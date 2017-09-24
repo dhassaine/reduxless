@@ -1,0 +1,32 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "globals": {
+    "Promise": true,
+    "Map": true,
+    "WeakMap": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+  "rules": {
+    "semi": ["error", "always"],
+    "no-unused-vars": ["error", { "varsIgnorePattern": "preact" }],
+    "no-global-assign": ["error"],
+    "no-console": ["warn"],
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
+    "react/display-name": "off",
+    "react/jsx-key": "off",
+    "react/no-unescaped-entities": "off",
+    "react/jsx-no-target-blank": ["warn"],
+    "max-len": ["warn", { "code": 100, "ignoreStrings": true, "ignoreTemplateLiterals": true }]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-css-modules"
+  ],
+  "plugins": [
+    "stylelint-order"
+  ],
+  "rules": {
+    "order/properties-order": [
+      "display",
+      "float",
+      "clear",
+      "flex",
+      "justify-content",
+      "position",
+      "box-sizing",
+      "width",
+      "min-width",
+      "max-width",
+      "height",
+      "min-height",
+      "max-height",
+      "left",
+      "top",
+      "right",
+      "bottom",
+      "margin",
+      "padding",
+      "border",
+      "color",
+      "background",
+      "font",
+      "text",
+      "line-height",
+      "vertical-align",
+      "white-space",
+      "overflow",
+      "content",
+      "cursor",
+      "box-shadow",
+      "transform", "animation"
+    ],
+    "declaration-colon-space-before": null,
+    "declaration-colon-space-after": null,
+    "selector-list-comma-newline-after": "always-multi-line"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "name": "reduxless",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "webpack-dev-server"
+  },
+  "author": "",
+  "license": "ISC",
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.jsx",
+      "src/**/*.js"
+    ],
+    "setupFiles": [
+      "./test/setup.js"
+    ],
+    "moduleDirectories": [
+      "node_modules"
+    ],
+    "moduleNameMapper": {
+      "^(react|react-dom|react-addons-create-fragment)$": "preact-compat/dist/preact-compat",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test/__mocks__/fileMock.js",
+      "\\.css$": "identity-obj-proxy"
+    }
+  },
+  "dependencies": {
+    "chai": "4.1.2",
+    "html-webpack-plugin": "2.30.1",
+    "immutable": "3.8.1",
+    "jest": "21.1.0",
+    "path": "0.12.7",
+    "preact": "8.2.5",
+    "preact-compat": "3.17.0",
+    "preact-jsx-chai": "2.2.1",
+    "redux": "3.7.2",
+    "webpack": "3.6.0",
+    "webpack-dev-server": "2.8.2"
+  },
+  "devDependencies": {
+    "babel-core": "6.26.0",
+    "babel-eslint": "8.0.0",
+    "babel-jest": "21.0.2",
+    "babel-loader": "7.1.2",
+    "babel-plugin-transform-object-assign": "6.22.0",
+    "babel-polyfill": "6.26.0",
+    "babel-preset-env": "1.6.0",
+    "babel-preset-react": "6.24.1",
+    "babel-preset-stage-0": "6.24.1",
+    "babili-webpack-plugin": "0.1.2",
+    "eslint": "4.7.0",
+    "eslint-plugin-react": "7.3.0",
+    "style-loader": "0.18.2",
+    "stylelint": "8.1.1",
+    "stylelint-config-css-modules": "1.1.0",
+    "stylelint-config-standard": "17.0.0",
+    "stylelint-order": "0.6.0"
+  }
+}
