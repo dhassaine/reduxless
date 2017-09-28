@@ -2,7 +2,6 @@
 import preact from 'preact';
 import { expect } from 'chai';
 import {Counter, default as CounterContainer} from '../../../src/features/counter';
-import {selectCounter} from '../../../src/features/counter/actions-selectors';
 import Container from '../../../src/state/container';
 import createStore from '../../../src/state/store';
 
