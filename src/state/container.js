@@ -1,15 +1,30 @@
 import preact from 'preact';
-import createStore from './store';
 
-export default (el, Component) => {
-  let store;
-  const render = () => {
-    preact.render(<Component store={store} />, el, el.lastChild);
+export default class Container extends preact.Component {
+  constructor() {
+    super();
+    this.update = this.update.bind(this);
   }
-  store = createStore(render);
 
-  return {
-    store,
-    render
+  componentWillMount() {
+    this.props.store.subscribe(this.update);
   }
-};
+
+  componentWillUnmount() {
+    this.props.store.unsubscribe();
+  }
+
+  update() {
+    this.forceUpdate();
+  }
+
+  render({children, store}) {
+    return (
+      <div>
+        {
+          children.map(componentFunc => componentFunc(store))
+        }
+      </div>
+    );
+  }
+}

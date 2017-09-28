@@ -1,16 +1,18 @@
-/* global describe, it */
+/* global describe, it, jest */
 import preact from 'preact';
 import { expect } from 'chai';
 import {Counter, default as CounterContainer} from '../../../src/features/counter';
 import {selectCounter} from '../../../src/features/counter/actions-selectors';
-import makeContainer from '../../../src/state/container';
+import Container from '../../../src/state/container';
+import createStore from '../../../src/state/store';
 
 const clickOn = el => el.dispatchEvent(new Event('click', { bubbles: true, cancelable: true }));
 
 function setup(value = 0) {
   const actions = {
     onIncrement: jest.fn(),
-    onDecrement: jest.fn()
+    onDecrement: jest.fn(),
+    onIncrementAsync: jest.fn()
   };
   const component = preact.render(
     <Counter value={value} {...actions} />,
@@ -43,17 +45,45 @@ describe('Counter component', () => {
     expect(actions.onDecrement.mock.calls).to.have.length(1);
   });
 
-  describe('store integration', () => {
-    it.only('behaves as expected', () => {
-      const container = makeContainer(document.body, CounterContainer);
-      container.render();
-      expect(document.querySelector('span').innerHTML).to.contain('Clicked: 0 times');
-      
-      clickOn(document.querySelectorAll('button')[0]);
-      expect(document.querySelector('span').innerHTML).to.contain('Clicked: 1 times');
+  it('third button should call onIncrementAsync', () => {
+    const { buttons, actions } = setup();
+    clickOn(buttons[2]);
+    expect(actions.onIncrementAsync.mock.calls).to.have.length(1);
+  });
 
-      clickOn(document.querySelectorAll('button')[1]);
-      expect(document.querySelector('span').innerHTML).to.contain('Clicked: 0 times');
+  describe('store integration', () => {
+    it('action/reducers are connected correctly', () => {
+      const store = createStore();
+      const component = preact.render(
+        <Container store={store}>
+          {store => <CounterContainer store={store} />}
+        </Container>,
+        document.body
+      );
+
+      expect(component.querySelector('span').innerHTML).to.contain('Clicked: 0 times');
+      
+      clickOn(component.querySelectorAll('button')[0]);
+      expect(component.querySelector('span').innerHTML).to.contain('Clicked: 1 times');
+
+      clickOn(component.querySelectorAll('button')[1]);
+      expect(component.querySelector('span').innerHTML).to.contain('Clicked: 0 times');
+    });
+
+    it('asynchronous actions can be tested by subscribing directly to the store', done => {
+      const store = createStore();
+      const component = preact.render(
+        <Container store={store}>
+          {store => <CounterContainer store={store} />}
+        </Container>,
+        document.body
+      );
+      store.subscribe(() => {
+        expect(component.querySelector('span').innerHTML).to.contain('Clicked: 1 times');
+        done();
+      });
+
+      clickOn(component.querySelectorAll('button')[2]);
     });
   });
 });

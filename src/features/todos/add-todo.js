@@ -1,7 +1,7 @@
 import preact from 'preact';
 
 const AddTodo = ({ submit }) => {
-  let input
+  let input;
 
   return (
     <div>
@@ -9,16 +9,16 @@ const AddTodo = ({ submit }) => {
         onSubmit={e => {
           const value = input.value;
           input.value = '';
-          e.preventDefault()
+          e.preventDefault();
           if (!value.trim()) {
-            return
+            return;
           }
-          submit(value)
+          submit(value);
         }}
       >
         <input
           ref={node => {
-            input = node
+            input = node;
           }}
         />
         <button type="submit">
@@ -26,7 +26,7 @@ const AddTodo = ({ submit }) => {
         </button>
       </form>
     </div>
-  )
-}
+  );
+};
 
 export default AddTodo;
