@@ -19,10 +19,9 @@ export const toggleTodo = (state, id) => {
 export const addTodo = (state, text) => {
   const todos = selectTodos(state);
   const id = todos.reduce((max, todo) => todo.id > max ? todo.id : max, 0) + 1;
-  todos.push({
+  setTodos(state, todos.concat([{
     id,
     completed: false,
     text
-  });
-  setTodos(state, todos);
+  }]));
 };

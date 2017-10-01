@@ -15,9 +15,7 @@ export const Todo = ({ onClick, completed, text }) => (
 
 const TodoList = ({ todos=[], onTodoClick }) => (
   <div>
-    <h2>
-      Todos:
-    </h2>
+    <h2>todos</h2>
     <ul>
       {todos.map(todo => (
         <Todo key={todo.id} {...todo} onClick={() => onTodoClick(todo.id)} />

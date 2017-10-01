@@ -1,9 +1,9 @@
 /* global describe, it, jest */
 import preact from 'preact';
 import { expect } from 'chai';
-import {Counter, default as CounterContainer} from '../../../src/features/counter';
-import Container from '../../../src/state/container';
-import createStore from '../../../src/state/store';
+import {Counter, default as CounterContainer} from './index';
+import Container from '../../state/container';
+import createStore from '../../state/store';
 
 const clickOn = el => el.dispatchEvent(new Event('click', { bubbles: true, cancelable: true }));
 
