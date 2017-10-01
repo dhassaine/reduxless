@@ -1,6 +1,7 @@
 import preact from 'preact';
 import {selectTodos, toggleTodo, addTodo} from './actions-selectors';
 import AddTodo from './add-todo';
+import {mapper} from '../../state/container';
 
 export const Todo = ({ onClick, completed, text }) => (
   <li
@@ -24,11 +25,19 @@ const TodoList = ({ todos=[], onTodoClick }) => (
   </div>
 );
 
-const Container = ({store}) => (
+const Todos = ({submit, todos, onTodoClick}) => (
   <div style={{border: '2px solid black', width: '500px', padding: '10px'}}>
-    <AddTodo submit={text => addTodo(store, text)} />
-    <TodoList todos={selectTodos(store)} onTodoClick={id => toggleTodo(store, id)}/>
+    <AddTodo submit={submit} />
+    <TodoList todos={todos} onTodoClick={onTodoClick}/>
   </div>
 );
 
-export default Container;
+export default mapper(
+  {
+    todos: selectTodos
+  }, 
+  {
+    submit: addTodo,
+    onTodoClick: toggleTodo
+  }
+)(Todos);

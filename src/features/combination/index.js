@@ -1,4 +1,5 @@
 import preact from 'preact';
+import {mapper} from '../../state/container';
 import {
   selectTaskCost
 } from './actions-selectors';
@@ -9,19 +10,11 @@ export const Combination = ({ taskCostings }) => (
       Project Costings:
     </h2>
     <ul>
-    {taskCostings.map(taskCost => <li>{taskCost}</li>)}
+      {taskCostings.map(taskCost => <li>{taskCost}</li>)}
     </ul>
   </div>
 );
 
-const Container = ({store}) => {
-  return (
-    <div>
-      <Combination 
-        taskCostings={selectTaskCost(store)}
-      />
-    </div>
-  );
-};
-
-export default Container;
+export default mapper({
+  taskCostings: selectTaskCost
+})(Combination);

@@ -1,8 +1,9 @@
 import preact from 'preact';
+import {mapper} from '../../state/container';
 import {
-  selectCounter, 
-  incrementCounter, 
-  decrementCounter, 
+  selectCounter,
+  incrementCounter,
+  decrementCounter,
   incrementAsync
 } from './actions-selectors';
 
@@ -24,15 +25,13 @@ export const Counter = ({ value, onIncrement, onDecrement, onIncrementAsync }) =
   </div>
 );
 
-const Container = ({store}) => (
-  <div>
-    <Counter 
-      value={selectCounter(store)} 
-      onIncrement={() => incrementCounter(store)}
-      onDecrement={() => decrementCounter(store)}
-      onIncrementAsync={() => incrementAsync(store)}
-    />
-  </div>
-);
-
-export default Container;
+export default mapper(
+  {
+    value: selectCounter
+  }, 
+  {
+    onIncrement: incrementCounter,
+    onDecrement: decrementCounter,
+    onIncrementAsync: incrementAsync
+  }
+)(Counter);

@@ -1,7 +1,7 @@
 const mountPoint = 'counter';
 
-export const selectCounter = state => {
-  const counter = state.get(mountPoint, state);
+export const selectCounter = store => {
+  const counter = store.get(mountPoint, store);
   if(counter) {
     return counter.value;
   } else {
@@ -9,15 +9,15 @@ export const selectCounter = state => {
   }
 };
 
-export const setCounter = (state, value) => 
-  state.set(mountPoint, {value});
+export const setCounter = (store, value) => 
+  store.set(mountPoint, {value});
 
-export const incrementCounter = state => 
-  setCounter(state, selectCounter(state) + 1);
+export const incrementCounter = store => 
+  setCounter(store, selectCounter(store) + 1);
 
-export const decrementCounter = state =>
-  setCounter(state, selectCounter(state) - 1);
+export const decrementCounter = store =>
+  setCounter(store, selectCounter(store) - 1);
 
-export const incrementAsync = state => 
+export const incrementAsync = store => 
   Promise.resolve()
-    .then(() => setCounter(state, selectCounter(state) + 1));
+    .then(() => setCounter(store, selectCounter(store) + 1));
