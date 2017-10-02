@@ -7,11 +7,11 @@ export default class Container extends preact.Component {
   }
 
   componentWillMount() {
-    this.props.store.subscribe(this.update);
+    this.unsubscribe = this.props.store.subscribe(this.update);
   }
 
   componentWillUnmount() {
-    this.props.store.unsubscribe();
+    this.unsubscribe();
   }
 
   update() {
