@@ -59,3 +59,38 @@ We provide the following Container components (must be installed as a peer depen
   - Preact `reduxless/preact`
   - Inferno: `reduxless/inferno`
 
+### Rendering performance gains using `mapper`
+There is also a `mapper` function which behaves in a similar fashion to Redux's `connect`, ie, it expects two arguments: `mapStateToProps` and `mapStateToActions`. The component returned by `mapper` will only render it's children after the store has changed if the relevant props have also changed. It's a good idea to use a memoization library like [reselect](https://github.com/reselect) for further performance gains. 
+
+```js
+import { h, render } from 'preact';
+import createStore from 'reduxless';
+import Container from 'reduxless/preact';
+
+const store = createStore({ name: 'Bart Simpson' });
+
+const Component = ({name, update}) => (
+  <p onClick={
+    () => update(name == 'Bart Simpson' ? 'Lisa Simpson' : 'Bart Simpson')
+  }>
+    Hello there, {name}! Click to change me.
+  </p>
+);
+
+const MappedComponent = mapper(
+  {
+    name: store => store.get('name')
+  }, 
+  {
+    update: (store, newName) => store.set('name', newName)
+  }
+)(Component);
+
+render(
+  <Container store={store}>
+    {store =>
+      <MappedComponent store={store} />
+    }
+  </Container>
+)
+```
