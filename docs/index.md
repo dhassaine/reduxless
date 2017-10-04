@@ -35,7 +35,7 @@ To use the store with a React-like library, you can use the library-specific `Co
 
 Here's an example using [Preact](https://preactjs.com/):
 
-```jsx
+```js
 import { h, render } from 'preact';
 import createStore from 'reduxless';
 import Container from 'reduxless/preact';
