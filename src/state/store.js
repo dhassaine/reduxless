@@ -1,7 +1,6 @@
 import { Subject } from 'rxjs/Subject';
 
-export default () => {
-  const store = {};
+export default (store = {}) => {
   const state$ = new Subject();
 
   return {

@@ -4,6 +4,13 @@ import createStore from './store';
 import {createSelector} from 'reselect';
 
 describe('Store', () => {
+  it('can be initialised with an initial state', () => {
+    const initialState = {a: 1, b:2};
+    const store = createStore(initialState);
+    expect(store.get('a')).to.equal(1);
+    expect(store.get('b')).to.equal(2);
+  });
+
   it('it should return the same reference if the state has not changed', () => {
     const store = createStore();
     store.set('mount', { a: 1 });
