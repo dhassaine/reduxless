@@ -1,0 +1,61 @@
+# Reduxless
+
+> A small state management library for unidirectional data flow.
+
+## Introduction
+
+Reduxless provides a store you can subscribe to and issue queries and commands against. It's intended to be a lightweight alternative to Redux or Flux with a simplified interface.
+
+It only has three methods:
+
+  - `subscribe(onChange: function)`: subscribes a listener called `onChange` to receive notifications when the store values change
+  - `get(key: string)`: returns the value of `key`
+  - `set(key: string, value: any)`: sets the value of `key`
+
+## Creating the store
+
+To create a store, call the `createStore()` function:
+
+```js
+import createStore from 'reduxless';
+
+const initialValues = { name: 'Bart', surname: 'Simpson' };
+const store = createStore(initialValues);
+
+const report = () =>
+  console.log(`Store has changed! – ${store.get('name')} ${store.get('surname')}`);
+
+store.subscribe(report);
+store.set('name', 'Homer');
+```
+
+## Using the store in a React-like library
+
+To use the store with a React-like library, you can use the library-specific `Container` component to wrap your components using the store.
+
+Here's an example using [Preact](https://preactjs.com/):
+
+```js
+import { h, render } from 'preact';
+import createStore from 'reduxless';
+import Container from 'reduxless/preact';
+
+const store = createStore({ name: 'Bart Simpson' });
+
+render(
+  <Container store={store}>
+    {store =>
+      <p onClick={() => store.set('name', 'Homer Simpson')}>
+        Hello there, {store.get('name')}! Click to change me.
+      </p>
+    }
+  </Container>
+)
+```
+
+We provide the following Container components (must be installed as a peer dependency):
+
+  - React: `reduxless/react`
+  - Preact `reduxless/preact`
+  - Inferno: `reduxless/inferno`
+
