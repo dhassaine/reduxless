@@ -7,7 +7,10 @@
     "test": "jest",
     "start": "webpack-dev-server"
   },
-  "author": "",
+  "authors": [
+    "Djamel Hassaine <dhassaine@gmail.com> (https://github.com/dhassaine)",
+    "Klemen Slavič <krof.drakula@gmail.com> (https://github.com/KrofDrakula)"
+  ],
   "license": "ISC",
   "jest": {
     "collectCoverageFrom": [
