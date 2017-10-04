@@ -49,5 +49,32 @@ describe('Container', () => {
         document.body
       );
     });
+
+    it('skips rendering if the relevant section of the store does not change', () => {
+      const store = createStore({
+        mount1: {a: 1},
+        mount2: {b: 2}
+      });
+
+      const childComponent = jest.fn();
+
+      const Component = mapper(
+        {
+          prop1: store => store.get('mount1').a
+        }
+      )(childComponent);
+
+      preact.render(
+        <Container store={store}>{
+          store => <Component store={store}/>
+        }</Container>,
+        document.body
+      );
+      expect(childComponent.mock.calls).to.have.length(1);
+      store.set('mount2', {b: 3});
+      expect(childComponent.mock.calls).to.have.length(1);
+      store.set('mount1', {a: 2});
+      expect(childComponent.mock.calls).to.have.length(2);
+    });
   });
 });
