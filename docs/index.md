@@ -60,7 +60,7 @@ We provide the following Container components (must be installed as a peer depen
   - Inferno: `reduxless/inferno`
 
 ### Rendering performance gains using `mapper`
-There is also a `mapper` function which behaves in a similar fashion to Redux's `connect`, ie, it expects two arguments: `mapStateToProps` and `mapStateToActions`. The component returned by `mapper` will only render it's children after the store has changed if the relevant props have also changed. It's a good idea to use a memoization library like [reselect](https://github.com/reselect) for further performance gains. 
+There is also a `mapper` function which behaves in a similar fashion to Redux's `connect`, ie, it expects two arguments: `mapStateToProps` and `mapStateToActions`. The component returned by `mapper` will only render it's children after the store has changed if the relevant props have also changed. It's a good idea to use a memoization library like [reselect](https://github.com/reactjs/reselect) for further performance gains. 
 
 ```js
 import { h, render } from 'preact';
