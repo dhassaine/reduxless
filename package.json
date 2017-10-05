@@ -37,9 +37,7 @@
     "preact": "8.2.5",
     "preact-compat": "3.17.0",
     "preact-jsx-chai": "2.2.1",
-    "redux": "3.7.2",
     "reselect": "3.0.1",
-    "rxjs": "5.4.3",
     "webpack": "3.6.0",
     "webpack-dev-server": "2.8.2"
   },

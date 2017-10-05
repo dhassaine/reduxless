@@ -1,7 +1,21 @@
-import { Subject } from 'rxjs/Subject';
+const makeSubject = () => {
+  const observers = new Map();
+  let idPtr = 0;
+  return {
+    subscribe: (callback) => {
+      const id = idPtr;
+      idPtr++;
+      observers.set(id, callback);
+      return () => observers.delete(id);
+    },
+    next: (...args) => {
+      observers.forEach(callback => callback(...args));
+    }
+  };
+};
 
 export default (store = {}) => {
-  const state$ = new Subject();
+  const state$ = makeSubject();
 
   return {
     subscribe: func => state$.subscribe(func),

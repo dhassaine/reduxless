@@ -1,4 +1,4 @@
-/* global describe, it */
+/* global describe, it, jest */
 import { expect } from 'chai';
 import createStore from './store';
 import {createSelector} from 'reselect';
@@ -9,6 +9,25 @@ describe('Store', () => {
     const store = createStore(initialState);
     expect(store.get('a')).to.equal(1);
     expect(store.get('b')).to.equal(2);
+  });
+
+  it('can be subscribed to and calls registered callback on state changes', () => {
+    const store = createStore();
+    const fn1 = jest.fn();
+    const fn2 = jest.fn();
+    const unsubscribe1 = store.subscribe(fn1);
+    const unsubscribe2 = store.subscribe(fn2);
+    store.set('a', 1);
+    expect(fn1.mock.calls).to.have.length(1);
+    expect(fn2.mock.calls).to.have.length(1);
+    unsubscribe1();
+    store.set('a', 2);
+    expect(fn1.mock.calls).to.have.length(1);
+    expect(fn2.mock.calls).to.have.length(2);
+    unsubscribe2();
+    store.set('a', 3);
+    expect(fn1.mock.calls).to.have.length(1);
+    expect(fn2.mock.calls).to.have.length(2);
   });
 
   it('it should return the same reference if the state has not changed', () => {
