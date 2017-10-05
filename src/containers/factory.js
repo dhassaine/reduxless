@@ -11,7 +11,7 @@ export const createComponent = Component => {
     update = () => this.forceUpdate();
 
     componentWillMount() {
-      this.unsubscript = this.props.store.subscribe(this.update);
+      this.unsubscribe = this.props.store.subscribe(this.update);
     }
 
     componentWillUnmount() {
@@ -41,7 +41,7 @@ const perf = (Component, Wrapped, keys) =>
     }
   };
 
-const mapper = Component => (propMappings={}, actionMappings={}) =>
+export const createMapper = Component => (propMappings={}, actionMappings={}) =>
   Wrapped => {
     const PerfComponent = perf(Component, Wrapped, Object.keys(propMappings));
     return ({ store, ...props }) => {
@@ -56,5 +56,3 @@ const mapper = Component => (propMappings={}, actionMappings={}) =>
       return <PerfComponent {...mapped} {...actions} {...props} />;
     };
   };
-
-export const createMapper = mapper(Component);

@@ -7,7 +7,8 @@
   "globals": {
     "Promise": true,
     "Map": true,
-    "WeakMap": true
+    "WeakMap": true,
+    "preact": true
   },
   "plugins": [
     "react"

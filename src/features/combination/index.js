@@ -1,5 +1,5 @@
-import preact from 'preact';
-import {mapper} from '../../state/container';
+import { mapper } from '../../containers/preact';
+
 import {
   selectTaskCost
 } from './actions-selectors';

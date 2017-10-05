@@ -1,7 +1,6 @@
-import preact from 'preact';
 import {selectTodos, toggleTodo, addTodo} from './actions-selectors';
 import AddTodo from './add-todo';
-import {mapper} from '../../state/container';
+import { mapper } from '../../containers/preact';
 
 export const Todo = ({ onClick, completed, text }) => (
   <li

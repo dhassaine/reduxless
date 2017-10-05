@@ -1,6 +1,6 @@
 import preact from 'preact';
 import createStore from '../state/store';
-import {mapper, default as Container} from '../state/container';
+import {mapper, Container} from '../containers/preact';
 
 const Component = ({name, update}) => (
   <p onClick={

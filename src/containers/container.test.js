@@ -1,13 +1,13 @@
 /* global describe, it, jest */
-import preact from 'preact';
 import { expect } from 'chai';
-import {mapper, default as Container} from './container';
-import createStore from './store';
+import createStore from '../state/store';
+import {Container, mapper} from './preact';
 
 describe('Container', () => {
   it('re-renders when the store changes', () => {
     const store = createStore();
     const childComponent = jest.fn();
+    
     preact.render(
       <Container store={store}>
         {() => childComponent()}
