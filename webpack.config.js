@@ -24,8 +24,22 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
-      { test: /\.jsx$/, loader: 'babel-loader', exclude: /node_modules/ }
+      { 
+        test: /\.jsx?$/, 
+        loader: 'babel-loader', 
+        options: {
+          "presets": [
+            ["env", { "targets": { "browsers": ["last 2 versions", "ie >= 10"] } }],
+            "react",
+            "stage-0"
+          ],
+          "plugins": [
+            ["transform-react-jsx", { "pragma": "preact.h" }],
+            ["transform-object-assign"]
+          ]
+        },
+        exclude: /node_modules/ 
+      },
     ]
   },
   plugins: [

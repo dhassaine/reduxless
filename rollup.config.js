@@ -6,7 +6,7 @@ import pkg from './package.json';
 export default [
 	// browser-friendly UMD build
 	{
-		entry: 'src/main.js',
+		input: 'src/main.js',
 		dest: pkg.browser,
 		format: 'umd',
 		moduleName: 'reduxless',
@@ -14,18 +14,7 @@ export default [
 			resolve(),
 			commonjs(),
 			babel({
-        exclude: ['node_modules/**'],
-        "presets": [
-          [
-            "es2015",
-            {
-              "modules": false
-            }
-          ]
-        ],
-        "plugins": [
-          "external-helpers"
-        ]
+        exclude: ['node_modules/**']
 			})
 		]
 	},
@@ -36,25 +25,15 @@ export default [
 	// builds from a single configuration where possible, using
 	// the `targets` option which can specify `dest` and `format`)
 	{
-		entry: 'src/main.js',
+    input: 'src/main.js',
+    external: ['react', 'preact', 'inferno-component'],
 		targets: [
 			{ dest: pkg.main, format: 'cjs' },
 			{ dest: pkg.module, format: 'es' }
 		],
 		plugins: [
 			babel({
-				exclude: ['node_modules/**'],
-        "presets": [
-          [
-            "es2015",
-            {
-              "modules": false
-            }
-          ]
-        ],
-        "plugins": [
-          "external-helpers"
-        ]
+				exclude: ['node_modules/**']
 			})
 		]
 	}

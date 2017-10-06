@@ -6,9 +6,12 @@ export const createContainer = Component => {
     constructor(props) {
       super(props);
       this.unsubscribe = noop;
+      this.update = this.update.bind(this);
     }
 
-    update = () => this.forceUpdate();
+    update() {
+      this.forceUpdate();
+    }
 
     componentWillMount() {
       this.unsubscribe = this.props.store.subscribe(this.update);
