@@ -1,8 +1,8 @@
 /* global describe, it, jest, expect */
-const React = require('react');
-const renderer = require('react-test-renderer');
-const createStore = require('../state/store');
-const {Container, mapper} = require('./container');
+import React from 'react';
+import renderer from 'react-test-renderer';
+import createStore from '../state/store';
+import {Container, mapper} from './container';
 
 describe('Container', () => {
   it('re-renders when the store changes', () => {

@@ -1,7 +1,7 @@
-const React = require('react');
+import React from 'react';
 const noop = () => { };
 
-class Container extends React.Component {
+export class Container extends React.Component {
 
   constructor(props) {
     super(props);
@@ -45,9 +45,7 @@ const perf = (Wrapped, keys) =>
     }
   };
 
-exports.Container = Container;
-
-exports.mapper = (propMappings = {}, actionMappings = {}) => Wrapped => {
+export const mapper = (propMappings = {}, actionMappings = {}) => Wrapped => {
   const PerfComponent = perf(Wrapped, Object.keys(propMappings));
   return ({ store, ...props }) => {
     const mapped = Object.assign({},
