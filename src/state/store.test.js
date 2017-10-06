@@ -1,7 +1,7 @@
 /* global describe, it, jest */
-import { expect } from 'chai';
-import createStore from './store';
-import {createSelector} from 'reselect';
+const { expect } = require('chai');
+const createStore = require('./store');
+const {createSelector} = require('reselect');
 
 describe('Store', () => {
   it('can be initialised with an initial state', () => {

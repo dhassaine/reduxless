@@ -14,7 +14,7 @@ const makeSubject = () => {
   };
 };
 
-export default (store = {}) => {
+module.exports = (store = {}) => {
   const state$ = makeSubject();
 
   return {

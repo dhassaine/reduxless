@@ -1,5 +1,4 @@
-import preact from 'preact';
-
+import React from 'react';
 const AddTodo = ({ submit }) => {
   let input;
 

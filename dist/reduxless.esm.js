@@ -1,7 +1,3 @@
-import { Component } from 'react';
-import { Component as Component$1 } from 'preact';
-import Component$2 from 'inferno-component';
-
 var makeSubject = function makeSubject() {
   var observers = new Map();
   var idPtr = 0;
@@ -26,7 +22,7 @@ var makeSubject = function makeSubject() {
   };
 };
 
-var store$1 = (function () {
+var createStore = (function () {
   var store = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
   var state$ = makeSubject();
@@ -65,7 +61,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var noop = function noop() {};
 
-var createContainer = function createContainer(Component$$1) {
+var createContainer = function createContainer(Component) {
   return function (_Component) {
     _inherits(Container, _Component);
 
@@ -116,10 +112,10 @@ var createContainer = function createContainer(Component$$1) {
     }]);
 
     return Container;
-  }(Component$$1);
+  }(Component);
 };
 
-var perf = function perf(Component$$1, Wrapped, keys) {
+var perf = function perf(Component, Wrapped, keys) {
   return function (_Component2) {
     _inherits(Perf, _Component2);
 
@@ -146,15 +142,15 @@ var perf = function perf(Component$$1, Wrapped, keys) {
     }]);
 
     return Perf;
-  }(Component$$1);
+  }(Component);
 };
 
-var createMapper = function createMapper(Component$$1) {
+var createMapper = function createMapper(Component) {
   return function () {
     var propMappings = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var actionMappings = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     return function (Wrapped) {
-      var PerfComponent = perf(Component$$1, Wrapped, Object.keys(propMappings));
+      var PerfComponent = perf(Component, Wrapped, Object.keys(propMappings));
       return function (_ref) {
         var store = _ref.store,
             props = _objectWithoutProperties(_ref, ["store"]);
@@ -187,29 +183,29 @@ var createMapper = function createMapper(Component$$1) {
   };
 };
 
-var Container = createContainer(Component);
-var mapper = createMapper(Component);
+var path = void 0;
 
-var react$1 = Object.freeze({
-	Container: Container,
-	mapper: mapper
-});
+try {
+    path = require.resolve('preact');
+} catch (e) {
+    try {
+        path = require.resolve('inferno-component');
+    } catch (e) {
+        try {
+            path = require.resolve('react');
+        } catch (e) {
+            throw Error('You should install either "preact", "inferno-component" or "react"');
+        }
+    }
+}
 
-var Container$1 = createContainer(Component$1);
-var mapper$1 = createMapper(Component$1);
+var _require = require(path);
+var Component = _require.Component;
 
-var preact$1 = Object.freeze({
-	Container: Container$1,
-	mapper: mapper$1
-});
+var main = {
+  createStore: createStore,
+  Container: createContainer(Component),
+  mapper: createMapper(Component)
+};
 
-var Container$2 = createContainer(Component$2);
-var mapper$2 = createMapper(Component$2);
-
-var inferno = Object.freeze({
-	Container: Container$2,
-	mapper: mapper$2
-});
-
-export { react$1 as react, preact$1 as preact, inferno };
-export default store$1;
+export default main;

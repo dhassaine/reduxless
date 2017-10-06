@@ -1,4 +1,5 @@
-import { mapper } from '../../../src/containers/react';
+import React from 'react';
+import { mapper } from '../../../src/main';
 import {
   selectCounter,
   incrementCounter,

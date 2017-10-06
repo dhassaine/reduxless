@@ -1,7 +1,8 @@
-import store from './state/store';
-import * as react from './containers/react';
-import * as preact from './containers/preact';
-import * as inferno from './containers/inferno';
+const createStore = require('./state/store');
+const { Container, mapper } = require('./containers/container');
 
-export default store;
-export {react, preact, inferno};
+module.exports = {
+  createStore,
+  Container,
+  mapper
+};

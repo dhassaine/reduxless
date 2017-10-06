@@ -25,9 +25,6 @@
       "src/**/*.jsx",
       "src/**/*.js"
     ],
-    "setupFiles": [
-      "./test/setup.js"
-    ],
     "moduleDirectories": [
       "node_modules"
     ]

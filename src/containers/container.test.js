@@ -1,7 +1,13 @@
 /* global describe, it, jest */
-import { expect } from 'chai';
-import createStore from '../state/store';
-import {Container, mapper} from './preact';
+const preact = require('preact');
+const { expect } = require('chai');
+const createStore = require('../state/store');
+const { Component, h } = require('../any-component');
+const {createContainer, createMapper} = require('./factory');
+const Container = createContainer(Component, h);
+const mapper = createMapper(Component, h);
+
+const React = { createElement: h };
 
 describe('Container', () => {
   it('re-renders when the store changes', () => {

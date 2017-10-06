@@ -1,5 +1,7 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
 import createStore from '../../src/state/store';
-import {mapper, Container} from '../../src/containers/react';
+import {mapper, Container} from '../../src/main';
 
 const Component = ({name, update}) => (
   <p onClick={

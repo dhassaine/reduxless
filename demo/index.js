@@ -1,6 +1,7 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
 import App from './app';
-import { Container } from '../src/containers/react';
-import createStore from '../src/state/store';
+import {createStore, Container} from '../src/main';
 import createDocsExample from './docs-example';
 
 const store = createStore();

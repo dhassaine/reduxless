@@ -1,6 +1,7 @@
+import React from 'react';
 import {selectTodos, toggleTodo, addTodo} from './actions-selectors';
 import AddTodo from './add-todo';
-import { mapper } from '../../../src/containers/react';
+import { mapper } from '../../../src/main';
 
 export const Todo = ({ onClick, completed, text }) => (
   <li
