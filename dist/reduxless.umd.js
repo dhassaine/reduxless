@@ -28,7 +28,7 @@ var makeSubject = function makeSubject() {
   };
 };
 
-var store = (function () {
+var store$1 = (function () {
   var store = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
   var state$ = makeSubject();
@@ -47,10 +47,6 @@ var store = (function () {
   };
 });
 
-var main = {
-  store: store
-};
-
-return main;
+return store$1;
 
 })));
