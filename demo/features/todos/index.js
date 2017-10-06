@@ -19,7 +19,7 @@ const TodoList = ({ todos=[], onTodoClick }) => (
     <h2>todos</h2>
     <ul>
       {todos.map(todo => (
-        <Todo key={todo.id} {...todo} onClick={() => onTodoClick(todo.id)} />
+        <Todo key={todo.id.toString()} {...todo} onClick={() => onTodoClick(todo.id)} />
       ))}
     </ul>
   </div>

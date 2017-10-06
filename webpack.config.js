@@ -1,6 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
-
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   template: './src/index.html',
@@ -34,7 +32,6 @@ module.exports = {
             "stage-0"
           ],
           "plugins": [
-            ["transform-react-jsx", { "pragma": "preact.h" }],
             ["transform-object-assign"]
           ]
         },
@@ -43,10 +40,6 @@ module.exports = {
     ]
   },
   plugins: [
-    HtmlWebpackPluginConfig,
-    new webpack.ProvidePlugin({
-      ReactDOM: 'react-dom',
-      React: 'react'
-    })
+    HtmlWebpackPluginConfig
   ]
 };

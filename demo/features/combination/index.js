@@ -11,7 +11,7 @@ export const Combination = ({ taskCostings }) => (
       Project Costings:
     </h2>
     <ul>
-      {taskCostings.map(taskCost => <li>{taskCost}</li>)}
+      {taskCostings.map((taskCost,id) => <li key={id}>{taskCost}</li>)}
     </ul>
   </div>
 );

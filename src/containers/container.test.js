@@ -1,28 +1,23 @@
-/* global describe, it, jest */
-const preact = require('preact');
-const { expect } = require('chai');
+/* global describe, it, jest, expect */
+const React = require('react');
+const renderer = require('react-test-renderer');
 const createStore = require('../state/store');
-const { Component, h } = require('../any-component');
-const {createContainer, createMapper} = require('./factory');
-const Container = createContainer(Component, h);
-const mapper = createMapper(Component, h);
-
-const React = { createElement: h };
+const {Container, mapper} = require('./container');
 
 describe('Container', () => {
   it('re-renders when the store changes', () => {
     const store = createStore();
     const childComponent = jest.fn();
+    childComponent.mockReturnValue(null);
     
-    preact.render(
+    renderer.create(
       <Container store={store}>
         {() => childComponent()}
-      </Container>,
-      document.body
+      </Container>
     );
-    expect(childComponent.mock.calls).to.have.length(1);
+    expect(childComponent.mock.calls.length).toEqual(1);
     store.set('mount', {a: 1});
-    expect(childComponent.mock.calls).to.have.length(2);
+    expect(childComponent.mock.calls.length).toEqual(2);
   });
 
   describe('mapper', () => {
@@ -33,11 +28,12 @@ describe('Container', () => {
       const action = jest.fn();
 
       const childComponent = ({prop1, prop2, onAction}) => {
-        expect(prop1).to.equal(1);
-        expect(prop2).to.equal(2);
+        expect(prop1).toEqual(1);
+        expect(prop2).toEqual(2);
         onAction(5);
-        expect(action.mock.calls[0][0]).to.equal(store);
-        expect(action.mock.calls[0][1]).to.equal(5);
+        expect(action.mock.calls[0][0]).toEqual(store);
+        expect(action.mock.calls[0][1]).toEqual(5);
+        return null;
       };
 
       const Component = mapper(
@@ -48,11 +44,10 @@ describe('Container', () => {
         {onAction: action}
       )(childComponent);
 
-      preact.render(
+      renderer.create(
         <Container store={store}>{
           store => <Component store={store}/>
-        }</Container>,
-        document.body
+        }</Container>
       );
     });
 
@@ -63,6 +58,7 @@ describe('Container', () => {
       });
 
       const childComponent = jest.fn();
+      childComponent.mockReturnValue(null);
 
       const Component = mapper(
         {
@@ -70,17 +66,16 @@ describe('Container', () => {
         }
       )(childComponent);
 
-      preact.render(
+      renderer.create(
         <Container store={store}>{
           store => <Component store={store}/>
-        }</Container>,
-        document.body
+        }</Container>
       );
-      expect(childComponent.mock.calls).to.have.length(1);
+      expect(childComponent.mock.calls.length).toEqual(1);
       store.set('mount2', {b: 3});
-      expect(childComponent.mock.calls).to.have.length(1);
+      expect(childComponent.mock.calls.length).toEqual(1);
       store.set('mount1', {a: 2});
-      expect(childComponent.mock.calls).to.have.length(2);
+      expect(childComponent.mock.calls.length).toEqual(2);
     });
   });
 });
