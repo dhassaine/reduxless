@@ -8,7 +8,9 @@
     "Promise": true,
     "Map": true,
     "WeakMap": true,
-    "preact": true
+    "preact": true,
+    "ReactDOM": true,
+    "React": true
   },
   "plugins": [
     "react"

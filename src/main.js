@@ -1,5 +1,5 @@
 import store from './state/store';
-import {default as Container, mapper} from './state/container';
+import {mapper, Container} from './containers/react';
 
 export default {
   store,

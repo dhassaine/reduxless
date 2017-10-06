@@ -1,6 +1,5 @@
-import preact from 'preact';
-import createStore from '../state/store';
-import {mapper, Container} from '../containers/preact';
+import createStore from '../../src/state/store';
+import {mapper, Container} from '../../src/containers/react';
 
 const Component = ({name, update}) => (
   <p onClick={
@@ -22,7 +21,7 @@ const MappedComponent = mapper(
 const createDocsExample = () => {
   const store = createStore({ name: 'Bart Simpson' });
 
-  preact.render(
+  ReactDOM.render(
     <Container store={store}>
       {store => 
         <MappedComponent store={store}/>

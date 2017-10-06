@@ -3,13 +3,13 @@ const webpack = require('webpack');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-  template: './src/index.html',
+  template: path.resolve(__dirname, './index.html'),
   filename: 'index.html',
   inject: 'body'
 });
 
 module.exports = {
-  entry: './src/index.js',
+  entry: path.resolve(__dirname, './index.js'),
   output: {
     path: path.resolve('dist'),
     filename: 'index_bundle.js'
@@ -24,8 +24,21 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
-      { test: /\.jsx$/, loader: 'babel-loader', exclude: /node_modules/ }
+      
+      { test: /\.jsx?$/, use: {
+        loader: 'babel-loader',
+        options: {
+          "presets": [
+            ["env", { "targets": { "browsers": ["last 2 versions", "ie >= 10"] } }],
+            "react",
+            "stage-0"
+          ],
+          "plugins": [
+            ["transform-react-jsx"],
+            ["transform-object-assign"]
+          ]
+        }
+      }, exclude: /node_modules/ }
     ]
   },
   plugins: [

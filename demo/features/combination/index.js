@@ -1,4 +1,4 @@
-import { mapper } from '../../containers/preact';
+import { mapper } from '../../../src/containers/react';
 
 import {
   selectTaskCost

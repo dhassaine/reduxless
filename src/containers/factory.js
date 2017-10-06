@@ -1,6 +1,6 @@
-const noop = () => {};
+const noop = () => { };
 
-export const createComponent = Component => {
+export const createContainer = Component => {
   return class Container extends Component {
 
     constructor(props) {
@@ -18,14 +18,16 @@ export const createComponent = Component => {
       this.unsubscribe();
     }
 
-    render({ children, store }) {
-      return (
-        children.length > 1 ?
+    render() {
+      const { children, store } = this.props;
+      if (Array.isArray(children)) {
+        return children.length > 1 ?
           <div>
             {children.map(f => f(store))}
-          </div> :
-          children[0] && children[0](store)
-      );
+          </div> : children[0] && children[0](store);
+      } else {
+        return children(store);
+      }
     }
   };
 };
@@ -41,7 +43,7 @@ const perf = (Component, Wrapped, keys) =>
     }
   };
 
-export const createMapper = Component => (propMappings={}, actionMappings={}) =>
+export const createMapper = Component => (propMappings = {}, actionMappings = {}) =>
   Wrapped => {
     const PerfComponent = perf(Component, Wrapped, Object.keys(propMappings));
     return ({ store, ...props }) => {

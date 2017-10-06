@@ -1,7 +1,7 @@
 /* global describe, it, jest */
 import { expect } from 'chai';
 import {Counter, default as CounterContainer} from './index';
-import {Container} from '../../containers/preact';
+import {Container} from '../../containers/react';
 import createStore from '../../state/store';
 
 const clickOn = el => el.dispatchEvent(new Event('click', { bubbles: true, cancelable: true }));
@@ -12,7 +12,7 @@ function setup(value = 0) {
     onDecrement: jest.fn(),
     onIncrementAsync: jest.fn()
   };
-  const component = preact.render(
+  const component = ReactDOM.render(
     <Counter value={value} {...actions} />,
     document.body
   );
