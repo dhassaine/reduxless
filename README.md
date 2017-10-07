@@ -1,4 +1,5 @@
 # Reduxless
+[![npm version](https://badge.fury.io/js/reduxless.svg)](https://badge.fury.io/js/reduxless)
 
 > A small state management library for unidirectional data flow.
 
