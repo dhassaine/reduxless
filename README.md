@@ -3,7 +3,7 @@
 > A small state management library for unidirectional data flow.
 
 ## Introduction
-Reduxless simplifies some of the complexity of redux and reduces the amount of necessary boiler plate code by removing the need for an intermediate dispatch stage, i.e. the roles of reducers and actions must be combined into one operation. We lose the ability to perform time travelling on our state, but the advantages of simpler code can out weigh that benefit. Please take a look at the [docs](https://dhassaine.github.io/reduxless/) for more information. There are some examples in the `demo` directory for further study.
+Reduxless simplifies some of the complexity of redux and reduces the amount of necessary boiler plate code by removing the need for an intermediate dispatch stage, i.e. the roles of reducers and actions are combined into one operation. We lose the ability to perform time travelling on our state, but the advantages of simpler code can outweigh that benefit. Please take a look at the [docs](https://dhassaine.github.io/reduxless/) for more information. There are some examples in the `demo` directory for further study.
 
 ## Installation
 
