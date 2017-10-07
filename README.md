@@ -1,5 +1,5 @@
 # Reduxless
-[![npm version](https://badge.fury.io/js/reduxless.svg)](https://badge.fury.io/js/reduxless)
+[![npm version](https://badge.fury.io/js/reduxless.svg)](https://badge.fury.io/js/reduxless) [![Build Status](https://travis-ci.org/dhassaine/reduxless.svg?branch=master)](https://travis-ci.org/dhassaine/reduxless)
 
 > A small state management library for unidirectional data flow.
 
