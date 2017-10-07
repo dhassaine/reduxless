@@ -6,6 +6,8 @@
 
 Reduxless provides a store you can subscribe to and issue queries and commands against. It's intended to be a lightweight alternative to Redux or Flux with a simplified interface.
 
+## API
+
 It only has three methods:
 
   - `subscribe(onChange: function)`: subscribes a listener called `onChange` to receive notifications when the store values change
@@ -17,7 +19,7 @@ It only has three methods:
 To create a store, call the `createStore()` function:
 
 ```js
-import createStore from 'reduxless';
+import { createStore } from 'reduxless';
 
 const initialValues = { name: 'Bart', surname: 'Simpson' };
 const store = createStore(initialValues);
@@ -31,14 +33,13 @@ store.set('name', 'Homer');
 
 ## Using the store in a React-like library
 
-To use the store with a React-like library, you can use the library-specific `Container` component to wrap your components using the store.
+To use the store with a React-like library, you can use the `Container` component to wrap your components using the store.
 
 Here's an example using [Preact](https://preactjs.com/):
 
 ```js
 import { h, render } from 'preact';
-import createStore from 'reduxless';
-import Container from 'reduxless/preact';
+import { createStore, Container } from 'reduxless';
 
 const store = createStore({ name: 'Bart Simpson' });
 
@@ -53,19 +54,12 @@ render(
 )
 ```
 
-We provide the following Container components (must be installed as a peer dependency):
-
-  - React: `reduxless/react`
-  - Preact `reduxless/preact`
-  - Inferno: `reduxless/inferno`
-
 ### Rendering performance gains using `mapper`
 There is also a `mapper` function which behaves in a similar fashion to Redux's `connect`, ie, it expects two arguments: `mapStateToProps` and `mapStateToActions`. The component returned by `mapper` will only render it's children after the store has changed if the relevant props have also changed. It's a good idea to use a memoization library like [reselect](https://github.com/reactjs/reselect) for further performance gains. 
 
 ```js
 import { h, render } from 'preact';
-import createStore from 'reduxless';
-import Container from 'reduxless/preact';
+import { createStore, Container, mapper } from 'reduxless';
 
 const store = createStore({ name: 'Bart Simpson' });
 
