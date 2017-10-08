@@ -77,5 +77,63 @@ describe('Container', () => {
       store.set('mount1', {a: 2});
       expect(childComponent.mock.calls.length).toEqual(2);
     });
+
+    it('Stateful components under container can still re-render even if the store has not change', () => {
+      const store = createStore({
+        mount1: {a: 1},
+        mount2: {b: 2}
+      });
+
+      const childComponent = jest.fn();
+      childComponent.mockReturnValue(null);
+
+      const trigger = {
+        changeState: () => {}
+      };
+
+      const StatefullComponent = class extends React.Component {
+        state = { val: 3 }
+
+        constructor(props) {
+          super(props);
+          trigger.changeState = this.update.bind(this);
+        }
+
+        update() {
+          this.setState({val: this.state.val + 1});
+        }
+        
+        render() {
+          return childComponent(this.state.val);
+        }
+      };
+
+      const PureComponentWithStatefullComponent = () => (
+        <div>
+          <StatefullComponent />
+        </div>
+      );
+
+      const Component = mapper(
+        {
+          prop1: store => store.get('mount1').a
+        }
+      )(PureComponentWithStatefullComponent);
+
+      renderer.create(
+        <Container store={store}>{
+          store => <Component store={store} />
+        }</Container>
+      );
+      expect(childComponent.mock.calls.length).toEqual(1);
+      expect(childComponent.mock.calls[0][0]).toEqual(3);
+      trigger.changeState();
+      expect(childComponent.mock.calls.length).toEqual(2);
+      expect(childComponent.mock.calls[1][0]).toEqual(4);
+
+      store.set('mount1', {a: 2});
+      expect(childComponent.mock.calls.length).toEqual(3);
+      expect(childComponent.mock.calls[2][0]).toEqual(4);
+    });
   });
 });
