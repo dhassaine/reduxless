@@ -1,0 +1,17 @@
+src
+docs
+.babelrc
+.eslintrc.json
+.gitignore
+.cache/
+node_modules/
+**/.DS_Store
+npm-debug.log
+storybook/
+npm-debug.log*
+coverage/
+public/
+stats.json
+json-schemas
+dist
+.coveralls.yml
