@@ -21,7 +21,7 @@ describe('Container', () => {
   });
 
   describe('mapper', () => {
-    it('maps state to props and actions', () => {
+    it.only('maps state to props and actions on given children as functions or vdom', () => {
       const store = createStore();
       store.set('mount', {a: 1, b: 2});
 
@@ -44,10 +44,32 @@ describe('Container', () => {
         {onAction: action}
       )(childComponent);
 
+      const BasicComponent = props => {
+        expect(props).toHaveProperty('store');
+        expect(props.store).toBe(store);
+        expect(props).toHaveProperty('nameProp');
+        expect(props.nameProp).toEqual('Jim');
+        return null;
+      };
+
+      class ClassComponent extends React.Component {
+        render() {
+          expect(this.props).toHaveProperty('store');
+          expect(this.props.store).toBe(store);
+          expect(this.props).toHaveProperty('nameProp');
+          expect(this.props.nameProp).toEqual('Jim');
+          return null;
+        }
+      }
+
       renderer.create(
-        <Container store={store}>{
-          store => <Component store={store}/>
-        }</Container>
+        <Container store={store}>
+          { store => <Component key='1' store={store}/> }
+          <BasicComponent key='2' nameProp='Jim' />
+          <ClassComponent key='3' nameProp='Jim' />
+          Hi this text node should left alone
+          <p>This also is left alone</p>
+        </Container>
       );
     });
 
