@@ -4,7 +4,7 @@
 > A small state management library for unidirectional data flow.
 
 ## Introduction
-Reduxless simplifies some of the complexity of redux and reduces the amount of necessary boiler plate code by removing the need for an intermediate dispatch stage, i.e. the roles of reducers and actions are combined into one operation. We lose the ability to perform time travelling on our state, but the advantages of simpler code can outweigh that benefit. Please take a look at the [docs](https://dhassaine.github.io/reduxless/) for more information. There are some examples in the `demo` directory for further study.
+Reduxless simplifies some of the complexity of [Redux](https://github.com/reactjs/redux) and reduces the amount of necessary boiler plate code by removing the need for an intermediate dispatch stage, i.e. the roles of reducers and actions are combined into one operation. We lose the ability to perform time travelling on our state, but the advantages of simpler code can outweigh that benefit. Please take a look at the [docs](https://dhassaine.github.io/reduxless/) for more information. There are some examples in the `demo` directory for further study.
 
 ## Installation
 
@@ -53,6 +53,8 @@ render(
 )
 ```
 
+`Container` accepts `children` as a mix of React components or functions. If it receives a function, then `Container` will call it with the store, as seen in the example above. If any of the `children` are React components then the `store` will be injected as a `prop`.
+
 ### Rendering performance gains using `mapper`
 
 There is also a `mapper` function which behaves in a similar fashion to Redux's `connect`, ie, it expects two arguments: `mapStateToProps` and `mapStateToActions`. The component returned by `mapper` will only render it's children after the store has changed if the relevant props have also changed. It's a good idea to use a memoization library like [reselect](https://github.com/reactjs/reselect) for further performance gains. 
@@ -82,9 +84,7 @@ const MappedComponent = mapper(
 
 render(
   <Container store={store}>
-    {store =>
-      <MappedComponent store={store} />
-    }
+    <MappedComponent />
   </Container>
 )
 ```
