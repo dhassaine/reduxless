@@ -32,7 +32,8 @@ describe('Container', () => {
         expect(prop2).toEqual(2);
         onAction(5);
         expect(action.mock.calls[0][0]).toEqual(store);
-        expect(action.mock.calls[0][1]).toEqual(5);
+        expect(action.mock.calls[0][1]).toEqual({originalProp: 'yes'});
+        expect(action.mock.calls[0][2]).toEqual(5);
         return null;
       };
 
@@ -64,7 +65,7 @@ describe('Container', () => {
 
       renderer.create(
         <Container store={store}>
-          { store => <Component key='1' store={store}/> }
+          { store => <Component key='1' store={store} originalProp='yes' /> }
           <BasicComponent key='2' nameProp='Jim' />
           <ClassComponent key='3' nameProp='Jim' />
           Hi this text node should left alone

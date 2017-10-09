@@ -64,14 +64,15 @@ const perf = (Wrapped, keys) =>
 export const mapper = (propMappings = {}, actionMappings = {}) => Wrapped => {
   const PerfComponent = perf(Wrapped, Object.keys(propMappings));
   return ({ store, ...props }) => {
+    
     const mapped = Object.assign({},
-      ...Object.entries(propMappings).map(([key, func]) => ({ [key]: func(store) }))
+      ...Object.entries(propMappings).map(([key, func]) => ({ [key]: func(store, props) }))
     );
 
     const actions = Object.assign({},
-      ...Object.entries(actionMappings).map(([key, func]) => ({ [key]: (...args) => func(store, ...args) }))
+      ...Object.entries(actionMappings).map(([key, func]) => ({ [key]: (...args) => func(store, props, ...args) }))
     );
 
-    return <PerfComponent {...mapped} {...actions} {...props} />;
+    return <PerfComponent {...props} {...mapped} {...actions} />;
   };
 };
