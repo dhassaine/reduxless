@@ -1,6 +1,19 @@
 import React from 'react';
 const noop = () => { };
 
+const createInjector = store => child => {
+  if (typeof child == 'function') {
+    return child(store);
+  }
+
+  return (typeof child.type == 'object' || typeof child.type == 'function') && 
+    child.type != null ? 
+      React.cloneElement(child, {
+        store: store
+      }) : 
+      child;
+};
+
 export class Container extends React.Component {
 
   constructor(props) {
@@ -23,13 +36,16 @@ export class Container extends React.Component {
 
   render() {
     const { children, store } = this.props;
+    const injectStore = createInjector(store);
+
     if (Array.isArray(children)) {
-      return children.length > 1 ?
+      return (
         <div>
-          {children.map(f => f(store))}
-        </div> : children[0] && children[0](store);
+          {children.map(injectStore)}
+        </div>
+      );
     } else {
-      return children(store);
+      return injectStore(children);
     }
   }
 }
