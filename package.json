@@ -5,6 +5,10 @@
   "main": "dist/reduxless.cjs.js",
   "module": "dist/reduxless.esm.js",
   "browser": "dist/reduxless.umd.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dhassaine/reduxless.git"
+  },
   "scripts": {
     "test": "jest",
     "coveralls": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
