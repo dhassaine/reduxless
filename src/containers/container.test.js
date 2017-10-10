@@ -31,9 +31,7 @@ describe('Container', () => {
     })
 
     const container = renderer.create(
-      <Container store={store}>
-        {() => null}
-      </Container>
+      <Container store={store} />
     );
 
     expect(unsubscribeMock.mock.calls.length).toEqual(0);
@@ -41,7 +39,46 @@ describe('Container', () => {
     expect(unsubscribeMock.mock.calls.length).toEqual(1);
   });
 
+  it('allows undefined children', () => {
+    const onError = jest.fn();
+
+    class ErrorBoundary extends React.Component {
+      componentDidCatch(error, info) {
+        onError();
+      }
+
+      render() {
+        return this.props.children;
+      }
+    }
+
+    renderer.create(
+      <ErrorBoundary>
+        <Container store={createStore()} />
+      </ErrorBoundary>
+    );
+
+    expect(onError.mock.calls.length).toEqual(0);
+  });
+
   describe('mapper', () => {
+    it('passes through props', () => {
+      const store = createStore();
+
+      const childComponent = ({originalProp}) => {
+        expect(originalProp).toEqual('yes');
+        return null;
+      };
+
+      const Component = mapper()(childComponent);
+
+      renderer.create(
+        <Container store={store}>
+          <Component originalProp='yes' />
+        </Container>
+      );
+    });
+
     it('maps state to props and actions on given children as functions or vdom', () => {
       const store = createStore();
       store.set('mount', {a: 1, b: 2});
@@ -146,7 +183,7 @@ describe('Container', () => {
         update() {
           this.setState({val: this.state.val + 1});
         }
-        
+
         render() {
           return childComponent(this.state.val);
         }
