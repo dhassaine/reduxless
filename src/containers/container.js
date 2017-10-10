@@ -1,5 +1,4 @@
 import React from 'react';
-const noop = () => { };
 
 const createInjector = store => child => {
   if (!child) {
@@ -22,16 +21,12 @@ export class Container extends React.Component {
 
   constructor(props) {
     super(props);
-    this.unsubscribe = noop;
     this.update = this.update.bind(this);
+    this.unsubscribe = props.store.subscribe(this.update);
   }
 
   update() {
     this.forceUpdate();
-  }
-
-  componentWillMount() {
-    this.unsubscribe = this.props.store.subscribe(this.update);
   }
 
   componentWillUnmount() {
