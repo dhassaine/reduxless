@@ -5,6 +5,9 @@
   "main": "dist/reduxless.cjs.js",
   "module": "dist/reduxless.esm.js",
   "browser": "dist/reduxless.umd.js",
+  "engines": {
+    "node" : ">=8"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/dhassaine/reduxless.git"
