@@ -1,6 +1,6 @@
 /* global describe, it, jest */
 import { expect } from 'chai';
-import createStore from './store';
+import {createStore} from '../main';
 import {createSelector} from 'reselect';
 
 describe('Store', () => {

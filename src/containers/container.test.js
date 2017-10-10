@@ -2,17 +2,17 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import createStore from '../state/store';
-import {Container, mapper} from './container';
+import {Container, mapper} from '../main';
 
 describe('Container', () => {
   it('re-renders when the store changes', () => {
     const store = createStore();
     const childComponent = jest.fn();
     childComponent.mockReturnValue(null);
-    
+
     renderer.create(
       <Container store={store}>
-        {() => childComponent()}
+        {childComponent}
       </Container>
     );
     expect(childComponent.mock.calls.length).toEqual(1);
@@ -20,8 +20,29 @@ describe('Container', () => {
     expect(childComponent.mock.calls.length).toEqual(2);
   });
 
+  it('does not re-render after unmounting', () => {
+    const store = createStore();
+    const subscribe = store.subscribe.bind(store);
+
+    let unsubscribeMock;
+    store.subscribe = jest.fn(() => {
+      unsubscribeMock = jest.fn(subscribe());
+      return unsubscribeMock;
+    })
+
+    const container = renderer.create(
+      <Container store={store}>
+        {() => null}
+      </Container>
+    );
+
+    expect(unsubscribeMock.mock.calls.length).toEqual(0);
+    container.unmount();
+    expect(unsubscribeMock.mock.calls.length).toEqual(1);
+  });
+
   describe('mapper', () => {
-    it.only('maps state to props and actions on given children as functions or vdom', () => {
+    it('maps state to props and actions on given children as functions or vdom', () => {
       const store = createStore();
       store.set('mount', {a: 1, b: 2});
 
