@@ -1,12 +1,12 @@
 {
   "name": "reduxless",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "",
   "main": "dist/reduxless.cjs.js",
   "module": "dist/reduxless.esm.js",
   "browser": "dist/reduxless.umd.js",
   "engines": {
-    "node" : ">=8"
+    "node": ">=8"
   },
   "repository": {
     "type": "git",
@@ -41,8 +41,7 @@
       "^.+\\.js$": "<rootDir>/preprocessor.js"
     }
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "babel-core": "6.26.0",
     "babel-eslint": "8.0.0",
