@@ -2,17 +2,17 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import createStore from '../state/store';
-import {Container, mapper} from './container';
+import {Container, mapper} from '../main';
 
 describe('Container', () => {
   it('re-renders when the store changes', () => {
     const store = createStore();
     const childComponent = jest.fn();
     childComponent.mockReturnValue(null);
-    
+
     renderer.create(
       <Container store={store}>
-        {() => childComponent()}
+        {childComponent}
       </Container>
     );
     expect(childComponent.mock.calls.length).toEqual(1);
@@ -20,8 +20,66 @@ describe('Container', () => {
     expect(childComponent.mock.calls.length).toEqual(2);
   });
 
+  it('does not re-render after unmounting', () => {
+    const store = createStore();
+    const subscribe = store.subscribe.bind(store);
+
+    let unsubscribeMock;
+    store.subscribe = jest.fn(() => {
+      unsubscribeMock = jest.fn(subscribe());
+      return unsubscribeMock;
+    })
+
+    const container = renderer.create(
+      <Container store={store} />
+    );
+
+    expect(unsubscribeMock.mock.calls.length).toEqual(0);
+    container.unmount();
+    expect(unsubscribeMock.mock.calls.length).toEqual(1);
+  });
+
+  it('allows undefined children', () => {
+    const onError = jest.fn();
+
+    class ErrorBoundary extends React.Component {
+      componentDidCatch(error, info) {
+        onError();
+      }
+
+      render() {
+        return this.props.children;
+      }
+    }
+
+    renderer.create(
+      <ErrorBoundary>
+        <Container store={createStore()} />
+      </ErrorBoundary>
+    );
+
+    expect(onError.mock.calls.length).toEqual(0);
+  });
+
   describe('mapper', () => {
-    it.only('maps state to props and actions on given children as functions or vdom', () => {
+    it('passes through props', () => {
+      const store = createStore();
+
+      const childComponent = ({originalProp}) => {
+        expect(originalProp).toEqual('yes');
+        return null;
+      };
+
+      const Component = mapper()(childComponent);
+
+      renderer.create(
+        <Container store={store}>
+          <Component originalProp='yes' />
+        </Container>
+      );
+    });
+
+    it('maps state to props and actions on given children as functions or vdom', () => {
       const store = createStore();
       store.set('mount', {a: 1, b: 2});
 
@@ -125,7 +183,7 @@ describe('Container', () => {
         update() {
           this.setState({val: this.state.val + 1});
         }
-        
+
         render() {
           return childComponent(this.state.val);
         }

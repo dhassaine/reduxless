@@ -1,16 +1,19 @@
 import React from 'react';
-const noop = () => { };
 
 const createInjector = store => child => {
+  if (!child) {
+    return null
+  }
+
   if (typeof child == 'function') {
     return child(store);
   }
 
-  return (typeof child.type == 'object' || typeof child.type == 'function') && 
-    child.type != null ? 
+  return (typeof child.type == 'object' || typeof child.type == 'function') &&
+    child.type != null ?
       React.cloneElement(child, {
         store: store
-      }) : 
+      }) :
       child;
 };
 
@@ -18,16 +21,12 @@ export class Container extends React.Component {
 
   constructor(props) {
     super(props);
-    this.unsubscribe = noop;
     this.update = this.update.bind(this);
+    this.unsubscribe = props.store.subscribe(this.update);
   }
 
   update() {
     this.forceUpdate();
-  }
-
-  componentWillMount() {
-    this.unsubscribe = this.props.store.subscribe(this.update);
   }
 
   componentWillUnmount() {
@@ -64,7 +63,7 @@ const perf = (Wrapped, keys) =>
 export const mapper = (propMappings = {}, actionMappings = {}) => Wrapped => {
   const PerfComponent = perf(Wrapped, Object.keys(propMappings));
   return ({ store, ...props }) => {
-    
+
     const mapped = Object.assign({},
       ...Object.entries(propMappings).map(([key, func]) => ({ [key]: func(store, props) }))
     );
