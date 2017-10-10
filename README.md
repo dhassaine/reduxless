@@ -13,7 +13,17 @@ To install the stable version:
 npm install --save redux
 ```
 
-## Creating the store
+## Documentation
+
+- [API](docs/api.md#api)
+  - [`createStore([initialState])`](#createStore)
+  - [`<Container store>`](#container)
+  - [`mapper([mapStateToProps], [mapActionsToProps])`](#mapper)
+
+## API
+
+<a id="createStore"></a>
+### `createStore([initialState])`
 
 To create a store, call the `createStore()` function:
 
@@ -30,10 +40,10 @@ store.subscribe(report);
 store.set('name', 'Homer');
 ```
 
-## Using the store in a React-like library
+<a id="container"></a>
+### `<Container store>`
 
 To use the store with a React-like library, you can use the `Container` component to wrap your components using the store.
-
 Here's an example using [Preact](https://preactjs.com/):
 
 ```js
@@ -55,9 +65,9 @@ render(
 
 `Container` accepts `children` as a mix of React components or functions. If it receives a function, then `Container` will call it with the store, as seen in the example above. If any of the `children` are React components then the `store` will be injected as a `prop`.
 
-### Rendering performance gains using `mapper`
-
-There is also a `mapper` function which behaves in a similar fashion to Redux's `connect`, ie, it expects two arguments: `mapStateToProps` and `mapStateToActions`. The component returned by `mapper` will only render it's children after the store has changed if the relevant props have also changed. It's a good idea to use a memoization library like [reselect](https://github.com/reactjs/reselect) for further performance gains. 
+<a id="mapper"></a>
+### `mapper([mapStateToProps], [mapActionsToProps])`
+Rendering performance gains can be achieved by using `mapper`; it behaves in a similar manner to Redux's `connect`, ie, it expects two arguments: `mapStateToProps` and `mapActionsToProps`. The component returned by `mapper` will only render it's children after the store has changed if the relevant props have also changed. It's a good idea to use a memoization library like [reselect](https://github.com/reactjs/reselect) for further performance gains. 
 
 ```js
 import { h, render } from 'preact';
@@ -78,7 +88,7 @@ const MappedComponent = mapper(
     name: store => store.get('name')
   }, 
   {
-    update: (store, newName) => store.set('name', newName)
+    update: (store, ownProps, newName) => store.set('name', newName)
   }
 )(Component);
 
@@ -88,3 +98,5 @@ render(
   </Container>
 )
 ```
+
+Functions in `mapActionsToProps` are passed the store, the wrapped component's props and the remaining arguments during invocation.
