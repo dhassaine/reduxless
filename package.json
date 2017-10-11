@@ -47,6 +47,9 @@
       "^.+\\.js$": "<rootDir>/preprocessor.js"
     }
   },
+  "optionalDependencies": {
+    "react": ">=15"
+  },
   "dependencies": {},
   "devDependencies": {
     "enzyme-adapter-react-16": "1.0.1",
