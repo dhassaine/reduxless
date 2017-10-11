@@ -6,7 +6,7 @@ export const selectTodos = state =>
 export const setTodos = (state, todos) => 
   state.set(mountPoint, todos);
 
-export const toggleTodo = (state, id) => {
+export const toggleTodo = (state, _, id) => {
   const todos = selectTodos(state);
   const newState = todos.map(todo => {
     return todo.id == id ? 
@@ -16,7 +16,7 @@ export const toggleTodo = (state, id) => {
   setTodos(state, newState);
 };
 
-export const addTodo = (state, text) => {
+export const addTodo = (state, _, text) => {
   const todos = selectTodos(state);
   const id = todos.reduce((max, todo) => todo.id > max ? todo.id : max, 0) + 1;
   setTodos(state, todos.concat([{
