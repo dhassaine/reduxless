@@ -4,7 +4,7 @@
 > A small state management library for unidirectional data flow.
 
 ## Introduction
-Reduxless simplifies some of the complexity of [Redux](https://github.com/reactjs/redux) and reduces the amount of necessary boiler plate code by removing the need for an intermediate dispatch stage, i.e. the roles of reducers and actions are combined into one operation. We lose the ability to perform time travelling on our state, but the advantages of simpler code can outweigh that benefit. Please take a look at the [docs](https://dhassaine.github.io/reduxless/) for more information. There are some examples in the `demo` directory for further study.
+Reduxless simplifies some of the complexity of [Redux](https://github.com/reactjs/redux) and reduces the amount of necessary boiler plate code by removing the need for an intermediate dispatch stage, i.e. the roles of reducers and actions are combined into one operation. We lose the ability to perform time travelling on our state, but the advantages of simpler code can outweigh that benefit.
 
 ## Installation
 
@@ -25,7 +25,13 @@ npm install --save redux
 <a id="createStore"></a>
 ### `createStore([initialState])`
 
-To create a store, call the `createStore()` function:
+To create a store, call the `createStore()` function.
+It returns an object containing the following functions:
+ - `set([mountPoint], [data])`
+ - `get([mountPoint])`
+ - `subscribe([fn])`
+
+### Example usage
 
 ```js
 import { createStore } from 'reduxless';
@@ -36,8 +42,10 @@ const store = createStore(initialValues);
 const report = () =>
   console.log(`Store has changed! – ${store.get('name')} ${store.get('surname')}`);
 
-store.subscribe(report);
+const unsubscribe = store.subscribe(report);
 store.set('name', 'Homer');
+
+unsubscribe();
 ```
 
 <a id="container"></a>
