@@ -1,10 +1,9 @@
 /* global describe, it, jest */
 import { expect } from 'chai';
-import {Counter, default as CounterContainer} from './index';
-import {Container} from '../../containers/react';
-import createStore from '../../state/store';
-
-const clickOn = el => el.dispatchEvent(new Event('click', { bubbles: true, cancelable: true }));
+import ConnectedCounter, {Counter} from './index';
+import {createStore, Container} from '../../../src/main';
+import React from 'react';
+import { mount } from 'enzyme';
 
 function setup(value = 0) {
   const actions = {
@@ -12,76 +11,71 @@ function setup(value = 0) {
     onDecrement: jest.fn(),
     onIncrementAsync: jest.fn()
   };
-  const component = ReactDOM.render(
-    <Counter value={value} {...actions} />,
-    document.body
-  );
+
+  const component = mount(<Counter value={value} {...actions} />);
 
   return {
-    component: component,
+    component,
     actions: actions,
-    buttons: component.querySelectorAll('button'),
-    contents: component.querySelector('span')
+    buttons: component.find('button'),
+    contents: component.find('span')
   };
 }
 
 describe('Counter component', () => {
   it('should display count', () => {
     const { contents } = setup();
-    expect(contents.innerHTML).to.contain('Clicked: 0 times');
+    expect(contents.text()).to.contain('Count: 0 times');
   });
-  
+
   it('first button should call onIncrement', () => {
     const { buttons, actions } = setup();
-    clickOn(buttons[0]);
+    buttons.first().simulate('click');
     expect(actions.onIncrement.mock.calls).to.have.length(1);
   });
 
   it('second button should call onDecrement', () => {
     const { buttons, actions } = setup();
-    clickOn(buttons[1]);
+    buttons.at(1).simulate('click');
     expect(actions.onDecrement.mock.calls).to.have.length(1);
   });
 
   it('third button should call onIncrementAsync', () => {
     const { buttons, actions } = setup();
-    clickOn(buttons[2]);
+    buttons.at(2).simulate('click');
     expect(actions.onIncrementAsync.mock.calls).to.have.length(1);
   });
 
   describe('store integration', () => {
     it('action/reducers are connected correctly', () => {
       const store = createStore();
-      const component = preact.render(
+      const component = mount(
         <Container store={store}>
-          {store => <CounterContainer store={store} />}
-        </Container>,
-        document.body
+          <ConnectedCounter />
+        </Container>
       );
 
-      expect(component.querySelector('span').innerHTML).to.contain('Clicked: 0 times');
-      
-      clickOn(component.querySelectorAll('button')[0]);
-      expect(component.querySelector('span').innerHTML).to.contain('Clicked: 1 times');
+      const buttons = component.find('button');
+      expect(component.find('span').text()).to.contain('Count: 0 times');
+      buttons.first().simulate('click');
+      expect(component.find('span').text()).to.contain('Count: 1 times');
 
-      clickOn(component.querySelectorAll('button')[1]);
-      expect(component.querySelector('span').innerHTML).to.contain('Clicked: 0 times');
+      buttons.at(1).simulate('click');
+      expect(component.find('span').text()).to.contain('Count: 0 times');
     });
 
     it('asynchronous actions can be tested by subscribing directly to the store', done => {
       const store = createStore();
-      const component = preact.render(
+      const component = mount(
         <Container store={store}>
-          {store => <CounterContainer store={store} />}
-        </Container>,
-        document.body
+          <ConnectedCounter />
+        </Container>
       );
       store.subscribe(() => {
-        expect(component.querySelector('span').innerHTML).to.contain('Clicked: 1 times');
+        expect(component.find('span').text()).to.contain('Count: 1 times');
         done();
       });
-
-      clickOn(component.querySelectorAll('button')[2]);
+      component.find('button').at(2).simulate('click');
     });
   });
 });
