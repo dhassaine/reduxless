@@ -6,7 +6,7 @@
   "module": "dist/reduxless.esm.js",
   "browser": "dist/reduxless.umd.js",
   "engines": {
-    "node" : ">=8"
+    "node": ">=8"
   },
   "repository": {
     "type": "git",
@@ -18,7 +18,9 @@
     "coveralls": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "start": "webpack-dev-server --config demo/webpack.config.js",
     "build": "rollup -c",
-    "dev": "rollup -c -w"
+    "dev": "rollup -c -w",
+    "bump-version": "bin/bump-version.sh",
+    "prepublish": "npm run build"
   },
   "files": [
     "dist"
@@ -41,8 +43,7 @@
       "^.+\\.js$": "<rootDir>/preprocessor.js"
     }
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "babel-core": "6.26.0",
     "babel-eslint": "8.0.0",
