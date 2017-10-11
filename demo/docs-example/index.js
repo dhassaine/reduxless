@@ -16,7 +16,7 @@ const MappedComponent = mapper(
     name: store => store.get('name')
   }, 
   {
-    update: (store, newName) => store.set('name', newName)
+    update: (store, _, newName) => store.set('name', newName)
   }
 )(Component);
 

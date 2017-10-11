@@ -2,7 +2,7 @@ import React from 'react';
 
 const createInjector = store => child => {
   if (!child) {
-    return null
+    return null;
   }
 
   if (typeof child == 'function') {

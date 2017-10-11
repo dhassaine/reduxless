@@ -28,7 +28,7 @@ describe('Container', () => {
     store.subscribe = jest.fn(() => {
       unsubscribeMock = jest.fn(subscribe());
       return unsubscribeMock;
-    })
+    });
 
     const container = renderer.create(
       <Container store={store} />

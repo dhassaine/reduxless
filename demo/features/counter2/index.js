@@ -9,7 +9,7 @@ import {
 
 export const Counter = ({ value, onIncrement, onDecrement, onIncrementAsync }) => (
   <div>
-    <span>Clicked: {value} times</span>
+    <span>Count: {value} times</span>
     {' '}
     <button onClick={onIncrement}>
       +
