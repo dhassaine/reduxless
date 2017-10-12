@@ -45,14 +45,16 @@
     ],
     "transform": {
       "^.+\\.js$": "<rootDir>/preprocessor.js"
-    }
+    },
+    "testURL": "http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2"
   },
   "optionalDependencies": {
     "react": ">=15"
   },
-  "dependencies": {},
+  "dependencies": {
+    "query-string": "^5.0.0"
+  },
   "devDependencies": {
-    "enzyme-adapter-react-16": "1.0.1",
     "babel-core": "6.26.0",
     "babel-eslint": "8.0.0",
     "babel-jest": "21.0.2",
@@ -68,6 +70,7 @@
     "chai": "4.1.2",
     "coveralls": "3.0.0",
     "enzyme": "3.1.0",
+    "enzyme-adapter-react-16": "1.0.1",
     "eslint": "4.7.0",
     "eslint-plugin-react": "7.3.0",
     "html-webpack-plugin": "2.30.1",
