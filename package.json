@@ -30,7 +30,7 @@
     "Djamel Hassaine <dhassaine@gmail.com> (https://github.com/dhassaine)",
     "Klemen Slavič <krof.drakula@gmail.com> (https://github.com/KrofDrakula)"
   ],
-  "license": "ISC",
+  "license": "MIT",
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.jsx",
