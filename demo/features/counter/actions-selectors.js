@@ -1,7 +1,7 @@
 const mountPoint = 'counter';
 
 export const selectCounter = store => {
-  const counter = store.get(mountPoint, store);
+  const counter = store.get(mountPoint);
   if(counter) {
     return counter.value;
   } else {

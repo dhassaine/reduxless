@@ -51,7 +51,7 @@ unsubscribe();
 <a id="container"></a>
 ### `<Container store>`
 
-To use the store with a React-like library, you can use the `Container` component to wrap your components using the store.
+To use the store with a React-like library, you can use the `Container` component to provide the `store` via `context`.
 Here's an example using [Preact](https://preactjs.com/):
 
 ```js
@@ -62,20 +62,22 @@ const store = createStore({ name: 'Bart Simpson' });
 
 render(
   <Container store={store}>
-    {store =>
-      <p onClick={() => store.set('name', 'Homer Simpson')}>
-        Hello there, {store.get('name')}! Click to change me.
+    {(props, {store}) =>
+      <p>
+        Hello there, {store.get('name')}!
       </p>
     }
   </Container>
 )
 ```
 
-`Container` accepts `children` as a mix of React components or functions. If it receives a function, then `Container` will call it with the store, as seen in the example above. If any of the `children` are React components then the `store` will be injected as a `prop`.
-
 <a id="mapper"></a>
-### `mapper([mapStateToProps], [mapActionsToProps])`
-Rendering performance gains can be achieved by using `mapper`; it behaves in a similar manner to Redux's `connect`, ie, it expects two arguments: `mapStateToProps` and `mapActionsToProps`. The component returned by `mapper` will only render it's children after the store has changed if the relevant props have also changed. It's a good idea to use a memoization library like [reselect](https://github.com/reactjs/reselect) for further performance gains. 
+### `mapper([propsFromStore], [actionsToProps])`
+Instead of directly receiving the `store` via context and manually subscribing to it, you should use the `mapper` HOC; it behaves in a similar manner to Redux's `connect`. Two arguments can be passed in: 
+ - `propsFromStore`: this is an object with prop names and functions to retrieve the corresponding values from the store.
+ - `actionsToProps`: this is an object with prop names and functions to make changes to the store.
+ 
+The component returned by `mapper` will only render it's children after the store has changed if the relevant props have also changed. It's also a good idea to use a memoization library like [reselect](https://github.com/reactjs/reselect) for further performance gains. 
 
 ```js
 import { h, render } from 'preact';
@@ -83,9 +85,9 @@ import { createStore, Container, mapper } from 'reduxless';
 
 const store = createStore({ name: 'Bart Simpson' });
 
-const Component = ({name, update}) => (
+const Component = ({name, updateName}) => (
   <p onClick={
-    () => update(name == 'Bart Simpson' ? 'Lisa Simpson' : 'Bart Simpson')
+    () => updateName(name == 'Bart Simpson' ? 'Lisa Simpson' : 'Bart Simpson')
   }>
     Hello there, {name}! Click to change me.
   </p>
@@ -96,7 +98,7 @@ const MappedComponent = mapper(
     name: store => store.get('name')
   }, 
   {
-    update: (store, ownProps, newName) => store.set('name', newName)
+    updateName: (store, ownProps, newName) => store.set('name', newName)
   }
 )(Component);
 

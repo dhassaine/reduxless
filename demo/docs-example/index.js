@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import createStore from '../../src/state/store';
-import {mapper, Container} from '../../src/main';
+import { mapper, Container } from '../../src/main';
 
-const Component = ({name, update}) => (
+const Component = ({ name, update }) => (
   <p onClick={
     () => update(name == 'Bart Simpson' ? 'Lisa Simpson' : 'Bart Simpson')
   }>
@@ -14,7 +14,7 @@ const Component = ({name, update}) => (
 const MappedComponent = mapper(
   {
     name: store => store.get('name')
-  }, 
+  },
   {
     update: (store, _, newName) => store.set('name', newName)
   }
@@ -25,10 +25,8 @@ const createDocsExample = () => {
 
   ReactDOM.render(
     <Container store={store}>
-      {store => 
-        <MappedComponent store={store}/>
-      }
-    </Container>, 
+      <MappedComponent />
+    </Container>,
     document.getElementById('docs-example'));
 };
 

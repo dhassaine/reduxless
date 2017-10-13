@@ -1,27 +1,17 @@
 import React from 'react';
-
-const createInjector = store => child => {
-  if (!child) {
-    return null;
-  }
-
-  if (typeof child == 'function') {
-    return child(store);
-  }
-
-  return (typeof child.type == 'object' || typeof child.type == 'function') &&
-    child.type != null ?
-      React.cloneElement(child, {
-        store: store
-      }) :
-      child;
-};
+import PropTypes from 'prop-types';
 
 export class Container extends React.Component {
+  getChildContext() {
+    return {
+      store: this.props.store
+    };
+  }
 
   constructor(props) {
     super(props);
     this.update = this.update.bind(this);
+    if (!props.store) throw new Error('Store not found');
     this.unsubscribe = props.store.subscribe(this.update);
   }
 
@@ -34,20 +24,14 @@ export class Container extends React.Component {
   }
 
   render() {
-    const { children, store } = this.props;
-    const injectStore = createInjector(store);
-
-    if (Array.isArray(children)) {
-      return (
-        <div>
-          {children.map(injectStore)}
-        </div>
-      );
-    } else {
-      return injectStore(children);
-    }
+    const { children, store } = this.props; // eslint-disable-line no-unused-vars
+    return children || null;
   }
 }
+
+Container.childContextTypes = {
+  store: PropTypes.object
+};
 
 const perf = (Wrapped, keys) =>
   class Perf extends React.Component {
@@ -62,16 +46,43 @@ const perf = (Wrapped, keys) =>
 
 export const mapper = (propMappings = {}, actionMappings = {}) => Wrapped => {
   const PerfComponent = perf(Wrapped, Object.keys(propMappings));
-  return ({ store, ...props }) => {
 
-    const mapped = Object.assign({},
-      ...Object.entries(propMappings).map(([key, func]) => ({ [key]: func(store, props) }))
-    );
+  return class Mapper extends React.Component {
+    static contextTypes = {
+      store: PropTypes.object
+    };
 
-    const actions = Object.assign({},
-      ...Object.entries(actionMappings).map(([key, func]) => ({ [key]: (...args) => func(store, props, ...args) }))
-    );
+    constructor(props, context) {
+      super(props, context);
+      this.unsubscribe = this.store.subscribe(this.handleStoreUpdate);
+    }
 
-    return <PerfComponent {...props} {...mapped} {...actions} />;
+    get store() {
+      const store = this.props.store || this.context.store;
+      if (!store) throw new Error('Store not found');
+      return store;
+    }
+
+    componentWillUnmount() {
+      this.unsubscribe();
+    }
+
+    handleStoreUpdate = () => {
+      this.forceUpdate();
+    };
+
+    render() {
+      const {store, ...ownProps} = this.props; // eslint-disable-line no-unused-vars
+
+      const mapped = Object.assign({},
+        ...Object.entries(propMappings).map(([key, func]) => ({ [key]: func(this.store, ownProps) }))
+      );
+
+      const actions = Object.assign({},
+        ...Object.entries(actionMappings).map(([key, func]) => ({ [key]: (...args) => func(this.store, ownProps, ...args) }))
+      );
+
+      return <PerfComponent {...ownProps} {...mapped} {...actions} />;
+    }
   };
 };
