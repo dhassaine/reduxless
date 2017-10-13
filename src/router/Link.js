@@ -11,7 +11,7 @@ const Link = ({ update, href }) => (
   <a
     href={href}
     onClick={ev => handleClick(ev, update)}
-  />
+  >{href}</a>
 );
 
 const actionsFromStore = {

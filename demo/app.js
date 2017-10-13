@@ -1,32 +1,34 @@
 import React from 'react';
-import { Match, Link } from './router';
+import { Match, Link } from '../src/main';
 import Todos from './features/todos';
 import Counter from './features/counter';
 import Counter2 from './features/counter2';
 import Combination from './features/combination';
 
-export default ({store}) => (
+export default () => (
   <div>
     <div>
-      <Link href="/todos">Todos</Link>
-      <Link href="/counter">Counters</Link>
-      <Link href="/both">Both examples</Link>
+      <ul>
+        <li><Link href="/todos">Todos</Link></li>
+        <li><Link href="/counter">Counters</Link></li>
+        <li><Link href="/both">Both examples</Link></li>
+      </ul>
     </div>
 
     <div>
       <Match path="/todos">
-        <Todos store={store} />
+        <Todos />
       </Match>
 
       <Match path="/counter">
-        <Counter store={store} />
-        <Counter2 store={store} />
+        <Counter />
+        <Counter2 />
       </Match>
     </div>
 
     <div>
       <Match path="/both">
-        <Combination store={store} />
+        <Combination />
       </Match>
     </div>
   </div>
