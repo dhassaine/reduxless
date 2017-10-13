@@ -132,6 +132,35 @@ describe('Container', () => {
       );
     });
 
+    it('can connect to the store even if its a nested child', () => {
+      const store = createStore({
+        mount1: {a: 1},
+        mount2: {b: 2}
+      });
+
+      const childComponent = jest.fn();
+      childComponent.mockReturnValue(null);
+
+      const Component = mapper(
+        {
+          prop1: store => store.get('mount1').a
+        }
+      )(childComponent);
+  
+      renderer.create(
+        <Container store={store}>
+          <div>
+            <Component />
+          </div>
+        </Container>
+      );
+      expect(childComponent.mock.calls.length).toEqual(1);
+      store.set('mount2', {b: 3});
+      expect(childComponent.mock.calls.length).toEqual(1);
+      store.set('mount1', {a: 2});
+      expect(childComponent.mock.calls.length).toEqual(2);
+    });
+
     it('skips rendering if the relevant section of the store does not change', () => {
       const store = createStore({
         mount1: {a: 1},

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const createInjector = store => child => {
   if (!child) {
@@ -18,6 +19,11 @@ const createInjector = store => child => {
 };
 
 export class Container extends React.Component {
+  getChildContext() {
+    return {
+      store: this.props.store
+    };
+  }
 
   constructor(props) {
     super(props);
@@ -49,6 +55,10 @@ export class Container extends React.Component {
   }
 }
 
+Container.childContextTypes = {
+  store: PropTypes.object
+};
+
 const perf = (Wrapped, keys) =>
   class Perf extends React.Component {
     shouldComponentUpdate(nextProps) {
@@ -62,7 +72,8 @@ const perf = (Wrapped, keys) =>
 
 export const mapper = (propMappings = {}, actionMappings = {}) => Wrapped => {
   const PerfComponent = perf(Wrapped, Object.keys(propMappings));
-  return ({ store, ...props }) => {
+  const Mapper = ({ store, ...props }, {store: contextStore}) => {
+    if(!store) store = contextStore;
 
     const mapped = Object.assign({},
       ...Object.entries(propMappings).map(([key, func]) => ({ [key]: func(store, props) }))
@@ -74,4 +85,9 @@ export const mapper = (propMappings = {}, actionMappings = {}) => Wrapped => {
 
     return <PerfComponent {...props} {...mapped} {...actions} />;
   };
+
+  Mapper.contextTypes = {
+    store: PropTypes.object
+  };
+  return Mapper;
 };

@@ -49,7 +49,8 @@
     "testURL": "http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2"
   },
   "optionalDependencies": {
-    "react": ">=15"
+    "react": ">=15",
+    "prop-types": ">=15"
   },
   "dependencies": {
     "query-string": "^5.0.0"
