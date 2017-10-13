@@ -1,6 +1,6 @@
 /* global describe, it, expect */
 import { createStore } from '../../src/main';
-import { enableHistory } from './index';
+import { enableHistory, Link, Match } from './index';
 
 describe('enableHistory', () => {
   describe('on initial page load', () => {

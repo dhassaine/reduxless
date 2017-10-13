@@ -1,12 +1,12 @@
 import React from 'react';
-import { Match, Router, Link } from './router';
+import { Match, Link } from './router';
 import Todos from './features/todos';
 import Counter from './features/counter';
 import Counter2 from './features/counter2';
 import Combination from './features/combination';
 
 export default ({store}) => (
-  <Router>
+  <div>
     <div>
       <Link href="/todos">Todos</Link>
       <Link href="/counter">Counters</Link>
@@ -29,5 +29,5 @@ export default ({store}) => (
         <Combination store={store} />
       </Match>
     </div>
-  </Router>
+  </div>
 );
