@@ -10,7 +10,7 @@ Reduxless simplifies some of the complexity of [Redux](https://github.com/reactj
 
 To install the stable version:
 ```
-npm install --save redux
+npm install --save reduxless
 ```
 
 ## Documentation
