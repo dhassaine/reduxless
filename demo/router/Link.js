@@ -1,3 +1,4 @@
+import React from 'react';
 import { mapper } from '../../src/main';
 import { updateHistory } from './index';
 
@@ -6,15 +7,15 @@ const handleClick = (ev, update) => {
   update();
 };
 
-const Link = ({ update, path }) => (
+const Link = ({ update, href }) => (
   <a
-    href={path}
+    href={href}
     onClick={ev => handleClick(ev, update)}
   />
 );
 
 const actionsFromStore = {
-  update: (store, { path }) => updateHistory(store, path)
+  update: (store, { href }) => updateHistory(store, href)
 };
 
 export default mapper({}, actionsFromStore)(Link);

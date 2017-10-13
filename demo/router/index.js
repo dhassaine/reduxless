@@ -6,16 +6,16 @@ let options = {
 
 function updateStoreState(store) {
   store.set('location', {
-    href: document.location.href,
-    pathname: document.location.pathname,
-    queryString: document.location.search,
-    query: parse(document.location.search, options)
+    href: window.location.href,
+    pathname: window.location.pathname,
+    queryString: window.location.search,
+    query: parse(window.location.search, options)
   });
 }
 
 export function updateHistory(store, newPath ) {
   const location = { ...store.get('location') };
-  const query = `?${stringify(location.query)}`;
+  const query = `?${stringify(location.query, options)}`;
   history.pushState(null, null, `${newPath}${query}`);
 
   updateStoreState(store);
@@ -23,11 +23,14 @@ export function updateHistory(store, newPath ) {
 
 export function enableHistory(store, incomingOptions = {}) {
   options = { ...options, ...incomingOptions };
-  window.addEventListener('popstate', () => {
+
+  const update = () => {
     updateStoreState(store);
-  });
+  };
+  window.addEventListener('popstate', update);
 
   updateStoreState(store);
+  return () => window.removeEventListener('popstate', update);
 }
 
 export { default as Match } from './Match';
