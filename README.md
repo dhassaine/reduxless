@@ -109,4 +109,4 @@ render(
 )
 ```
 
-Functions in `mapActionsToProps` are passed the store, the wrapped component's props and the remaining arguments during invocation.
+Functions in `propsFromStore` are passed the store, the wrapped component's props and the remaining arguments during invocation.
