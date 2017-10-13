@@ -1,20 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const pick = (obj, ...names) =>
-  names.reduce(
-    (ret, next) => {
-      if (typeof obj[next] != 'undefined')
-        ret[next] = obj[next];
-      return ret;
-    },
-    {}
-  );
-
-// the inverse of pick() - filter out provided key names
-const strip = (obj, ...names) =>
-  pick(obj, ...Object.keys(obj).filter(key => !names.includes(key)));
-
 const createInjector = store => child => {
   if (!child) {
     return null;
@@ -113,7 +99,7 @@ export const mapper = (propMappings = {}, actionMappings = {}) => Wrapped => {
     };
 
     render() {
-      const ownProps = strip(this.props, 'store');
+      const {store, ...ownProps} = this.props; // eslint-disable-line no-unused-vars
 
       const mapped = Object.assign({},
         ...Object.entries(propMappings).map(([key, func]) => ({ [key]: func(this.store, ownProps) }))
