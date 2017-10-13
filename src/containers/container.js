@@ -1,6 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+const pick = (obj, ...names) =>
+  names.reduce(
+    (ret, next) => {
+      if (typeof obj[next] != 'undefined')
+        ret[next] = obj[next];
+      return ret;
+    },
+    {}
+  );
+
+// the inverse of pick() - filter out provided key names
+const strip = (obj, ...names) =>
+  pick(obj, ...Object.keys(obj).filter(key => !names.includes(key)));
+
 const createInjector = store => child => {
   if (!child) {
     return null;
@@ -12,10 +26,10 @@ const createInjector = store => child => {
 
   return (typeof child.type == 'object' || typeof child.type == 'function') &&
     child.type != null ?
-      React.cloneElement(child, {
-        store: store
-      }) :
-      child;
+    React.cloneElement(child, {
+      store: store
+    }) :
+    child;
 };
 
 export class Container extends React.Component {
@@ -72,22 +86,43 @@ const perf = (Wrapped, keys) =>
 
 export const mapper = (propMappings = {}, actionMappings = {}) => Wrapped => {
   const PerfComponent = perf(Wrapped, Object.keys(propMappings));
-  const Mapper = ({ store, ...props }, {store: contextStore}) => {
-    if(!store) store = contextStore;
 
-    const mapped = Object.assign({},
-      ...Object.entries(propMappings).map(([key, func]) => ({ [key]: func(store, props) }))
-    );
+  return class Mapper extends React.Component {
+    static contextTypes = {
+      store: PropTypes.object
+    };
 
-    const actions = Object.assign({},
-      ...Object.entries(actionMappings).map(([key, func]) => ({ [key]: (...args) => func(store, props, ...args) }))
-    );
+    constructor(props, context) {
+      super(props, context);
+      this.unsubscribe = this.store.subscribe(this.handleStoreUpdate);
+    }
 
-    return <PerfComponent {...props} {...mapped} {...actions} />;
+    get store() {
+      const store = this.props.store || this.context.store;
+      if (!store) throw new Error('Store not found');
+      return store;
+    }
+
+    componentWillUnmount() {
+      if (this.unsubscribe) this.unsubscribe();
+    }
+
+    handleStoreUpdate = () => {
+      this.forceUpdate();
+    };
+
+    render() {
+      const ownProps = strip(this.props, 'store');
+
+      const mapped = Object.assign({},
+        ...Object.entries(propMappings).map(([key, func]) => ({ [key]: func(this.store, ownProps) }))
+      );
+
+      const actions = Object.assign({},
+        ...Object.entries(actionMappings).map(([key, func]) => ({ [key]: (...args) => func(this.store, ownProps, ...args) }))
+      );
+
+      return <PerfComponent {...ownProps} {...mapped} {...actions} />;
+    }
   };
-
-  Mapper.contextTypes = {
-    store: PropTypes.object
-  };
-  return Mapper;
 };
