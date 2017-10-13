@@ -42,6 +42,7 @@ export class Container extends React.Component {
   constructor(props) {
     super(props);
     this.update = this.update.bind(this);
+    if (!props.store) throw new Error('Store not found');
     this.unsubscribe = props.store.subscribe(this.update);
   }
 
@@ -104,7 +105,7 @@ export const mapper = (propMappings = {}, actionMappings = {}) => Wrapped => {
     }
 
     componentWillUnmount() {
-      if (this.unsubscribe) this.unsubscribe();
+      this.unsubscribe();
     }
 
     handleStoreUpdate = () => {
