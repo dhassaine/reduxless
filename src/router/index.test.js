@@ -1,7 +1,7 @@
 /* global describe, it, expect, jest, afterEach */
 import React from 'react';
-import { Container, createStore } from '../../src/main';
-import { enableHistory, updateHistory, Link, Match } from './index';
+import { Container, createStore, enableHistory, Link, Match } from '../main';
+import { updateHistory } from './index';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 

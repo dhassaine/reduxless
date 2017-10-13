@@ -1,4 +1,4 @@
-import { mapper } from '../../src/main';
+import { mapper } from '../main';
 
 const Match = ({path, currentPath, children}) => {
   return path == currentPath ? children : null;
