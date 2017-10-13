@@ -1,23 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const createInjector = store => child => {
-  if (!child) {
-    return null;
-  }
-
-  if (typeof child == 'function') {
-    return child(store);
-  }
-
-  return (typeof child.type == 'object' || typeof child.type == 'function') &&
-    child.type != null ?
-    React.cloneElement(child, {
-      store: store
-    }) :
-    child;
-};
-
 export class Container extends React.Component {
   getChildContext() {
     return {
@@ -41,18 +24,8 @@ export class Container extends React.Component {
   }
 
   render() {
-    const { children, store } = this.props;
-    const injectStore = createInjector(store);
-
-    if (Array.isArray(children)) {
-      return (
-        <div>
-          {children.map(injectStore)}
-        </div>
-      );
-    } else {
-      return injectStore(children);
-    }
+    const { children, store } = this.props; // eslint-disable-line no-unused-vars
+    return children || null;
   }
 }
 

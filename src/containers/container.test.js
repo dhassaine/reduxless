@@ -30,17 +30,16 @@ describe('Container', () => {
 
   it('re-renders when the store changes', () => {
     const store = createStore();
-    const childComponent = jest.fn();
-    childComponent.mockReturnValue(null);
+    const ChildComponent = jest.fn(() => null);
 
     renderer.create(
       <Container store={store}>
-        {childComponent}
+        <ChildComponent />
       </Container>
     );
-    expect(childComponent.mock.calls.length).toEqual(1);
+    expect(ChildComponent.mock.calls.length).toEqual(1);
     store.set('mount', { a: 1 });
-    expect(childComponent.mock.calls.length).toEqual(2);
+    expect(ChildComponent.mock.calls.length).toEqual(2);
   });
 
   it('does not re-render after unmounting', () => {
@@ -92,7 +91,7 @@ describe('Container', () => {
       );
     });
 
-    it('maps state to props and actions on given children as functions or vdom', () => {
+    it('maps state to props and actions on given children', () => {
       const store = createStore();
       store.set('mount', { a: 1, b: 2 });
 
@@ -117,8 +116,6 @@ describe('Container', () => {
       )(childComponent);
 
       const BasicComponent = props => {
-        expect(props).toHaveProperty('store');
-        expect(props.store).toBe(store);
         expect(props).toHaveProperty('nameProp');
         expect(props.nameProp).toEqual('Jim');
         return null;
@@ -126,8 +123,6 @@ describe('Container', () => {
 
       class ClassComponent extends React.Component {
         render() {
-          expect(this.props).toHaveProperty('store');
-          expect(this.props.store).toBe(store);
           expect(this.props).toHaveProperty('nameProp');
           expect(this.props.nameProp).toEqual('Jim');
           return null;
@@ -136,7 +131,7 @@ describe('Container', () => {
 
       renderer.create(
         <Container store={store}>
-          {store => <Component key='1' store={store} originalProp='yes' />}
+          <Component key='1' originalProp='yes' />
           <BasicComponent key='2' nameProp='Jim' />
           <ClassComponent key='3' nameProp='Jim' />
           Hi this text node should left alone
@@ -191,7 +186,7 @@ describe('Container', () => {
 
       renderer.create(
         <Container store={store}>{
-          store => <Component store={store} />
+          <Component />
         }</Container>
       );
       expect(childComponent.mock.calls.length).toEqual(1);
@@ -245,7 +240,7 @@ describe('Container', () => {
 
       renderer.create(
         <Container store={store}>{
-          store => <Component store={store} />
+          <Component />
         }</Container>
       );
       expect(childComponent.mock.calls.length).toEqual(1);
