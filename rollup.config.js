@@ -6,7 +6,7 @@ import commonjs from 'rollup-plugin-commonjs';
 export default [
 	{
     input: 'src/main.js',
-    external: ['react', 'react-dom', 'preact', 'inferno-component'],
+    external: ['react', 'react-dom', 'preact', 'inferno-component', 'prop-types'],
 		dest: pkg.browser,
 		format: 'umd',
 		moduleName: 'reduxless',
