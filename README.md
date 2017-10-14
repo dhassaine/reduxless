@@ -4,7 +4,7 @@
 > A small state management library for unidirectional data flow.
 
 ## Introduction
-Reduxless simplifies some of the complexity of [Redux](https://github.com/reactjs/redux) and reduces the amount of necessary boiler plate code by removing the need for an intermediate dispatch stage, i.e. the roles of reducers and actions are combined into one operation. We lose the ability to perform time travelling on our state, but the advantages of simpler code can outweigh that benefit.
+Reduxless simplifies some of the complexity of [Redux](https://github.com/reactjs/redux) and reduces the amount of necessary boiler plate code. This is mainly achieved by removing the need for an intermediate dispatch stage, followed by a reduction. Reduxless combines the roles of reducers and actions into one operation: the two key operations are actions and selectors. We lose the ability to perform time travelling on our state, but the advantages of simpler code can outweigh that benefit.
 
 ## Installation
 
@@ -15,16 +15,13 @@ npm install --save reduxless
 
 ## Documentation
 
-- [API](docs/api.md#api)
+- API
   - [`createStore([initialState])`](#createStore)
   - [`<Container store>`](#container)
   - [`mapper([mapStateToProps], [mapActionsToProps])`](#mapper)
 
-## API
-
 <a id="createStore"></a>
 ### `createStore([initialState])`
-
 To create a store, call the `createStore()` function.
 It returns an object containing the following functions:
  - `set([mountPoint], [data])`
@@ -54,6 +51,8 @@ unsubscribe();
 To use the store with a React-like library, you can use the `Container` component to provide the `store` via `context`.
 Here's an example using [Preact](https://preactjs.com/):
 
+### Example usage
+
 ```js
 import { h, render } from 'preact';
 import { createStore, Container } from 'reduxless';
@@ -78,6 +77,8 @@ Instead of directly receiving the `store` via context and manually subscribing t
  - `actionsToProps`: this is an object with prop names and functions to make changes to the store.
  
 The component returned by `mapper` will only render it's children after the store has changed if the relevant props have also changed. It's also a good idea to use a memoization library like [reselect](https://github.com/reactjs/reselect) for further performance gains. 
+
+### Example usage
 
 ```js
 import { h, render } from 'preact';
@@ -110,3 +111,9 @@ render(
 ```
 
 Functions in `propsFromStore` are passed the store, the wrapped component's props and the remaining arguments during invocation.
+
+
+## Change Log
+This project follows [semantic versioning](http://semver.org/)
+## LICENSE
+MIT

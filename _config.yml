@@ -1,0 +1,4 @@
+theme: jekyll-theme-minimal
+title: Reduxless
+description: A small state management library for unidirectional data flow.
+show_downloads: "true"

@@ -10,3 +10,5 @@ stats.json
 json-schemas
 dist
 .coveralls.yml
+_site
+reduxless
