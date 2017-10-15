@@ -49,9 +49,9 @@ render(
 ## Documentation
 
 - API
-  - [`createStore([initialState])`](https://github.io/dhassaine/reduxless/store)
-  - For the react bindings, see [`<Container>, mapper()`](https://github.io/dhassaine/reduxless/container-mapper)
-  - For the navigational components, please see [`<Match>`, `<Link>`](https://github.io/dhassaine/reduxless/router)
+  - [`createStore([initialState])`](https://dhassaine.github.io/reduxless/store)
+  - For the react bindings, see [`<Container>, mapper()`](https://dhassaine.github.io/reduxless/container-mapper)
+  - For the navigational components, please see [`<Match>`, `<Link>`](https://dhassaine.github.io/reduxless/router)
 
 ## Change Log
 This project follows [semantic versioning](http://semver.org/)
