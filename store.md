@@ -1,4 +1,5 @@
-# `createStore([initialState])`
+# Store
+> `createStore([initialState])`
 To create a store, call the `createStore()` function.
 It returns an object containing the following functions:
  - `set([mountPoint], [data])`
