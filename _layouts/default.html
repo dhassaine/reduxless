@@ -19,7 +19,7 @@
         <p>{{ site.description | default: site.github.project_tagline }}</p>
 
 
-        <p class="view"><a href="/">Home <small>{{ github_name }}</small></a></p>
+        <p class="view"><a href="{{ site.github.url }}">Home <small>{{ github_name }}</small></a></p>
     
 
         {% if site.github.is_user_page %}
