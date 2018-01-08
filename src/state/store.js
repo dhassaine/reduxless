@@ -21,19 +21,26 @@ export default (store = {}) => {
     set: (mountPoint, payload) => (store[mountPoint] = payload)
   };
 
+  const set = (mountPoint, payload) => {
+    store[mountPoint] = payload;
+    state$.next();
+  };
+
+  const get = mountPoint => store[mountPoint];
+
+  const withMutations = fn => {
+    fn(mutableStore);
+    state$.next();
+  };
+
+  const storeApi = {
+    set,
+    get,
+    withMutations
+  };
+
   return {
-    subscribe: func => state$.subscribe(func),
-
-    set: (mountPoint, payload) => {
-      store[mountPoint] = payload;
-      state$.next();
-    },
-
-    get: mountPoint => store[mountPoint],
-
-    withMutations: fn => {
-      fn(mutableStore);
-      state$.next();
-    }
+    subscribe: func => state$.subscribe(() => func(storeApi)),
+    ...storeApi
   };
 };

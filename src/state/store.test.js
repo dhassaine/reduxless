@@ -19,6 +19,9 @@ describe("Store", () => {
     const unsubscribe2 = store.subscribe(fn2);
     store.set("a", 1);
     expect(fn1.mock.calls).to.have.length(1);
+    expect(fn1.mock.calls[0][0]).to.have.property("get");
+    expect(fn1.mock.calls[0][0]).to.have.property("set");
+    expect(fn1.mock.calls[0][0]).to.have.property("withMutations");
     expect(fn2.mock.calls).to.have.length(1);
     unsubscribe1();
     store.set("a", 2);
