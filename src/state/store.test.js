@@ -11,6 +11,12 @@ describe("Store", () => {
     expect(store.get("b")).to.equal(2);
   });
 
+  it("getAll can be used to retrieve multiple mountpoints at the same time", () => {
+    const initialState = { a: 1, b: 2, c: 3 };
+    const store = createStore(initialState);
+    expect(store.getAll(["a", "c"])).to.deep.equal({ a: 1, c: 3 });
+  });
+
   it("can be subscribed to and calls registered callback on state changes", () => {
     const store = createStore();
     const fn1 = jest.fn();
@@ -33,6 +39,24 @@ describe("Store", () => {
     expect(fn2.mock.calls).to.have.length(2);
   });
 
+  it("allows multiple mount points to be updated by using setAll", () => {
+    const store = createStore();
+    const fn1 = jest.fn();
+    const fn2 = jest.fn();
+    store.subscribe(fn1);
+    store.subscribe(fn2);
+    store.setAll({
+      a: 1,
+      b: 2,
+      c: 3
+    });
+    expect(store.get("a")).to.equal(1);
+    expect(store.get("b")).to.equal(2);
+    expect(store.get("c")).to.equal(3);
+    expect(fn1.mock.calls).to.have.length(1);
+    expect(fn2.mock.calls).to.have.length(1);
+  });
+
   it("allows multiple mount points to be updated by using withMutations", () => {
     const store = createStore();
     const fn1 = jest.fn();
@@ -44,6 +68,9 @@ describe("Store", () => {
       s.set("b", 2);
       s.set("c", 3);
     });
+    expect(store.get("a")).to.equal(1);
+    expect(store.get("b")).to.equal(2);
+    expect(store.get("c")).to.equal(3);
     expect(fn1.mock.calls).to.have.length(1);
     expect(fn2.mock.calls).to.have.length(1);
   });
