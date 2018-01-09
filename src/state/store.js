@@ -28,6 +28,21 @@ export default (store = {}) => {
 
   const get = mountPoint => store[mountPoint];
 
+  const getAll = mountPoints =>
+    mountPoints.reduce(
+      (results, mountPoint) => (
+        (results[mountPoint] = store[mountPoint]), results
+      ),
+      {}
+    );
+
+  const setAll = mountPointsAndPayloads => {
+    Object.entries(mountPointsAndPayloads).forEach(
+      ([mountPoint, payload]) => (store[mountPoint] = payload)
+    );
+    state$.next();
+  };
+
   const withMutations = fn => {
     fn(mutableStore);
     state$.next();
@@ -35,7 +50,9 @@ export default (store = {}) => {
 
   const storeApi = {
     set,
+    setAll,
     get,
+    getAll,
     withMutations
   };
 
