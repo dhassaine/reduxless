@@ -1,6 +1,6 @@
 {
   "name": "reduxless",
-  "version": "1.0.14",
+  "version": "1.0.16",
   "description": "",
   "main": "dist/reduxless.cjs.js",
   "module": "dist/reduxless.esm.js",
