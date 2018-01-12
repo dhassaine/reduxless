@@ -1,5 +1,6 @@
 import React from "react";
 import { mapper } from "../main";
+import { updateHistory } from "./index";
 
 const handleClick = (ev, update) => {
   ev.preventDefault();
@@ -13,7 +14,7 @@ const Link = ({ update, href, children }) => (
 );
 
 const actionsFromStore = {
-  update: (store, { href }) => store.updateHistory(href)
+  update: (store, { href }) => updateHistory(store, href)
 };
 
 export default mapper({}, actionsFromStore)(Link);
