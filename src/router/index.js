@@ -26,10 +26,15 @@ export function syncLocationToStore(store) {
 const getQueryStringFromStore = (store, newPath) => {
   const storeLocation = { ...store.get("location") };
   const data = store.getAll(Array.from(store.syncToLocations.values()));
-  const rawQuery = Object.keys(data).reduce((results, key) => {
-    results[key] = JSON.stringify(data[key]);
-    return results;
-  }, {});
+  const rawQuery = Object.keys(data).reduce(
+    (results, key) => {
+      results[key] = JSON.stringify(data[key]);
+      return results;
+    },
+    parse(window.location.search, {
+      arrayFormat: "bracket"
+    })
+  );
 
   const query = stringify(rawQuery, {
     arrayFormat: "bracket"
