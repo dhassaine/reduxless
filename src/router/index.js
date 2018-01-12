@@ -7,11 +7,13 @@ export function syncLocationToStore(store) {
   });
 
   const query = {};
-  store.syncToLocations.forEach(mountPoint => {
-    query[mountPoint] = rawQuery[mountPoint]
-      ? JSON.parse(rawQuery[mountPoint])
-      : undefined;
-  });
+  if (rawQuery.storeData) {
+    const data = JSON.parse(rawQuery.storeData);
+
+    store.syncToLocations.forEach(
+      mountPoint => (query[mountPoint] = data[mountPoint])
+    );
+  }
 
   const location = {
     href: window.location.href,
@@ -25,15 +27,15 @@ export function syncLocationToStore(store) {
 
 const getQueryStringFromStore = (store, newPath) => {
   const storeLocation = { ...store.get("location") };
-  const data = store.getAll(Array.from(store.syncToLocations.values()));
-  const rawQuery = Object.keys(data).reduce(
-    (results, key) => {
-      results[key] = JSON.stringify(data[key]);
-      return results;
-    },
+  const storeData = JSON.stringify(
+    store.getAll(Array.from(store.syncToLocations.values()))
+  );
+
+  const rawQuery = Object.assign(
     parse(window.location.search, {
       arrayFormat: "bracket"
-    })
+    }),
+    { storeData }
   );
 
   const query = stringify(rawQuery, {
