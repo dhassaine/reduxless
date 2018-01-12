@@ -1,13 +1,5 @@
 import { parse, stringify } from "query-string";
 
-let options = {
-  arrayFormat: "bracket"
-};
-
-export function addLocationSync(store, ...mountPoints) {
-  mountPoints.forEach(mountPoint => store.syncToLocations.add(mountPoint));
-}
-
 export function syncLocationToStore(store) {
   store.syncedLocationToStore = true;
   const rawQuery = parse(window.location.search, {
@@ -28,6 +20,7 @@ export function syncLocationToStore(store) {
   };
 
   store.setAll({ location, ...query });
+  store.syncedLocationToStore = false;
 }
 
 const getQueryStringFromStore = (store, newPath) => {
@@ -43,7 +36,7 @@ const getQueryStringFromStore = (store, newPath) => {
   });
 
   const path = newPath || storeLocation.pathname;
-  return `${path}?${query}`;
+  return query ? `${path}?${query}` : path;
 };
 
 export function updateHistory(store, newPath) {
@@ -56,9 +49,8 @@ export function updateHistory(store, newPath) {
   });
 }
 
-export function enableHistory(store, incomingOptions = {}) {
-  store.syncToLocations = new Set();
-  options = { ...options, ...incomingOptions };
+export function enableHistory(store, mountPoints) {
+  store.syncToLocations = new Set(mountPoints);
 
   const update = () => syncLocationToStore(store);
 
