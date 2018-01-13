@@ -106,7 +106,7 @@ describe("enableHistory", () => {
 
       history.pushState(null, null, "/page2");
       history.pushState(null, null, "/page3?queryParam=queryValue&a[]=1&a[]=2");
-      history.pushState(null, null, "/page4");
+      history.pushState(null, null, "/ignored");
       history.back();
     });
 
@@ -146,6 +146,40 @@ describe("enableHistory", () => {
       );
       history.pushState(null, null, "/ignored");
       history.back();
+    });
+
+    it("changes made directly to the registered sync data in the store automatically update the browser location and store location", done => {
+      const store = createStore();
+      unsubscribe = enableHistory(store, ["counter", "counter2"]);
+
+      const assertions = [
+        () => {
+          expect(store.get("counter")).toEqual({ value: 2 });
+          expect(store.get("counter2")).toEqual({ value: 3 });
+          expect(store.get("location")).toHaveProperty(
+            "queryString",
+            "?a[]=1&a[]=2&queryParam=queryValue&storeData=%7B%22counter%22%3A%7B%22value%22%3A2%7D%2C%22counter2%22%3A%7B%22value%22%3A3%7D%7D"
+          );
+        }
+      ];
+
+      store.subscribe(() => {
+        const assert = assertions.pop();
+
+        try {
+          assert();
+        } catch (error) {
+          done(error);
+        }
+
+        if (assertions.length === 0) {
+          return done();
+        }
+      });
+
+      expect(store.get("counter")).toEqual({ value: 1 });
+      expect(store.get("counter2")).toEqual({ value: 2 });
+      store.setAll({ counter: { value: 2 }, counter2: { value: 3 } });
     });
   });
 
@@ -208,6 +242,7 @@ describe("enableHistory", () => {
       );
       expect(childComponent.mock.calls.length).toEqual(0);
       updateHistory(store, "/page2");
+      expect(location.search).toEqual("");
       expect(childComponent.mock.calls.length).toEqual(1);
     });
   });

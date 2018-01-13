@@ -25,8 +25,9 @@ export function syncLocationToStore(store) {
   store.syncedLocationToStore = false;
 }
 
-const getQueryStringFromStore = (store, newPath) => {
-  const storeLocation = { ...store.get("location") };
+const stringifyStoreData = store => {
+  if (store.syncToLocations.size == 0) return null;
+
   const storeData = JSON.stringify(
     store.getAll(Array.from(store.syncToLocations.values()))
   );
@@ -38,10 +39,14 @@ const getQueryStringFromStore = (store, newPath) => {
     { storeData }
   );
 
-  const query = stringify(rawQuery, {
+  return stringify(rawQuery, {
     arrayFormat: "bracket"
   });
+};
 
+const getQueryStringFromStore = (store, newPath) => {
+  const storeLocation = { ...store.get("location") };
+  const query = stringifyStoreData(store);
   const path = newPath || storeLocation.pathname;
   return query ? `${path}?${query}` : path;
 };
