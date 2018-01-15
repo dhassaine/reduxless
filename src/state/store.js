@@ -16,14 +16,18 @@ const makeSubject = () => {
 
 export default (store = {}) => {
   const state$ = makeSubject();
+  const updateIntercepts = [];
 
-  const mutableStore = {
-    set: (mountPoint, payload) => (store[mountPoint] = payload)
+  const addUpdateIntercept = fn => updateIntercepts.push(fn);
+
+  const update = () => {
+    updateIntercepts.forEach(fn => fn(mutableStore));
+    state$.next();
   };
 
   const set = (mountPoint, payload) => {
     store[mountPoint] = payload;
-    state$.next();
+    update();
   };
 
   const get = mountPoint => store[mountPoint];
@@ -36,16 +40,20 @@ export default (store = {}) => {
       {}
     );
 
+  const mutableStore = {
+    set: (mountPoint, payload) => (store[mountPoint] = payload)
+  };
+
   const setAll = mountPointsAndPayloads => {
     Object.entries(mountPointsAndPayloads).forEach(
       ([mountPoint, payload]) => (store[mountPoint] = payload)
     );
-    state$.next();
+    update();
   };
 
   const withMutations = fn => {
     fn(mutableStore);
-    state$.next();
+    update();
   };
 
   const storeApi = {
@@ -53,7 +61,8 @@ export default (store = {}) => {
     setAll,
     get,
     getAll,
-    withMutations
+    withMutations,
+    addUpdateIntercept
   };
 
   return {
