@@ -47,38 +47,6 @@ describe("enableHistory", () => {
       expect(store.get("counter")).toEqual({ value: 1 });
       expect(store.get("counter2")).toEqual({ value: 2 });
     });
-
-    it("validates query parameters against any given schemas and only adds them to the store if they are valide", () => {
-      const store = createStore();
-      const schemas = [
-        {
-          mountPoint: "counter",
-          schema: {
-            type: "object",
-            properties: {
-              value: {
-                type: "number"
-              }
-            }
-          }
-        },
-        {
-          mountPoint: "counter2",
-          schema: {
-            type: "object",
-            properties: {
-              value: {
-                type: "string"
-              }
-            }
-          }
-        }
-      ];
-      unsubscribe = enableHistory(store, ["counter", "counter2"], [], schemas);
-
-      expect(store.get("counter")).toEqual({ value: 1 });
-      expect(store.get("counter2")).toEqual(undefined); // should have failed validation
-    });
   });
 
   describe("on history change", () => {

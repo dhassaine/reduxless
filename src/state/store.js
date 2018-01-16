@@ -1,3 +1,5 @@
+import Ajv from "ajv";
+
 const makeSubject = () => {
   const observers = new Map();
   let idPtr = 0;
@@ -14,19 +16,58 @@ const makeSubject = () => {
   };
 };
 
-export default (store = {}) => {
+export default (
+  incomingStore = {},
+  schemas = [],
+  throwOnValidation = false
+) => {
   const state$ = makeSubject();
   const updateIntercepts = [];
 
-  const addUpdateIntercept = fn => updateIntercepts.push(fn);
+  const ajv = new Ajv();
+  const ajvSchemas = new Map(
+    schemas.map(({ schema, mountPoint }) => [mountPoint, ajv.compile(schema)])
+  );
+
+  const validate = (mountPoint, payload) => {
+    let valid = true;
+    if (ajvSchemas.has(mountPoint)) {
+      const validate = ajvSchemas.get(mountPoint);
+      valid = validate(payload);
+      if (throwOnValidation && !valid)
+        throw new Error(
+          JSON.stringify(
+            { payload, mountPoint, error: validate.errors },
+            null,
+            "\t"
+          )
+        );
+    }
+    return valid;
+  };
 
   const update = () => {
     updateIntercepts.forEach(fn => fn(mutableStore));
     state$.next();
   };
 
+  const _set = (mountPoint, payload) => {
+    if (validate(mountPoint, payload)) store[mountPoint] = payload;
+  };
+
+  const setAll = mountPointsAndPayloads => {
+    Object.entries(mountPointsAndPayloads).forEach(([mountPoint, payload]) =>
+      _set(mountPoint, payload)
+    );
+    update();
+  };
+  const store = {};
+  setAll(incomingStore);
+
+  const addUpdateIntercept = fn => updateIntercepts.push(fn);
+
   const set = (mountPoint, payload) => {
-    store[mountPoint] = payload;
+    _set(mountPoint, payload);
     update();
   };
 
@@ -41,14 +82,7 @@ export default (store = {}) => {
     );
 
   const mutableStore = {
-    set: (mountPoint, payload) => (store[mountPoint] = payload)
-  };
-
-  const setAll = mountPointsAndPayloads => {
-    Object.entries(mountPointsAndPayloads).forEach(
-      ([mountPoint, payload]) => (store[mountPoint] = payload)
-    );
-    update();
+    set: _set
   };
 
   const withMutations = fn => {
