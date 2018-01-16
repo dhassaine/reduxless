@@ -127,4 +127,31 @@ describe("Store", () => {
     expect(selector(store.get("mount"))).to.deep.equal({ c: 6, d: 12 });
     expect(selector.recomputations()).to.equal(2);
   });
+
+  it("does not update store if json schema validation fails", () => {
+    const store = createStore(
+      {
+        a: 10
+      },
+      [{ mountPoint: "a", schema: { type: "number" } }]
+    );
+
+    expect(store.get("a")).to.equal(10);
+    store.set("a", 15);
+    expect(store.get("a")).to.equal(15);
+    store.set("a", "30");
+    expect(store.get("a")).to.equal(15);
+  });
+
+  it("throws a validation error if throwOnValidation flag is set", () => {
+    const store = createStore(
+      {
+        a: 10
+      },
+      [{ mountPoint: "a", schema: { type: "number" } }],
+      true
+    );
+
+    expect(() => store.set("a", "30")).throw();
+  });
 });
