@@ -7,10 +7,7 @@ import { createStore, Container, enableHistory } from "../src/main";
 import createDocsExample from "./docs-example";
 
 const store = createStore();
-enableHistory(store, [counterMountPoint, counterMountPoint2]);
-store.subscribe(() => {
-  console.log(store.get("location"));
-});
+enableHistory(store, [counterMountPoint], [counterMountPoint2]);
 ReactDOM.render(
   <Container store={store}>
     <App />
