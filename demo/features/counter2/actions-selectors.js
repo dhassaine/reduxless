@@ -9,6 +9,12 @@ export const schema = {
   }
 };
 
+export const initialState = {
+  [mountPoint]: {
+    value: 0
+  }
+};
+
 export const selectCounter = state => {
   const counter = state.get(mountPoint, state);
   if (counter) {
