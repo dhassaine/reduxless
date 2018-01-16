@@ -1,5 +1,14 @@
 export const mountPoint = "counter2";
 
+export const schema = {
+  type: "object",
+  properties: {
+    value: {
+      type: "number"
+    }
+  }
+};
+
 export const selectCounter = state => {
   const counter = state.get(mountPoint, state);
   if (counter) {

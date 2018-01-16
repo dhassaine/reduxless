@@ -1,6 +1,11 @@
 import { parse, stringify } from "query-string";
+import Ajv from "ajv";
 
-export function syncLocationToStore(store, mountPoints) {
+export function syncLocationToStore(
+  store,
+  mountPoints,
+  ajvSchemas = new Map()
+) {
   store.syncedLocationToStore = true;
   const rawQuery = parse(window.location.search, {
     arrayFormat: "bracket"
@@ -8,9 +13,19 @@ export function syncLocationToStore(store, mountPoints) {
 
   const query = {};
   if (rawQuery.storeData) {
-    const data = JSON.parse(rawQuery.storeData);
+    try {
+      const data = JSON.parse(rawQuery.storeData);
 
-    mountPoints.forEach(mountPoint => (query[mountPoint] = data[mountPoint]));
+      mountPoints.forEach(mountPoint => {
+        let valid = true;
+        if (ajvSchemas.has(mountPoint))
+          valid = ajvSchemas.get(mountPoint)(data[mountPoint]);
+
+        if (valid) query[mountPoint] = data[mountPoint];
+      });
+    } catch (e) {
+      //ignore
+    }
   }
 
   const location = {
@@ -72,15 +87,20 @@ const hasChanged = (store, mountPoints) => {
 export function enableHistory(
   store,
   pushStateMountPoints = [],
-  replaceStateMountPoints = []
+  replaceStateMountPoints = [],
+  schemas = []
 ) {
+  const ajv = new Ajv();
+  const ajvSchemas = new Map(
+    schemas.map(({ schema, mountPoint }) => [mountPoint, ajv.compile(schema)])
+  );
   store.syncToLocations = pushStateMountPoints.concat(replaceStateMountPoints);
 
   const update = () => syncLocationToStore(store, pushStateMountPoints);
 
   window.addEventListener("popstate", update);
 
-  syncLocationToStore(store, store.syncToLocations);
+  syncLocationToStore(store, store.syncToLocations, ajvSchemas);
 
   store.addUpdateIntercept(s => {
     if (store.syncedLocationToStore) {
