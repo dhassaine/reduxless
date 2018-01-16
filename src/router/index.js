@@ -1,6 +1,6 @@
 import { parse, stringify } from "query-string";
 
-export function syncLocationToStore(store) {
+export function syncLocationToStore(store, mountPoints) {
   store.syncedLocationToStore = true;
   const rawQuery = parse(window.location.search, {
     arrayFormat: "bracket"
@@ -10,9 +10,7 @@ export function syncLocationToStore(store) {
   if (rawQuery.storeData) {
     const data = JSON.parse(rawQuery.storeData);
 
-    store.syncToLocations.forEach(
-      mountPoint => (query[mountPoint] = data[mountPoint])
-    );
+    mountPoints.forEach(mountPoint => (query[mountPoint] = data[mountPoint]));
   }
 
   const location = {
@@ -26,11 +24,9 @@ export function syncLocationToStore(store) {
 }
 
 const stringifyStoreData = store => {
-  if (store.syncToLocations.size == 0) return null;
+  if (store.syncToLocations.length == 0) return null;
 
-  const storeData = JSON.stringify(
-    store.getAll(Array.from(store.syncToLocations.values()))
-  );
+  const storeData = JSON.stringify(store.getAll(store.syncToLocations));
 
   const rawQuery = Object.assign(
     parse(window.location.search, {
@@ -61,14 +57,30 @@ export function updateHistory(store, newPath) {
   });
 }
 
-export function enableHistory(store, mountPoints) {
-  store.syncToLocations = new Set(mountPoints);
+const hasChanged = (store, mountPoints) => {
+  const props = store.getAll(mountPoints);
+  let changed = true;
+  if (store.lastState)
+    changed = mountPoints.some(
+      mountPoint => props[mountPoint] !== store.lastState[mountPoint]
+    );
 
-  const update = () => syncLocationToStore(store);
+  store.lastState = props;
+  return changed;
+};
+
+export function enableHistory(
+  store,
+  pushStateMountPoints = [],
+  replaceStateMountPoints = []
+) {
+  store.syncToLocations = pushStateMountPoints.concat(replaceStateMountPoints);
+
+  const update = () => syncLocationToStore(store, pushStateMountPoints);
 
   window.addEventListener("popstate", update);
 
-  syncLocationToStore(store);
+  syncLocationToStore(store, store.syncToLocations);
 
   store.addUpdateIntercept(s => {
     if (store.syncedLocationToStore) {
@@ -76,7 +88,10 @@ export function enableHistory(store, mountPoints) {
       return;
     }
 
-    history.pushState(null, null, getQueryStringFromStore(store));
+    if (hasChanged(store, pushStateMountPoints))
+      history.pushState(null, null, getQueryStringFromStore(store));
+    else history.replaceState(null, null, getQueryStringFromStore(store));
+
     const location = {
       href: window.location.href,
       pathname: window.location.pathname,
