@@ -16,11 +16,16 @@ const makeSubject = () => {
   };
 };
 
-export default (
-  incomingStore = {},
-  schemas = {},
-  throwOnValidation = false
-) => {
+const defaultOptions = {
+  throwOnValidation: false,
+  throwOnMissingSchemas: false
+};
+
+export default (incomingStore = {}, schemas = {}, options = {}) => {
+  const { throwOnValidation, throwOnMissingSchemas } = {
+    ...defaultOptions,
+    ...options
+  };
   const state$ = makeSubject();
   const updateIntercepts = [];
 
@@ -45,6 +50,8 @@ export default (
             "\t"
           )
         );
+    } else if (throwOnMissingSchemas) {
+      throw new Error(`missing schema for ${mountPoint}`);
     }
     return valid;
   };
