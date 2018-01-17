@@ -16,10 +16,10 @@ import createDocsExample from "./docs-example";
 
 const store = createStore(
   Object.assign(counterInitialState, counterInitialState2),
-  [
-    { mountPoint: counterMountPoint, schema: counterSchema },
-    { mountPoint: counterMountPoint2, schema: counterSchema2 }
-  ]
+  {
+    [counterMountPoint]: counterSchema,
+    [counterMountPoint2]: counterSchema2
+  }
 );
 enableHistory(store, [counterMountPoint], [counterMountPoint2]);
 ReactDOM.render(
