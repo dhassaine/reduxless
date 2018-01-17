@@ -18,7 +18,7 @@ const makeSubject = () => {
 
 export default (
   incomingStore = {},
-  schemas = [],
+  schemas = {},
   throwOnValidation = false
 ) => {
   const state$ = makeSubject();
@@ -26,7 +26,10 @@ export default (
 
   const ajv = new Ajv();
   const ajvSchemas = new Map(
-    schemas.map(({ schema, mountPoint }) => [mountPoint, ajv.compile(schema)])
+    Object.entries(schemas).map(([mountPoint, schema]) => [
+      mountPoint,
+      ajv.compile(schema)
+    ])
   );
 
   const validate = (mountPoint, payload) => {

@@ -133,7 +133,7 @@ describe("Store", () => {
       {
         a: 10
       },
-      [{ mountPoint: "a", schema: { type: "number" } }]
+      { a: { type: "number" } }
     );
 
     expect(store.get("a")).to.equal(10);
@@ -148,7 +148,7 @@ describe("Store", () => {
       {
         a: 10
       },
-      [{ mountPoint: "a", schema: { type: "number" } }],
+      { a: { type: "number" } },
       true
     );
 
