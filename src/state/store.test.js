@@ -149,9 +149,22 @@ describe("Store", () => {
         a: 10
       },
       { a: { type: "number" } },
-      true
+      { throwOnValidation: true }
     );
 
     expect(() => store.set("a", "30")).throw();
+  });
+
+  it("throws an error if throwOnMissingSchemas flag is set to a schema is missing ", () => {
+    const store = createStore(
+      {
+        a: 10
+      },
+      { a: { type: "number" } },
+      { throwOnMissingSchemas: true }
+    );
+    store.set("a", 30);
+
+    expect(() => store.set("b", "30")).throw();
   });
 });
