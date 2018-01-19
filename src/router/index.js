@@ -76,11 +76,29 @@ const hasChanged = (store, mountPoints) => {
   return changed;
 };
 
+export const debounce = (time, fn) => {
+  let timer = null;
+  return (...args) => {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), time);
+  };
+};
+
+const defaultOptions = {
+  debounceTime: 500
+};
+
 export function enableHistory(
   store,
   pushStateMountPoints = [],
-  replaceStateMountPoints = []
+  replaceStateMountPoints = [],
+  options
 ) {
+  const { debounceTime } = {
+    ...defaultOptions,
+    ...(options || {})
+  };
+
   store.syncToLocations = pushStateMountPoints.concat(replaceStateMountPoints);
 
   const update = () => syncLocationToStore(store, pushStateMountPoints);
@@ -89,22 +107,27 @@ export function enableHistory(
 
   syncLocationToStore(store, store.syncToLocations);
 
+  const debouncedReplaceState = debounce(debounceTime, (store, location) => {
+    store.set("location", location);
+    history.replaceState(null, null, getQueryStringFromStore(store));
+  });
+
   store.addUpdateIntercept(s => {
     if (store.syncedLocationToStore) {
       store.syncedLocationToStore = false;
       return;
     }
 
-    if (hasChanged(store, pushStateMountPoints))
-      history.pushState(null, null, getQueryStringFromStore(store));
-    else history.replaceState(null, null, getQueryStringFromStore(store));
-
     const location = {
       href: window.location.href,
       pathname: window.location.pathname,
       queryString: window.location.search
     };
-    s.set("location", location);
+
+    if (hasChanged(store, pushStateMountPoints)) {
+      s.set("location", location);
+      history.pushState(null, null, getQueryStringFromStore(store));
+    } else debouncedReplaceState(s, location);
   });
   return () => window.removeEventListener("popstate", update);
 }
