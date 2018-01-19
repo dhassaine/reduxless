@@ -66,11 +66,16 @@ export default (incomingStore = {}, schemas = {}, options = {}) => {
   };
 
   const setAll = mountPointsAndPayloads => {
+    _setAll(mountPointsAndPayloads);
+    update();
+  };
+
+  const _setAll = mountPointsAndPayloads => {
     Object.entries(mountPointsAndPayloads).forEach(([mountPoint, payload]) =>
       _set(mountPoint, payload)
     );
-    update();
   };
+
   const store = {};
   setAll(incomingStore);
 
@@ -92,7 +97,10 @@ export default (incomingStore = {}, schemas = {}, options = {}) => {
     );
 
   const mutableStore = {
-    set: _set
+    get,
+    set: _set,
+    getAll,
+    setAll: _setAll
   };
 
   const withMutations = fn => {
