@@ -65,8 +65,9 @@ describe("Store", () => {
     store.subscribe(fn2);
     store.withMutations(s => {
       s.set("a", 1);
-      s.set("b", 2);
-      s.set("c", 3);
+      s.setAll({ b: 2, c: 3 });
+      expect(s.get("a")).to.equal(1);
+      expect(s.getAll(["b", "c"])).to.eql({ b: 2, c: 3 });
     });
     expect(store.get("a")).to.equal(1);
     expect(store.get("b")).to.equal(2);
