@@ -31,7 +31,8 @@ export function syncLocationToStore(store, mountPoints) {
 }
 
 const stringifyStoreData = store => {
-  if (store.syncToLocations.length == 0) return null;
+  if (!store.syncLocationToStore || store.syncToLocations.length == 0)
+    return null;
 
   const storeData = JSON.stringify(store.getAll(store.syncToLocations));
 
@@ -126,7 +127,7 @@ export function enableHistory(
 
     if (hasChanged(store, pushStateMountPoints)) {
       s.set("location", location);
-      history.pushState(null, null, getQueryStringFromStore(store));
+      history.pushState(null, null, getQueryStringFromStore(s));
     } else debouncedReplaceState(s, location);
   });
   return () => window.removeEventListener("popstate", update);

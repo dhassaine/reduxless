@@ -183,9 +183,10 @@ describe("enableHistory", () => {
     });
 
     it("changes made directly to the replaceStateMountPoints in the store replace the browser location", done => {
+      jest.useFakeTimers();
       const store = createStore();
       unsubscribe = enableHistory(store, ["counter"], ["counter2"], {
-        debounceTime: 100
+        debounceTime: 1000
       });
 
       const assertions = [
@@ -197,26 +198,15 @@ describe("enableHistory", () => {
           expect(store.get("counter")).toEqual({ value: 3 });
           expect(store.get("counter2")).toEqual({ value: 2 });
         },
+        // this should not happen!
+        () => {
+          expect(store.get("counter")).toEqual({ value: 3 });
+          expect(store.get("counter2")).toEqual({ value: 3 });
+        },
         () => {
           expect(store.get("counter")).toEqual({ value: 3 });
           expect(store.get("counter2")).toEqual({ value: 4 });
         }
-        /*() => {
-          expect(store.get("counter")).toEqual({ value: 1 });
-          expect(store.get("counter2")).toEqual({ value: 4 });
-          expect(store.get("location")).toHaveProperty(
-            "queryString",
-            "?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D"
-          );
-        },
-        () => {
-          expect(store.get("counter")).toEqual({ value: 2 });
-          expect(store.get("counter2")).toEqual({ value: 4 });
-          expect(store.get("location")).toHaveProperty(
-            "queryString",
-            "?a[]=1&a[]=2&queryParam=queryValue&storeData=%7B%22counter%22%3A%7B%22value%22%3A2%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D"
-          );
-        }*/
       ];
 
       expect(store.get("counter")).toEqual({ value: 1 });
@@ -240,6 +230,7 @@ describe("enableHistory", () => {
       store.set("counter", { value: 3 }); // pushState
       store.set("counter2", { value: 3 }); // replaceState
       store.set("counter2", { value: 4 }); // replaceState
+      jest.runOnlyPendingTimers();
     });
   });
 
@@ -271,7 +262,7 @@ describe("enableHistory", () => {
       expect(childComponent.mock.calls.length).toEqual(1);
     });
 
-    it("does not renders children if the window.location path does not match", () => {
+    it("does not render children if the window.location path does not match", () => {
       const store = createStore();
       unsubscribe = enableHistory(store);
       const childComponent = jest.fn(() => null);
@@ -369,8 +360,8 @@ describe("enableHistory", () => {
       const timed = debounce(1000, callee);
       timed("dick", "tracy");
       jest.runOnlyPendingTimers();
-      expect(callee.mock.calls.length).toEqual(1),
-        expect(callee.mock.calls[0]).toEqual(["dick", "tracy"]);
+      expect(callee.mock.calls.length).toEqual(1);
+      expect(callee.mock.calls[0]).toEqual(["dick", "tracy"]);
     });
   });
 });
