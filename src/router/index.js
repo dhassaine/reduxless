@@ -31,8 +31,7 @@ export function syncLocationToStore(store, mountPoints) {
 }
 
 const stringifyStoreData = store => {
-  if (!store.syncLocationToStore || store.syncToLocations.length == 0)
-    return null;
+  if (!store.syncToLocations || store.syncToLocations.length == 0) return null;
 
   const storeData = JSON.stringify(store.getAll(store.syncToLocations));
 
