@@ -158,7 +158,7 @@ describe("enableHistory", () => {
           expect(store.get("counter2")).toEqual({ value: 3 });
           expect(store.get("location")).toHaveProperty(
             "queryString",
-            "?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A2%7D%2C%22counter2%22%3A%7B%22value%22%3A3%7D%7D"
+            "?a[]=1&a[]=2&queryParam=queryValue&storeData=%7B%22counter%22%3A%7B%22value%22%3A2%7D%2C%22counter2%22%3A%7B%22value%22%3A3%7D%7D"
           );
         }
       ];
@@ -184,6 +184,17 @@ describe("enableHistory", () => {
 
     it("changes made directly to the replaceStateMountPoints in the store replace the browser location", done => {
       jest.useFakeTimers();
+
+      const oldPush = window.history.pushState;
+      const oldReplace = window.history.replaceState;
+
+      const pushState = (window.history.pushState = jest.fn(
+        oldPush.bind(window.history)
+      ));
+      const replaceState = (window.history.replaceState = jest.fn(
+        oldReplace.bind(window.history)
+      ));
+
       const store = createStore();
       unsubscribe = enableHistory(store, ["counter"], ["counter2"], {
         debounceTime: 1000
@@ -193,19 +204,26 @@ describe("enableHistory", () => {
         () => {
           expect(store.get("counter")).toEqual({ value: 2 });
           expect(store.get("counter2")).toEqual({ value: 2 });
+          expect(pushState.mock.calls.length).toEqual(1);
+          expect(replaceState.mock.calls.length).toEqual(0);
         },
         () => {
           expect(store.get("counter")).toEqual({ value: 3 });
           expect(store.get("counter2")).toEqual({ value: 2 });
+          expect(pushState.mock.calls.length).toEqual(2);
+          expect(replaceState.mock.calls.length).toEqual(0);
         },
-        // this should not happen!
         () => {
           expect(store.get("counter")).toEqual({ value: 3 });
           expect(store.get("counter2")).toEqual({ value: 3 });
+          expect(pushState.mock.calls.length).toEqual(2);
+          expect(replaceState.mock.calls.length).toEqual(0);
         },
         () => {
           expect(store.get("counter")).toEqual({ value: 3 });
           expect(store.get("counter2")).toEqual({ value: 4 });
+          expect(pushState.mock.calls.length).toEqual(2);
+          expect(replaceState.mock.calls.length).toEqual(0);
         }
       ];
 
@@ -218,10 +236,16 @@ describe("enableHistory", () => {
         try {
           assert();
         } catch (error) {
+          window.history.pushState = oldPush;
+          window.history.replaceState = oldReplace;
           done(error);
         }
 
         if (assertions.length === 0) {
+          jest.runOnlyPendingTimers();
+          expect(replaceState.mock.calls.length).toEqual(1);
+          window.history.pushState = oldPush;
+          window.history.replaceState = oldReplace;
           return done();
         }
       });
@@ -230,7 +254,6 @@ describe("enableHistory", () => {
       store.set("counter", { value: 3 }); // pushState
       store.set("counter2", { value: 3 }); // replaceState
       store.set("counter2", { value: 4 }); // replaceState
-      jest.runOnlyPendingTimers();
     });
   });
 

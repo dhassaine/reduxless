@@ -107,9 +107,8 @@ export function enableHistory(
 
   syncLocationToStore(store, store.syncToLocations);
 
-  const debouncedReplaceState = debounce(debounceTime, (store, location) => {
-    store.set("location", location);
-    history.replaceState(null, null, getQueryStringFromStore(store));
+  const debouncedReplaceState = debounce(debounceTime, url => {
+    history.replaceState(null, null, url);
   });
 
   store.addUpdateIntercept(s => {
@@ -118,16 +117,17 @@ export function enableHistory(
       return;
     }
 
-    const location = {
-      href: window.location.href,
-      pathname: window.location.pathname,
-      queryString: window.location.search
-    };
+    const url = getQueryStringFromStore(store);
+    const qs = "?" + stringifyStoreData(store);
+    const location = s.get("location");
+    location.queryString = qs;
+    s.set("location", location);
 
     if (hasChanged(store, pushStateMountPoints)) {
-      s.set("location", location);
-      history.pushState(null, null, getQueryStringFromStore(s));
-    } else debouncedReplaceState(s, location);
+      history.pushState(null, null, url);
+    } else {
+      debouncedReplaceState(url);
+    }
   });
   return () => window.removeEventListener("popstate", update);
 }
