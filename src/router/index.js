@@ -31,7 +31,7 @@ export function syncLocationToStore(store, mountPoints) {
 }
 
 const stringifyStoreData = store => {
-  if (store.syncToLocations.length == 0) return null;
+  if (!store.syncToLocations || store.syncToLocations.length == 0) return null;
 
   const storeData = JSON.stringify(store.getAll(store.syncToLocations));
 
@@ -76,11 +76,29 @@ const hasChanged = (store, mountPoints) => {
   return changed;
 };
 
+export const debounce = (time, fn) => {
+  let timer = null;
+  return (...args) => {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), time);
+  };
+};
+
+const defaultOptions = {
+  debounceTime: 500
+};
+
 export function enableHistory(
   store,
   pushStateMountPoints = [],
-  replaceStateMountPoints = []
+  replaceStateMountPoints = [],
+  options
 ) {
+  const { debounceTime } = {
+    ...defaultOptions,
+    ...(options || {})
+  };
+
   store.syncToLocations = pushStateMountPoints.concat(replaceStateMountPoints);
 
   const update = () => syncLocationToStore(store, pushStateMountPoints);
@@ -89,22 +107,27 @@ export function enableHistory(
 
   syncLocationToStore(store, store.syncToLocations);
 
+  const debouncedReplaceState = debounce(debounceTime, url => {
+    history.replaceState(null, null, url);
+  });
+
   store.addUpdateIntercept(s => {
     if (store.syncedLocationToStore) {
       store.syncedLocationToStore = false;
       return;
     }
 
-    if (hasChanged(store, pushStateMountPoints))
-      history.pushState(null, null, getQueryStringFromStore(store));
-    else history.replaceState(null, null, getQueryStringFromStore(store));
-
-    const location = {
-      href: window.location.href,
-      pathname: window.location.pathname,
-      queryString: window.location.search
-    };
+    const url = getQueryStringFromStore(store);
+    const qs = "?" + stringifyStoreData(store);
+    const location = s.get("location");
+    location.queryString = qs;
     s.set("location", location);
+
+    if (hasChanged(store, pushStateMountPoints)) {
+      history.pushState(null, null, url);
+    } else {
+      debouncedReplaceState(url);
+    }
   });
   return () => window.removeEventListener("popstate", update);
 }

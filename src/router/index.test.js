@@ -1,7 +1,7 @@
 /* global describe, it, expect, jest, afterEach */
 import React from "react";
 import { Container, createStore, enableHistory, Link, Match } from "../main";
-import { updateHistory } from "./index";
+import { updateHistory, debounce } from "./index";
 import renderer from "react-test-renderer";
 import { mount } from "enzyme";
 
@@ -183,51 +183,77 @@ describe("enableHistory", () => {
     });
 
     it("changes made directly to the replaceStateMountPoints in the store replace the browser location", done => {
+      jest.useFakeTimers();
+
+      const oldPush = window.history.pushState;
+      const oldReplace = window.history.replaceState;
+
+      const pushState = (window.history.pushState = jest.fn(
+        oldPush.bind(window.history)
+      ));
+      const replaceState = (window.history.replaceState = jest.fn(
+        oldReplace.bind(window.history)
+      ));
+
       const store = createStore();
-      unsubscribe = enableHistory(store, ["counter"], ["counter2"]);
+      unsubscribe = enableHistory(store, ["counter"], ["counter2"], {
+        debounceTime: 1000
+      });
 
       const assertions = [
         () => {
-          expect(store.get("counter")).toEqual({ value: 1 });
-          expect(store.get("counter2")).toEqual({ value: 4 });
-          expect(store.get("location")).toHaveProperty(
-            "queryString",
-            "?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D"
-          );
+          expect(store.get("counter")).toEqual({ value: 2 });
+          expect(store.get("counter2")).toEqual({ value: 2 });
+          expect(pushState.mock.calls.length).toEqual(1);
+          expect(replaceState.mock.calls.length).toEqual(0);
         },
         () => {
-          expect(store.get("counter")).toEqual({ value: 2 });
+          expect(store.get("counter")).toEqual({ value: 3 });
+          expect(store.get("counter2")).toEqual({ value: 2 });
+          expect(pushState.mock.calls.length).toEqual(2);
+          expect(replaceState.mock.calls.length).toEqual(0);
+        },
+        () => {
+          expect(store.get("counter")).toEqual({ value: 3 });
+          expect(store.get("counter2")).toEqual({ value: 3 });
+          expect(pushState.mock.calls.length).toEqual(2);
+          expect(replaceState.mock.calls.length).toEqual(0);
+        },
+        () => {
+          expect(store.get("counter")).toEqual({ value: 3 });
           expect(store.get("counter2")).toEqual({ value: 4 });
-          expect(store.get("location")).toHaveProperty(
-            "queryString",
-            "?a[]=1&a[]=2&queryParam=queryValue&storeData=%7B%22counter%22%3A%7B%22value%22%3A2%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D"
-          );
+          expect(pushState.mock.calls.length).toEqual(2);
+          expect(replaceState.mock.calls.length).toEqual(0);
         }
       ];
 
       expect(store.get("counter")).toEqual({ value: 1 });
       expect(store.get("counter2")).toEqual({ value: 2 });
 
-      store.set("counter", { value: 2 }); // pushState
-      store.set("counter", { value: 3 }); // pushState
-      store.set("counter2", { value: 3 }); // replaceState
-      store.set("counter2", { value: 4 }); // replaceState
-      history.back();
-
       store.subscribe(() => {
-        const assert = assertions.pop();
+        const assert = assertions.shift();
 
         try {
           assert();
         } catch (error) {
+          window.history.pushState = oldPush;
+          window.history.replaceState = oldReplace;
           done(error);
         }
 
         if (assertions.length === 0) {
+          jest.runOnlyPendingTimers();
+          expect(replaceState.mock.calls.length).toEqual(1);
+          window.history.pushState = oldPush;
+          window.history.replaceState = oldReplace;
           return done();
         }
-        history.back();
       });
+
+      store.set("counter", { value: 2 }); // pushState
+      store.set("counter", { value: 3 }); // pushState
+      store.set("counter2", { value: 3 }); // replaceState
+      store.set("counter2", { value: 4 }); // replaceState
     });
   });
 
@@ -259,7 +285,7 @@ describe("enableHistory", () => {
       expect(childComponent.mock.calls.length).toEqual(1);
     });
 
-    it("does not renders children if the window.location path does not match", () => {
+    it("does not render children if the window.location path does not match", () => {
       const store = createStore();
       unsubscribe = enableHistory(store);
       const childComponent = jest.fn(() => null);
@@ -320,6 +346,45 @@ describe("enableHistory", () => {
       expect(store.get("location")).toHaveProperty("pathname", "/page1");
       component.simulate("click");
       expect(store.get("location")).toHaveProperty("pathname", "/page2");
+    });
+  });
+
+  describe("debounce", () => {
+    it("should fire a function after the debounce time", () => {
+      jest.useFakeTimers();
+      const callee = jest.fn();
+      const timed = debounce(1000, callee);
+      timed();
+      jest.advanceTimersByTime(500);
+      expect(callee.mock.calls.length).toEqual(0);
+      jest.advanceTimersByTime(500);
+      expect(callee.mock.calls.length).toEqual(1);
+      jest.runOnlyPendingTimers();
+    });
+
+    it("should not trigger a pending call if interrupted by another", () => {
+      jest.useFakeTimers();
+      const callee = jest.fn();
+      const timed = debounce(1000, callee);
+      timed();
+      jest.advanceTimersByTime(500);
+      expect(callee.mock.calls.length).toEqual(0);
+      timed();
+      jest.advanceTimersByTime(500);
+      expect(callee.mock.calls.length).toEqual(0);
+      jest.advanceTimersByTime(500);
+      expect(callee.mock.calls.length).toEqual(1);
+      jest.runOnlyPendingTimers();
+    });
+
+    it("should forward arguments for debounced function", () => {
+      jest.useFakeTimers();
+      const callee = jest.fn();
+      const timed = debounce(1000, callee);
+      timed("dick", "tracy");
+      jest.runOnlyPendingTimers();
+      expect(callee.mock.calls.length).toEqual(1);
+      expect(callee.mock.calls[0]).toEqual(["dick", "tracy"]);
     });
   });
 });
