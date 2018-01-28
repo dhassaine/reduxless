@@ -18,7 +18,7 @@
     "coverage": "jest --coverage",
     "coveralls": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "start": "webpack-dev-server --config demo/webpack.config.js",
-    "build": "rollup -c && cp -r src/* dist/",
+    "build": "rollup -c",
     "dev": "rollup -c -w",
     "bump-version": "bin/bump-version.sh",
     "prepublish": "npm run build"
