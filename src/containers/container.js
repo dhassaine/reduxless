@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 export class Container extends React.Component {
   getChildContext() {
@@ -10,17 +10,7 @@ export class Container extends React.Component {
 
   constructor(props) {
     super(props);
-    this.update = this.update.bind(this);
-    if (!props.store) throw new Error('Store not found');
-    this.unsubscribe = props.store.subscribe(this.update);
-  }
-
-  update() {
-    this.forceUpdate();
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
+    if (!props.store) throw new Error("Store not found");
   }
 
   render() {
@@ -59,7 +49,7 @@ export const mapper = (propMappings = {}, actionMappings = {}) => Wrapped => {
 
     get store() {
       const store = this.props.store || this.context.store;
-      if (!store) throw new Error('Store not found');
+      if (!store) throw new Error("Store not found");
       return store;
     }
 
@@ -72,14 +62,20 @@ export const mapper = (propMappings = {}, actionMappings = {}) => Wrapped => {
     };
 
     render() {
-      const {store, ...ownProps} = this.props; // eslint-disable-line no-unused-vars
+      const { store, ...ownProps } = this.props; // eslint-disable-line no-unused-vars
 
-      const mapped = Object.assign({},
-        ...Object.entries(propMappings).map(([key, func]) => ({ [key]: func(this.store, ownProps) }))
+      const mapped = Object.assign(
+        {},
+        ...Object.entries(propMappings).map(([key, func]) => ({
+          [key]: func(this.store, ownProps)
+        }))
       );
 
-      const actions = Object.assign({},
-        ...Object.entries(actionMappings).map(([key, func]) => ({ [key]: (...args) => func(this.store, ownProps, ...args) }))
+      const actions = Object.assign(
+        {},
+        ...Object.entries(actionMappings).map(([key, func]) => ({
+          [key]: (...args) => func(this.store, ownProps, ...args)
+        }))
       );
 
       return <PerfComponent {...ownProps} {...mapped} {...actions} />;
