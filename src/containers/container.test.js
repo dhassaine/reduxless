@@ -35,7 +35,7 @@ describe("Container", () => {
     expect(onError.mock.calls.length).toEqual(1);
   });
 
-  it("re-renders when the store changes", () => {
+  it("does not directly re-render when the store changes", () => {
     const store = createStore();
     const ChildComponent = jest.fn(() => null);
 
@@ -46,24 +46,7 @@ describe("Container", () => {
     );
     expect(ChildComponent.mock.calls.length).toEqual(1);
     store.set("mount", { a: 1 });
-    expect(ChildComponent.mock.calls.length).toEqual(2);
-  });
-
-  it("does not re-render after unmounting", () => {
-    const store = createStore();
-    const subscribe = store.subscribe.bind(store);
-
-    let unsubscribeMock;
-    store.subscribe = jest.fn(() => {
-      unsubscribeMock = jest.fn(subscribe());
-      return unsubscribeMock;
-    });
-
-    const container = renderer.create(<Container store={store} />);
-
-    expect(unsubscribeMock.mock.calls.length).toEqual(0);
-    container.unmount();
-    expect(unsubscribeMock.mock.calls.length).toEqual(1);
+    expect(ChildComponent.mock.calls.length).toEqual(1);
   });
 
   it("allows undefined children", () => {
