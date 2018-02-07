@@ -18,7 +18,7 @@ describe("router/index", () => {
     it("encodes data into uri as JSON encoded storeData query parameter", () => {
       const data = { prop1: "value", prop2: 10 };
       const result = stringifyStoreDataHelper(data);
-      const expected = `storeData={"prop1":"value","prop2":10}`;
+      const expected = `storeData=%7B%22prop1%22%3A%22value%22%2C%22prop2%22%3A10%7D`;
       expect(result).toEqual(expected);
     });
 
@@ -26,7 +26,7 @@ describe("router/index", () => {
       const data = {};
       const query = `?storeData={"prop":2}&foo=bar`;
       expect(stringifyStoreDataHelper(data, query)).toEqual(
-        "foo=bar&storeData={}"
+        "foo=bar&storeData=%7B%7D"
       );
     });
   });
@@ -197,7 +197,7 @@ describe("router/index", () => {
             expect(store.get("counter2")).toEqual({ value: 3 });
             expect(store.get("location")).toHaveProperty(
               "queryString",
-              "?queryParam%3DqueryValue%26a%5B%5D%3D1%26a%5B%5D%3D2%26%26storeData%3D%7B%22counter%22%3A%7B%22value%22%3A2%7D%2C%22counter2%22%3A%7B%22value%22%3A3%7D%7D"
+              "?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A2%7D%2C%22counter2%22%3A%7B%22value%22%3A3%7D%7D"
             );
           }
         ];

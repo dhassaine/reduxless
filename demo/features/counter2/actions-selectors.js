@@ -4,7 +4,7 @@ export const schema = {
   type: "object",
   properties: {
     value: {
-      type: "number"
+      type: "integer"
     }
   }
 };

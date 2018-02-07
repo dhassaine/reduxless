@@ -29,20 +29,23 @@ export function syncLocationToStore(store, mountPoints) {
 
 export const stringifyStoreDataHelper = (data, query = "") => {
   const cleanQuery = decodeURIComponent(query)
-    .replace(/(^\?)?/, "")
-    .replace(/storeData={.*}&?/, "");
-  const storeDataParam = `storeData=${JSON.stringify(data)}`;
+    .replace(/^\?/, "")
+    .split("&")
+    .filter(pair => !pair.startsWith("storeData="))
+    .join("&");
+
+  const storeDataParam = `storeData=${encodeURIComponent(
+    JSON.stringify(data)
+  )}`;
   return cleanQuery ? `${cleanQuery}&${storeDataParam}` : storeDataParam;
 };
 
 const stringifyStoreData = store => {
   if (!store.syncToLocations || store.syncToLocations.length == 0) return null;
 
-  return encodeURIComponent(
-    stringifyStoreDataHelper(
-      store.getAll(store.syncToLocations),
-      window.location.search
-    )
+  return stringifyStoreDataHelper(
+    store.getAll(store.syncToLocations),
+    window.location.search
   );
 };
 
