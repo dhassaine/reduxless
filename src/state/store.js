@@ -1,4 +1,4 @@
-import Ajv from "ajv";
+import jsonValidator from "tiny-json-validator";
 
 const makeSubject = () => {
   const observers = new Map();
@@ -29,23 +29,18 @@ export default (incomingStore = {}, schemas = {}, options = {}) => {
   const state$ = makeSubject();
   const updateIntercepts = [];
 
-  const ajv = new Ajv();
-  const ajvSchemas = new Map(
-    Object.entries(schemas).map(([mountPoint, schema]) => [
-      mountPoint,
-      ajv.compile(schema)
-    ])
-  );
+  const schemasMap = new Map(Object.entries(schemas));
 
   const validate = (mountPoint, payload) => {
     let valid = true;
-    if (ajvSchemas.has(mountPoint)) {
-      const validate = ajvSchemas.get(mountPoint);
-      valid = validate(payload);
+    if (schemasMap.has(mountPoint)) {
+      const schema = schemasMap.get(mountPoint);
+      const validatorResponse = jsonValidator(schema, payload);
+      valid = validatorResponse.isValid;
       if (throwOnValidation && !valid)
         throw new Error(
           JSON.stringify(
-            { payload, mountPoint, error: validate.errors },
+            { payload, mountPoint, error: validatorResponse.errors },
             null,
             "\t"
           )
