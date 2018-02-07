@@ -8,7 +8,7 @@ const storeAndQuery = rawQuery => {
 
   return {
     query,
-    storeData: (storeDatas[0] && storeDatas[0].replace(/^storeData=/, "")) || {}
+    storeData: storeDatas[0] && storeDatas[0].replace(/^storeData=/, "")
   };
 };
 
