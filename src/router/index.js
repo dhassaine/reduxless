@@ -1,7 +1,21 @@
+const storeAndQuery = rawQuery => {
+  const params = decodeURIComponent(rawQuery)
+    .replace(/^\?/, "")
+    .split("&");
+
+  const query = params.filter(pair => !pair.startsWith("storeData=")).join("&");
+  const storeDatas = params.filter(pair => pair.startsWith("storeData="));
+
+  return {
+    query,
+    storeData: (storeDatas[0] && storeDatas[0].replace(/^storeData=/, "")) || {}
+  };
+};
+
 export function extractStoreFromLocation(query) {
   try {
-    const matches = decodeURIComponent(query).match(/storeData=({.*})/, "");
-    return JSON.parse(matches[1]);
+    const { storeData } = storeAndQuery(query);
+    return JSON.parse(decodeURIComponent(storeData));
   } catch (e) {
     return {};
   }
@@ -28,11 +42,7 @@ export function syncLocationToStore(store, mountPoints) {
 }
 
 export const stringifyStoreDataHelper = (data, query = "") => {
-  const cleanQuery = decodeURIComponent(query)
-    .replace(/^\?/, "")
-    .split("&")
-    .filter(pair => !pair.startsWith("storeData="))
-    .join("&");
+  const { query: cleanQuery } = storeAndQuery(query);
 
   const storeDataParam = `storeData=${encodeURIComponent(
     JSON.stringify(data)
