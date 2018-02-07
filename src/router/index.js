@@ -1,24 +1,39 @@
-import { parse, stringify } from "query-string";
+const storeAndQuery = rawQuery => {
+  const params = decodeURIComponent(rawQuery)
+    .replace(/^\?/, "")
+    .split("&");
+
+  return params.reduce(
+    (acc, pair) => {
+      if (!acc.storeData && pair.startsWith("storeData="))
+        acc.storeData = decodeURIComponent(pair.replace(/^storeData=/, ""));
+      else acc.query += (acc.query ? "&" : "") + pair;
+      return acc;
+    },
+    { query: "", storeData: null }
+  );
+};
+
+export function extractStoreFromLocation(query) {
+  const { storeData } = storeAndQuery(query);
+  if (!storeData) return {};
+
+  try {
+    return JSON.parse(decodeURIComponent(storeData));
+  } catch (e) {
+    return {};
+  }
+}
 
 export function syncLocationToStore(store, mountPoints) {
   store.syncedLocationToStore = true;
-  const rawQuery = parse(window.location.search, {
-    arrayFormat: "bracket"
-  });
+  const parsed = extractStoreFromLocation(window.location.search);
 
   const query = {};
-  if (rawQuery.storeData) {
-    let parsed = {};
-    try {
-      parsed = JSON.parse(rawQuery.storeData);
-    } catch (e) {
-      //ignore
-    }
-    const mountPointsSet = new Set(mountPoints);
-    Object.entries(parsed).forEach(([key, data]) => {
-      if (mountPointsSet.has(key)) query[key] = data;
-    });
-  }
+  const mountPointsSet = new Set(mountPoints);
+  Object.entries(parsed).forEach(([key, data]) => {
+    if (mountPointsSet.has(key)) query[key] = data;
+  });
 
   const location = {
     href: window.location.href,
@@ -30,21 +45,22 @@ export function syncLocationToStore(store, mountPoints) {
   store.syncedLocationToStore = false;
 }
 
+export const stringifyStoreDataHelper = (data, query = "") => {
+  const { query: cleanQuery } = storeAndQuery(query);
+
+  const storeDataParam = `storeData=${encodeURIComponent(
+    JSON.stringify(data)
+  )}`;
+  return cleanQuery ? `${cleanQuery}&${storeDataParam}` : storeDataParam;
+};
+
 const stringifyStoreData = store => {
   if (!store.syncToLocations || store.syncToLocations.length == 0) return null;
 
-  const storeData = JSON.stringify(store.getAll(store.syncToLocations));
-
-  const rawQuery = Object.assign(
-    parse(window.location.search, {
-      arrayFormat: "bracket"
-    }),
-    { storeData }
+  return stringifyStoreDataHelper(
+    store.getAll(store.syncToLocations),
+    window.location.search
   );
-
-  return stringify(rawQuery, {
-    arrayFormat: "bracket"
-  });
 };
 
 const getQueryStringFromStore = (store, newPath) => {
