@@ -3,18 +3,22 @@ const storeAndQuery = rawQuery => {
     .replace(/^\?/, "")
     .split("&");
 
-  const query = params.filter(pair => !pair.startsWith("storeData=")).join("&");
-  const storeDatas = params.filter(pair => pair.startsWith("storeData="));
-
-  return {
-    query,
-    storeData: storeDatas[0] && storeDatas[0].replace(/^storeData=/, "")
-  };
+  return params.reduce(
+    (acc, pair) => {
+      if (!acc.storeData && pair.startsWith("storeData="))
+        acc.storeData = decodeURIComponent(pair.replace(/^storeData=/, ""));
+      else acc.query += (acc.query ? "&" : "") + pair;
+      return acc;
+    },
+    { query: "", storeData: null }
+  );
 };
 
 export function extractStoreFromLocation(query) {
+  const { storeData } = storeAndQuery(query);
+  if (!storeData) return {};
+
   try {
-    const { storeData } = storeAndQuery(query);
     return JSON.parse(decodeURIComponent(storeData));
   } catch (e) {
     return {};
