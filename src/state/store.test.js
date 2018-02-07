@@ -2,6 +2,7 @@
 import { expect } from "chai";
 import { createStore } from "../main";
 import { createSelector } from "reselect";
+import validator from "tiny-json-validator";
 
 describe("Store", () => {
   it("can be initialised with an initial state", () => {
@@ -134,7 +135,7 @@ describe("Store", () => {
       {
         a: 10
       },
-      { a: { type: "number" } }
+      { a: { type: "integer" } }
     );
 
     expect(store.get("a")).to.equal(10);
@@ -149,7 +150,7 @@ describe("Store", () => {
       {
         a: 10
       },
-      { a: { type: "number" } },
+      { a: { type: "integer" } },
       { throwOnValidation: true }
     );
 
@@ -161,7 +162,7 @@ describe("Store", () => {
       {
         a: 10
       },
-      { a: { type: "number" } },
+      { a: { type: "integer" } },
       { throwOnMissingSchemas: true }
     );
     store.set("a", 30);
