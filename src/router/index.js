@@ -1,6 +1,6 @@
 export function extractStoreFromLocation(query) {
   try {
-    const matches = query.match(/storeData=({.*})/, "");
+    const matches = decodeURIComponent(query).match(/storeData=({.*})/, "");
     return JSON.parse(matches[1]);
   } catch (e) {
     return {};
@@ -9,9 +9,7 @@ export function extractStoreFromLocation(query) {
 
 export function syncLocationToStore(store, mountPoints) {
   store.syncedLocationToStore = true;
-  const parsed = extractStoreFromLocation(
-    decodeURIComponent(window.location.search)
-  );
+  const parsed = extractStoreFromLocation(window.location.search);
 
   const query = {};
   const mountPointsSet = new Set(mountPoints);
@@ -30,7 +28,7 @@ export function syncLocationToStore(store, mountPoints) {
 }
 
 export const stringifyStoreDataHelper = (data, query = "") => {
-  const cleanQuery = query
+  const cleanQuery = decodeURIComponent(query)
     .replace(/(^\?)?/, "")
     .replace(/storeData={.*}&?/, "");
   const storeDataParam = `storeData=${JSON.stringify(data)}`;
@@ -40,9 +38,11 @@ export const stringifyStoreDataHelper = (data, query = "") => {
 const stringifyStoreData = store => {
   if (!store.syncToLocations || store.syncToLocations.length == 0) return null;
 
-  const storeData = JSON.stringify(store.getAll(store.syncToLocations));
   return encodeURIComponent(
-    stringifyStoreDataHelper(storeData, window.location.search)
+    stringifyStoreDataHelper(
+      store.getAll(store.syncToLocations),
+      window.location.search
+    )
   );
 };
 

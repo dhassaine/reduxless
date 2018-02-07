@@ -197,7 +197,7 @@ describe("router/index", () => {
             expect(store.get("counter2")).toEqual({ value: 3 });
             expect(store.get("location")).toHaveProperty(
               "queryString",
-              "?queryParam%3DqueryValue%26a%5B%5D%3D1%26a%5B%5D%3D2%26storeData%3D%257B%2522counter%2522%253A%257B%2522value%2522%253A1%257D%252C%2522counter2%2522%253A%257B%2522value%2522%253A2%257D%257D%26storeData%3D%22%7B%5C%22counter%5C%22%3A%7B%5C%22value%5C%22%3A2%7D%2C%5C%22counter2%5C%22%3A%7B%5C%22value%5C%22%3A3%7D%7D%22"
+              "?queryParam%3DqueryValue%26a%5B%5D%3D1%26a%5B%5D%3D2%26%26storeData%3D%7B%22counter%22%3A%7B%22value%22%3A2%7D%2C%22counter2%22%3A%7B%22value%22%3A3%7D%7D"
             );
           }
         ];
