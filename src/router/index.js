@@ -1,24 +1,23 @@
-import { parse, stringify } from "query-string";
+export function extractStoreFromLocation(query) {
+  try {
+    const matches = query.match(/storeData=({.*})/, "");
+    return JSON.parse(matches[1]);
+  } catch (e) {
+    return {};
+  }
+}
 
 export function syncLocationToStore(store, mountPoints) {
   store.syncedLocationToStore = true;
-  const rawQuery = parse(window.location.search, {
-    arrayFormat: "bracket"
-  });
+  const parsed = extractStoreFromLocation(
+    decodeURIComponent(window.location.search)
+  );
 
   const query = {};
-  if (rawQuery.storeData) {
-    let parsed = {};
-    try {
-      parsed = JSON.parse(rawQuery.storeData);
-    } catch (e) {
-      //ignore
-    }
-    const mountPointsSet = new Set(mountPoints);
-    Object.entries(parsed).forEach(([key, data]) => {
-      if (mountPointsSet.has(key)) query[key] = data;
-    });
-  }
+  const mountPointsSet = new Set(mountPoints);
+  Object.entries(parsed).forEach(([key, data]) => {
+    if (mountPointsSet.has(key)) query[key] = data;
+  });
 
   const location = {
     href: window.location.href,
@@ -30,21 +29,21 @@ export function syncLocationToStore(store, mountPoints) {
   store.syncedLocationToStore = false;
 }
 
+export const stringifyStoreDataHelper = (data, query = "") => {
+  const cleanQuery = query
+    .replace(/(^\?)?/, "")
+    .replace(/storeData={.*}&?/, "");
+  const storeDataParam = `storeData=${JSON.stringify(data)}`;
+  return cleanQuery ? `${cleanQuery}&${storeDataParam}` : storeDataParam;
+};
+
 const stringifyStoreData = store => {
   if (!store.syncToLocations || store.syncToLocations.length == 0) return null;
 
   const storeData = JSON.stringify(store.getAll(store.syncToLocations));
-
-  const rawQuery = Object.assign(
-    parse(window.location.search, {
-      arrayFormat: "bracket"
-    }),
-    { storeData }
+  return encodeURIComponent(
+    stringifyStoreDataHelper(storeData, window.location.search)
   );
-
-  return stringify(rawQuery, {
-    arrayFormat: "bracket"
-  });
 };
 
 const getQueryStringFromStore = (store, newPath) => {

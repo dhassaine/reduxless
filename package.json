@@ -53,8 +53,7 @@
     "react": ">=15"
   },
   "dependencies": {
-    "ajv": "6.0.1",
-    "query-string": "5.0.1"
+    "ajv": "6.0.1"
   },
   "devDependencies": {
     "babel-core": "6.26.0",
