@@ -29,9 +29,7 @@ export default (incomingStore = {}, schemas = {}, options = {}) => {
   const state$ = makeSubject();
   const updateIntercepts = [];
 
-  const schemasMap = new Map(
-    Object.entries(schemas).map(([mountPoint, schema]) => [mountPoint, schema])
-  );
+  const schemasMap = new Map(Object.entries(schemas));
 
   const validate = (mountPoint, payload) => {
     let valid = true;
