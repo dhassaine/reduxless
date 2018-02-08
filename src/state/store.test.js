@@ -2,7 +2,8 @@
 import { expect } from "chai";
 import { createStore } from "../main";
 import { createSelector } from "reselect";
-import validator from "tiny-json-validator";
+import Ajv from "ajv";
+const ajv = new Ajv();
 
 describe("Store", () => {
   it("can be initialised with an initial state", () => {
@@ -131,11 +132,19 @@ describe("Store", () => {
   });
 
   it("does not update store if json schema validation fails", () => {
+    const schema = { type: "integer" };
+    const validators = {
+      a: data => {
+        const validated = ajv.validate(schema, data);
+        return { valid: validated, errors: ajv.errors };
+      }
+    };
+
     const store = createStore(
       {
         a: 10
       },
-      { a: { type: "integer" } }
+      validators
     );
 
     expect(store.get("a")).to.equal(10);
@@ -146,11 +155,19 @@ describe("Store", () => {
   });
 
   it("throws a validation error if throwOnValidation flag is set", () => {
+    const schema = { type: "integer" };
+    const validators = {
+      a: data => {
+        const validated = ajv.validate(schema, data);
+        return { valid: validated, errors: ajv.errors };
+      }
+    };
+
     const store = createStore(
       {
         a: 10
       },
-      { a: { type: "integer" } },
+      validators,
       { throwOnValidation: true }
     );
 
@@ -158,11 +175,19 @@ describe("Store", () => {
   });
 
   it("throws an error if throwOnMissingSchemas flag is set to a schema is missing ", () => {
+    const schema = { type: "integer" };
+    const validators = {
+      a: data => {
+        const validated = ajv.validate(schema, data);
+        return { valid: validated, errors: ajv.errors };
+      }
+    };
+
     const store = createStore(
       {
         a: 10
       },
-      { a: { type: "integer" } },
+      validators,
       { throwOnMissingSchemas: true }
     );
     store.set("a", 30);
