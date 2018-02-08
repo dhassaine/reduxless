@@ -1,5 +1,3 @@
-import jsonValidator from "tiny-json-validator";
-
 const makeSubject = () => {
   const observers = new Map();
   let idPtr = 0;
@@ -21,7 +19,7 @@ const defaultOptions = {
   throwOnMissingSchemas: false
 };
 
-export default (incomingStore = {}, schemas = {}, options = {}) => {
+export default (incomingStore = {}, validators = {}, options = {}) => {
   const { throwOnValidation, throwOnMissingSchemas } = {
     ...defaultOptions,
     ...options
@@ -29,14 +27,14 @@ export default (incomingStore = {}, schemas = {}, options = {}) => {
   const state$ = makeSubject();
   const updateIntercepts = [];
 
-  const schemasMap = new Map(Object.entries(schemas));
+  const validatorsMap = new Map(Object.entries(validators));
 
   const validate = (mountPoint, payload) => {
     let valid = true;
-    if (schemasMap.has(mountPoint)) {
-      const schema = schemasMap.get(mountPoint);
-      const validatorResponse = jsonValidator(schema, payload);
-      valid = validatorResponse.isValid;
+    if (validatorsMap.has(mountPoint)) {
+      const validator = validatorsMap.get(mountPoint);
+      const validatorResponse = validator(payload);
+      valid = validatorResponse.valid;
       if (throwOnValidation && !valid)
         throw new Error(
           JSON.stringify(

@@ -52,10 +52,9 @@
     "prop-types": ">=15",
     "react": ">=15"
   },
-  "dependencies": {
-    "tiny-json-validator": "2.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "ajv": "6.1.1",
     "babel-core": "6.26.0",
     "babel-eslint": "8.0.0",
     "babel-jest": "21.0.2",

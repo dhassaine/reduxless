@@ -1,12 +1,20 @@
+import Ajv from "ajv";
+const ajv = new Ajv();
+
 export const mountPoint = "counter";
 
-export const schema = {
+const schema = {
   type: "object",
   properties: {
     value: {
       type: "integer"
     }
   }
+};
+
+export const validator = data => {
+  const validated = ajv.validate(schema, data);
+  return { valid: validated, errors: ajv.errors };
 };
 
 export const initialState = {
