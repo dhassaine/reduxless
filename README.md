@@ -1,7 +1,8 @@
 # Reduxless
+> A small state management and routing library with unidirectional data flow (4.8K compressed).
+
 [![npm version](https://badge.fury.io/js/reduxless.svg)](https://badge.fury.io/js/reduxless) [![Build Status](https://travis-ci.org/dhassaine/reduxless.svg?branch=master)](https://travis-ci.org/dhassaine/reduxless) [![Coverage Status](https://coveralls.io/repos/github/dhassaine/reduxless/badge.svg?branch=master)](https://coveralls.io/github/dhassaine/reduxless?branch=master)
 
-> A small state management library for unidirectional data flow.
 
 ## Introduction
 Reduxless simplifies some of the complexity of [Redux](https://github.com/reactjs/redux) and reduces the amount of necessary boiler plate code. This is mainly achieved by removing the need for an intermediate dispatch stage, followed by a reduction. Reduxless combines the roles of reducers and actions into one operation: the two key operations are actions and selectors. We lose the ability to perform time travelling on our state, but the advantages of simpler code can outweigh that benefit. The library ships with React bindings and a simple router.
@@ -32,9 +33,11 @@ const Component = ({name, updateName}) => (
 
 const MappedComponent = mapper(
   {
+    // selectors
     name: store => store.get('name')
   }, 
   {
+    // actions
     updateName: (store, ownProps, newName) => store.set('name', newName)
   }
 )(Component);
@@ -46,12 +49,61 @@ render(
 )
 ```
 
+## Routing and browser history syncing
+Reduxless offers a very simple mechanism for both routing (i.e. which components to render based on the URL) and keeping the browser URL and store state in sync. You can choose which properties in the store will trigger a pushState event and also whether the popState event from the browser history navigation will update the store.
+
+In the example above if we wanted the `name` property synced, it would be as simple as:
+```js
+import { createStore, enableHistory } from 'reduxless';
+
+const store = createStore({ name: 'Bart Simpson' });
+enableHistory(
+  this.store,
+  ['name']
+);
+```
+
+Routing is as straight forward as:
+```js
+import {h} from "preact";
+import { Match, Link } from "reduxless";
+
+const store = createStore({ name: 'Bart Simpson' });
+enableHistory(
+  this.store,
+  ['name']
+);
+
+const app = () => (
+  <Container store={store}>
+    <ul>
+      <li>
+        <Link href="/todos">Todos</Link>
+      </li>
+      <li>
+        <Link href="/counter">Counters</Link>
+      </li>
+    </ul>
+
+    <Match path="/todos">
+      <Todos />
+    </Match>
+
+    <Match path="/counter">
+      <Counter />
+    </Match>
+  </div>
+);
+```
+
+For more configuration options, including how to validate the store data incoming for the URL and also controlling one-way or two-way binding between the store state and browser URL, see the detailed documentation section.
 ## Documentation
 
 - API
   - [`createStore([initialState])`](https://dhassaine.github.io/reduxless/store)
   - [`<Container>, mapper()`](https://dhassaine.github.io/reduxless/container-mapper) for the react bindings.
-  - [`<Match>`, `<Link>`](https://dhassaine.github.io/reduxless/router) for the navigational components. 
+  - [`enableHistory()`](https://dhassaine.github.io/reduxless/enableHistory) for the browser history sync functionality.
+  - [`<Match>, <Link>`](https://dhassaine.github.io/reduxless/router) for the navigational components.
 
 ## Change Log
 This project follows [semantic versioning](http://semver.org/)
