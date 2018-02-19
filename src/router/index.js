@@ -94,10 +94,18 @@ const hasChanged = (store, mountPoints) => {
 
 export const debounce = (time, fn) => {
   let timer = null;
-  return (...args) => {
+  const cancel = () => {
     if (timer) clearTimeout(timer);
+    timer = null;
+  };
+
+  const debouncer = (...args) => {
+    cancel();
     timer = setTimeout(() => fn(...args), time);
   };
+
+  debouncer.cancel = cancel;
+  return debouncer;
 };
 
 const defaultOptions = {
@@ -141,7 +149,8 @@ export function enableHistory(
 
     if (hasChanged(store, pushStateMountPoints)) {
       history.pushState(null, null, url);
-    } else {
+      debouncedReplaceState.cancel();
+    } else if (hasChanged(store, replaceStateMountPoints)) {
       debouncedReplaceState(url);
     }
   });
