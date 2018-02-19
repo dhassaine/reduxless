@@ -235,34 +235,36 @@ describe("router/index", () => {
         ));
 
         const store = createStore();
+        expect(replaceState.mock.calls.length).toEqual(0);
         unsubscribe = enableHistory(store, ["counter"], ["counter2"], {
           debounceTime: 1000
         });
+        expect(replaceState.mock.calls.length).toEqual(1);
 
         const assertions = [
           () => {
             expect(store.get("counter")).toEqual({ value: 2 });
             expect(store.get("counter2")).toEqual({ value: 2 });
             expect(pushState.mock.calls.length).toEqual(1);
-            expect(replaceState.mock.calls.length).toEqual(0);
+            expect(replaceState.mock.calls.length).toEqual(1);
           },
           () => {
             expect(store.get("counter")).toEqual({ value: 2 });
             expect(store.get("counter2")).toEqual({ value: 3 });
             expect(pushState.mock.calls.length).toEqual(1);
-            expect(replaceState.mock.calls.length).toEqual(0);
+            expect(replaceState.mock.calls.length).toEqual(1);
           },
           () => {
             expect(store.get("counter")).toEqual({ value: 3 });
             expect(store.get("counter2")).toEqual({ value: 3 });
             expect(pushState.mock.calls.length).toEqual(2);
-            expect(replaceState.mock.calls.length).toEqual(0);
+            expect(replaceState.mock.calls.length).toEqual(1);
           },
           () => {
             expect(store.get("counter")).toEqual({ value: 3 });
             expect(store.get("counter2")).toEqual({ value: 4 });
             expect(pushState.mock.calls.length).toEqual(2);
-            expect(replaceState.mock.calls.length).toEqual(0);
+            expect(replaceState.mock.calls.length).toEqual(1);
           }
         ];
 
@@ -282,7 +284,7 @@ describe("router/index", () => {
 
           if (assertions.length === 0) {
             jest.runOnlyPendingTimers();
-            expect(replaceState.mock.calls.length).toEqual(1);
+            expect(replaceState.mock.calls.length).toEqual(2);
             window.history.pushState = oldPush;
             window.history.replaceState = oldReplace;
             return done();

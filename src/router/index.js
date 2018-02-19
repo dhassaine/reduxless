@@ -132,6 +132,9 @@ export function enableHistory(
 
   syncLocationToStore(store, store.syncToLocations);
 
+  if (store.syncToLocations.length > 0)
+    history.replaceState(null, null, getQueryStringFromStore(store));
+
   const debouncedReplaceState = debounce(debounceTime, url => {
     history.replaceState(null, null, url);
   });
