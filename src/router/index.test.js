@@ -221,7 +221,7 @@ describe("router/index", () => {
         store.setAll({ counter: { value: 2 }, counter2: { value: 3 } });
       });
 
-      it("changes made directly to the replaceStateMountPoints in the store replace the browser location", done => {
+      it.only("changes made directly to the replaceStateMountPoints in the store replace the browser location", done => {
         jest.useFakeTimers();
 
         const oldPush = window.history.pushState;
@@ -247,9 +247,9 @@ describe("router/index", () => {
             expect(replaceState.mock.calls.length).toEqual(0);
           },
           () => {
-            expect(store.get("counter")).toEqual({ value: 3 });
-            expect(store.get("counter2")).toEqual({ value: 2 });
-            expect(pushState.mock.calls.length).toEqual(2);
+            expect(store.get("counter")).toEqual({ value: 2 });
+            expect(store.get("counter2")).toEqual({ value: 3 });
+            expect(pushState.mock.calls.length).toEqual(1);
             expect(replaceState.mock.calls.length).toEqual(0);
           },
           () => {
@@ -290,8 +290,8 @@ describe("router/index", () => {
         });
 
         store.set("counter", { value: 2 }); // pushState
-        store.set("counter", { value: 3 }); // pushState
         store.set("counter2", { value: 3 }); // replaceState
+        store.set("counter", { value: 3 }); // pushState
         store.set("counter2", { value: 4 }); // replaceState
       });
     });
