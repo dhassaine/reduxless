@@ -82,13 +82,14 @@ export function updateHistory(store, newPath) {
 
 const hasChanged = (store, mountPoints) => {
   const props = store.getAll(mountPoints);
-  let changed = true;
+  let changed;
+
   if (store.lastState)
     changed = mountPoints.some(
       mountPoint => props[mountPoint] !== store.lastState[mountPoint]
     );
+  else changed = true;
 
-  store.lastState = props;
   return changed;
 };
 
@@ -147,10 +148,16 @@ export function enableHistory(
     location.queryString = qs;
     s.set("location", location);
 
-    if (hasChanged(store, pushStateMountPoints)) {
+    if (
+      pushStateMountPoints.length > 0 &&
+      hasChanged(store, pushStateMountPoints)
+    ) {
       history.pushState(null, null, url);
       debouncedReplaceState.cancel();
-    } else if (hasChanged(store, replaceStateMountPoints)) {
+    } else if (
+      replaceStateMountPoints.length > 0 &&
+      hasChanged(store, replaceStateMountPoints)
+    ) {
       debouncedReplaceState(url);
     }
   });

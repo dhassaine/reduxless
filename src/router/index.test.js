@@ -221,7 +221,7 @@ describe("router/index", () => {
         store.setAll({ counter: { value: 2 }, counter2: { value: 3 } });
       });
 
-      it.only("changes made directly to the replaceStateMountPoints in the store replace the browser location", done => {
+      it("changes made directly to the replaceStateMountPoints in the store replace the browser location", done => {
         jest.useFakeTimers();
 
         const oldPush = window.history.pushState;

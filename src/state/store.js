@@ -26,6 +26,8 @@ export default (incomingStore = {}, validators = {}, options = {}) => {
   };
   const state$ = makeSubject();
   const updateIntercepts = [];
+  let lastState = null;
+  const store = {};
 
   const validatorsMap = new Map(Object.entries(validators));
 
@@ -51,6 +53,7 @@ export default (incomingStore = {}, validators = {}, options = {}) => {
 
   const update = () => {
     updateIntercepts.forEach(fn => fn(mutableStore));
+    lastState = { ...store };
     state$.next();
   };
 
@@ -69,7 +72,6 @@ export default (incomingStore = {}, validators = {}, options = {}) => {
     );
   };
 
-  const store = {};
   setAll(incomingStore);
 
   const addUpdateIntercept = fn => updateIntercepts.push(fn);
@@ -90,11 +92,13 @@ export default (incomingStore = {}, validators = {}, options = {}) => {
     );
 
   const mutableStore = {
+    lastState,
     get,
     set: _set,
     getAll,
     setAll: _setAll
   };
+  Object.defineProperty(mutableStore, "lastState", { get: () => lastState });
 
   const withMutations = fn => {
     fn(mutableStore);
@@ -107,11 +111,10 @@ export default (incomingStore = {}, validators = {}, options = {}) => {
     get,
     getAll,
     withMutations,
-    addUpdateIntercept
+    addUpdateIntercept,
+    subscribe: func => state$.subscribe(() => func(storeApi))
   };
+  Object.defineProperty(storeApi, "lastState", { get: () => lastState });
 
-  return {
-    subscribe: func => state$.subscribe(() => func(storeApi)),
-    ...storeApi
-  };
+  return storeApi;
 };
