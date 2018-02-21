@@ -45,34 +45,34 @@ export function syncLocationToStore(store, mountPoints) {
   store.syncedLocationToStore = false;
 }
 
-export const filter = (data, filters) => {
-  if (!filters) return data;
+export const filter = (data, propsToKeep) => {
+  if (!propsToKeep) return data;
 
-  if (!Array.isArray(filters))
+  if (!Array.isArray(propsToKeep))
     throw Error("filter must be called with (Object, Array)");
 
-  return filters.reduce((results, key) => {
+  return propsToKeep.reduce((results, key) => {
     results[key] = data[key];
     return results;
   }, {});
 };
 
-export const stringifyStoreDataHelper = (data, query = "", filters) => {
+export const stringifyStoreDataHelper = (data, query = "", propsToKeep) => {
   const { query: cleanQuery } = storeAndQuery(query);
 
   const storeDataParam = `storeData=${encodeURIComponent(
-    JSON.stringify(filter(data, filters))
+    JSON.stringify(filter(data, propsToKeep))
   )}`;
   return cleanQuery ? `${cleanQuery}&${storeDataParam}` : storeDataParam;
 };
 
-export const getQuery = (store, filters) => {
+export const getQuery = (store, propsToKeep) => {
   if (!store.syncToLocations || store.syncToLocations.length == 0) return null;
 
   return stringifyStoreDataHelper(
     store.getAll(store.syncToLocations),
     window.location.search,
-    filters
+    propsToKeep
   );
 };
 
@@ -95,13 +95,10 @@ export function updateHistory(store, newPath) {
 
 const hasChanged = (store, mountPoints) => {
   const props = store.getAll(mountPoints);
-  let changed;
 
-  changed = mountPoints.some(
+  return mountPoints.some(
     mountPoint => props[mountPoint] !== store.lastState[mountPoint]
   );
-
-  return changed;
 };
 
 export const debounce = (time, fn) => {
