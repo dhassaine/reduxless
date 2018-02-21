@@ -6,7 +6,8 @@ import {
   debounce,
   stringifyStoreDataHelper,
   extractStoreFromLocation,
-  filter
+  filter,
+  getQuery
 } from "./index";
 import renderer from "react-test-renderer";
 import { mount } from "enzyme";
@@ -55,6 +56,13 @@ describe("router/index", () => {
       expect(stringifyStoreDataHelper(data, query)).toEqual(
         "foo=bar&storeData=%7B%7D"
       );
+    });
+
+    it("filters data", () => {
+      const data = { prop1: "value", prop2: 10 };
+      const result = stringifyStoreDataHelper(data, "", ["prop2"]);
+      const expected = `storeData=%7B%22prop2%22%3A10%7D`;
+      expect(result).toEqual(expected);
     });
   });
 
@@ -108,6 +116,16 @@ describe("router/index", () => {
 
         expect(store.get("counter")).toEqual({ value: 1 });
         expect(store.get("counter2")).toEqual({ value: 2 });
+      });
+
+      describe("getQuery", () => {
+        it("returns a query string by mergeing the browser query with the store params", () => {
+          const store = createStore();
+          unsubscribe = enableHistory(store, ["counter", "counter2"]);
+          expect(getQuery(store, ["counter2"])).toEqual(
+            "queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter2%22%3A%7B%22value%22%3A2%7D%7D"
+          );
+        });
       });
     });
 
