@@ -266,7 +266,7 @@ describe("router/index", () => {
         store.setAll({ counter: { value: 2 }, counter2: { value: 3 } });
       });
 
-      it("changes made directly to the replaceStateMountPoints in the store replace the browser location", done => {
+      it("changes made directly to the replaceStateMountPoints and pushStateMountPoints in the store replace the browser location", done => {
         jest.useFakeTimers();
 
         const oldPush = window.history.pushState;
@@ -340,6 +340,83 @@ describe("router/index", () => {
         store.set("counter2", { value: 3 }); // replaceState
         store.set("counter", { value: 3 }); // pushState
         store.set("counter2", { value: 4 }); // replaceState
+        unsubscribe();
+      });
+
+      it("changes made directly to the replaceStateMountPoints in the store replace the browser location", done => {
+        jest.useFakeTimers();
+
+        const oldPush = window.history.pushState;
+        const oldReplace = window.history.replaceState;
+
+        const pushState = (window.history.pushState = jest.fn(
+          oldPush.bind(window.history)
+        ));
+        const replaceState = (window.history.replaceState = jest.fn(
+          oldReplace.bind(window.history)
+        ));
+
+        const store = createStore();
+        expect(replaceState.mock.calls.length).toEqual(0);
+        unsubscribe = enableHistory(store, [], ["counter2"], {
+          debounceTime: 1000
+        });
+        expect(replaceState.mock.calls.length).toEqual(1);
+
+        const assertions = [
+          () => {
+            expect(store.get("counter")).toEqual({ value: 2 });
+            expect(store.get("counter2")).toEqual({ value: 2 });
+            expect(pushState.mock.calls.length).toEqual(0);
+            expect(replaceState.mock.calls.length).toEqual(1);
+          },
+          () => {
+            expect(store.get("counter")).toEqual({ value: 2 });
+            expect(store.get("counter2")).toEqual({ value: 3 });
+            expect(pushState.mock.calls.length).toEqual(0);
+            expect(replaceState.mock.calls.length).toEqual(1);
+          },
+          () => {
+            expect(store.get("counter")).toEqual({ value: 3 });
+            expect(store.get("counter2")).toEqual({ value: 3 });
+            expect(pushState.mock.calls.length).toEqual(0);
+            expect(replaceState.mock.calls.length).toEqual(1);
+          },
+          () => {
+            expect(store.get("counter")).toEqual({ value: 3 });
+            expect(store.get("counter2")).toEqual({ value: 4 });
+            expect(pushState.mock.calls.length).toEqual(0);
+            expect(replaceState.mock.calls.length).toEqual(1);
+          }
+        ];
+
+        expect(store.get("counter2")).toEqual({ value: 2 });
+
+        store.subscribe(() => {
+          const assert = assertions.shift();
+
+          try {
+            assert();
+          } catch (error) {
+            window.history.pushState = oldPush;
+            window.history.replaceState = oldReplace;
+            done(error);
+          }
+
+          if (assertions.length === 0) {
+            jest.runOnlyPendingTimers();
+            expect(replaceState.mock.calls.length).toEqual(2);
+            window.history.pushState = oldPush;
+            window.history.replaceState = oldReplace;
+            return done();
+          }
+        });
+
+        store.set("counter", { value: 2 }); // simple update
+        store.set("counter2", { value: 3 }); // replaceState
+        store.set("counter", { value: 3 }); // simple update
+        store.set("counter2", { value: 4 }); // replaceState
+        unsubscribe();
       });
     });
 

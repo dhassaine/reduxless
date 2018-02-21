@@ -97,11 +97,9 @@ const hasChanged = (store, mountPoints) => {
   const props = store.getAll(mountPoints);
   let changed;
 
-  if (store.lastState)
-    changed = mountPoints.some(
-      mountPoint => props[mountPoint] !== store.lastState[mountPoint]
-    );
-  else changed = true;
+  changed = mountPoints.some(
+    mountPoint => props[mountPoint] !== store.lastState[mountPoint]
+  );
 
   return changed;
 };
