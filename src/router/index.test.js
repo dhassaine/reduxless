@@ -5,7 +5,8 @@ import {
   updateHistory,
   debounce,
   stringifyStoreDataHelper,
-  extractStoreFromLocation
+  extractStoreFromLocation,
+  filter
 } from "./index";
 import renderer from "react-test-renderer";
 import { mount } from "enzyme";
@@ -14,6 +15,32 @@ const url =
   "http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D";
 
 describe("router/index", () => {
+  describe("filter", () => {
+    it("returns the given object unmodified if filter is not defined", () => {
+      const data = {
+        a: 1,
+        b: 2
+      };
+      expect(filter(data)).toEqual(data);
+      expect(filter(data, null)).toEqual(data);
+    });
+
+    it("throws an error if filters is defined but not an array", () => {
+      const fn = () => filter({}, "sdd");
+      expect(fn).toThrow();
+    });
+
+    it("returns subset of the given data object based on the filters key", () => {
+      const data = {
+        a: 1,
+        b: 2,
+        c: 3,
+        d: 4
+      };
+      expect(filter(data, ["b", "d"])).toEqual({ b: 2, d: 4 });
+    });
+  });
+
   describe("stringifyStoreDataHelper", () => {
     it("encodes data into uri as JSON encoded storeData query parameter", () => {
       const data = { prop1: "value", prop2: 10 };
