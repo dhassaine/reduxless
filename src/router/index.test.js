@@ -5,7 +5,9 @@ import {
   updateHistory,
   debounce,
   stringifyStoreDataHelper,
-  extractStoreFromLocation
+  extractStoreFromLocation,
+  filter,
+  getQuery
 } from "./index";
 import renderer from "react-test-renderer";
 import { mount } from "enzyme";
@@ -14,6 +16,32 @@ const url =
   "http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D";
 
 describe("router/index", () => {
+  describe("filter", () => {
+    it("returns the given object unmodified if filter is not defined", () => {
+      const data = {
+        a: 1,
+        b: 2
+      };
+      expect(filter(data)).toEqual(data);
+      expect(filter(data, null)).toEqual(data);
+    });
+
+    it("throws an error if filters is defined but not an array", () => {
+      const fn = () => filter({}, "sdd");
+      expect(fn).toThrow();
+    });
+
+    it("returns subset of the given data object based on the filters key", () => {
+      const data = {
+        a: 1,
+        b: 2,
+        c: 3,
+        d: 4
+      };
+      expect(filter(data, ["b", "d"])).toEqual({ b: 2, d: 4 });
+    });
+  });
+
   describe("stringifyStoreDataHelper", () => {
     it("encodes data into uri as JSON encoded storeData query parameter", () => {
       const data = { prop1: "value", prop2: 10 };
@@ -28,6 +56,13 @@ describe("router/index", () => {
       expect(stringifyStoreDataHelper(data, query)).toEqual(
         "foo=bar&storeData=%7B%7D"
       );
+    });
+
+    it("filters data", () => {
+      const data = { prop1: "value", prop2: 10 };
+      const result = stringifyStoreDataHelper(data, "", ["prop2"]);
+      const expected = `storeData=%7B%22prop2%22%3A10%7D`;
+      expect(result).toEqual(expected);
     });
   });
 
@@ -81,6 +116,16 @@ describe("router/index", () => {
 
         expect(store.get("counter")).toEqual({ value: 1 });
         expect(store.get("counter2")).toEqual({ value: 2 });
+      });
+
+      describe("getQuery", () => {
+        it("returns a query string by mergeing the browser query with the store params", () => {
+          const store = createStore();
+          unsubscribe = enableHistory(store, ["counter", "counter2"]);
+          expect(getQuery(store, ["counter2"])).toEqual(
+            "queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter2%22%3A%7B%22value%22%3A2%7D%7D"
+          );
+        });
       });
     });
 
@@ -221,7 +266,7 @@ describe("router/index", () => {
         store.setAll({ counter: { value: 2 }, counter2: { value: 3 } });
       });
 
-      it("changes made directly to the replaceStateMountPoints in the store replace the browser location", done => {
+      it("changes made directly to the replaceStateMountPoints and pushStateMountPoints in the store replace the browser location", done => {
         jest.useFakeTimers();
 
         const oldPush = window.history.pushState;
@@ -295,6 +340,83 @@ describe("router/index", () => {
         store.set("counter2", { value: 3 }); // replaceState
         store.set("counter", { value: 3 }); // pushState
         store.set("counter2", { value: 4 }); // replaceState
+        unsubscribe();
+      });
+
+      it("changes made directly to the replaceStateMountPoints in the store replace the browser location", done => {
+        jest.useFakeTimers();
+
+        const oldPush = window.history.pushState;
+        const oldReplace = window.history.replaceState;
+
+        const pushState = (window.history.pushState = jest.fn(
+          oldPush.bind(window.history)
+        ));
+        const replaceState = (window.history.replaceState = jest.fn(
+          oldReplace.bind(window.history)
+        ));
+
+        const store = createStore();
+        expect(replaceState.mock.calls.length).toEqual(0);
+        unsubscribe = enableHistory(store, [], ["counter2"], {
+          debounceTime: 1000
+        });
+        expect(replaceState.mock.calls.length).toEqual(1);
+
+        const assertions = [
+          () => {
+            expect(store.get("counter")).toEqual({ value: 2 });
+            expect(store.get("counter2")).toEqual({ value: 2 });
+            expect(pushState.mock.calls.length).toEqual(0);
+            expect(replaceState.mock.calls.length).toEqual(1);
+          },
+          () => {
+            expect(store.get("counter")).toEqual({ value: 2 });
+            expect(store.get("counter2")).toEqual({ value: 3 });
+            expect(pushState.mock.calls.length).toEqual(0);
+            expect(replaceState.mock.calls.length).toEqual(1);
+          },
+          () => {
+            expect(store.get("counter")).toEqual({ value: 3 });
+            expect(store.get("counter2")).toEqual({ value: 3 });
+            expect(pushState.mock.calls.length).toEqual(0);
+            expect(replaceState.mock.calls.length).toEqual(1);
+          },
+          () => {
+            expect(store.get("counter")).toEqual({ value: 3 });
+            expect(store.get("counter2")).toEqual({ value: 4 });
+            expect(pushState.mock.calls.length).toEqual(0);
+            expect(replaceState.mock.calls.length).toEqual(1);
+          }
+        ];
+
+        expect(store.get("counter2")).toEqual({ value: 2 });
+
+        store.subscribe(() => {
+          const assert = assertions.shift();
+
+          try {
+            assert();
+          } catch (error) {
+            window.history.pushState = oldPush;
+            window.history.replaceState = oldReplace;
+            done(error);
+          }
+
+          if (assertions.length === 0) {
+            jest.runOnlyPendingTimers();
+            expect(replaceState.mock.calls.length).toEqual(2);
+            window.history.pushState = oldPush;
+            window.history.replaceState = oldReplace;
+            return done();
+          }
+        });
+
+        store.set("counter", { value: 2 }); // simple update
+        store.set("counter2", { value: 3 }); // replaceState
+        store.set("counter", { value: 3 }); // simple update
+        store.set("counter2", { value: 4 }); // replaceState
+        unsubscribe();
       });
     });
 
