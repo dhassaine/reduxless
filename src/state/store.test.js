@@ -59,6 +59,17 @@ describe("Store", () => {
     expect(fn1.mock.calls).to.have.length(1);
   });
 
+  it.only("batch updates defaults to raf", done => {
+    const store = createStore(undefined, undefined, {
+      batchUpdates: true
+    });
+    store.subscribe(() => {
+      expect(store.get("a")).to.equal(1);
+      done();
+    });
+    store.set("a", 1);
+  });
+
   it("lastState can be retrieved from store", () => {
     const store = createStore();
     store.set("a", 1);
