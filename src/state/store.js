@@ -17,17 +17,11 @@ const makeSubject = () => {
 const defaultOptions = {
   throwOnValidation: false,
   throwOnMissingSchemas: false,
-  batchUpdateFn: requestAnimationFrame,
-  batchUpdates: false
+  batchUpdateFn: fn => fn()
 };
 
 export default (incomingStore = {}, validators = {}, options = {}) => {
-  const {
-    throwOnValidation,
-    throwOnMissingSchemas,
-    batchUpdates,
-    batchUpdateFn
-  } = {
+  const { throwOnValidation, throwOnMissingSchemas, batchUpdateFn } = {
     ...defaultOptions,
     ...options
   };
@@ -68,9 +62,7 @@ export default (incomingStore = {}, validators = {}, options = {}) => {
 
   const update = () => {
     updateIntercepts.forEach(fn => fn(mutableStore));
-    if (!batchUpdates) {
-      state$.next();
-    } else if (!batchUpdateInProgress) {
+    if (!batchUpdateInProgress) {
       batchUpdateInProgress = true;
       batchUpdateFn(notify);
     }
