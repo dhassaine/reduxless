@@ -41,6 +41,24 @@ describe("Store", () => {
     expect(fn2.mock.calls).to.have.length(2);
   });
 
+  it("can batch updates and be given a schedule function to control when registered callbacks are executed on state changes", () => {
+    jest.useFakeTimers();
+    const scheduler = fn => setTimeout(fn, 100);
+    const store = createStore(undefined, undefined, {
+      batchUpdates: true,
+      batchUpdateFn: scheduler
+    });
+    const fn1 = jest.fn();
+    store.subscribe(fn1);
+    store.set("a", 1);
+    expect(store.get("a")).to.equal(1);
+    store.set("a", 2);
+    expect(store.get("a")).to.equal(2);
+    expect(fn1.mock.calls).to.have.length(0);
+    jest.runOnlyPendingTimers();
+    expect(fn1.mock.calls).to.have.length(1);
+  });
+
   it("lastState can be retrieved from store", () => {
     const store = createStore();
     store.set("a", 1);

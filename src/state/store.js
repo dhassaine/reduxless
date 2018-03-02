@@ -16,11 +16,12 @@ const makeSubject = () => {
 
 const defaultOptions = {
   throwOnValidation: false,
-  throwOnMissingSchemas: false
+  throwOnMissingSchemas: false,
+  batchUpdateFn: fn => fn()
 };
 
 export default (incomingStore = {}, validators = {}, options = {}) => {
-  const { throwOnValidation, throwOnMissingSchemas } = {
+  const { throwOnValidation, throwOnMissingSchemas, batchUpdateFn } = {
     ...defaultOptions,
     ...options
   };
@@ -28,6 +29,7 @@ export default (incomingStore = {}, validators = {}, options = {}) => {
   const updateIntercepts = [];
   let _lastState = null;
   const store = {};
+  let batchUpdateInProgress = false;
 
   const validatorsMap = new Map(Object.entries(validators));
 
@@ -53,9 +55,17 @@ export default (incomingStore = {}, validators = {}, options = {}) => {
 
   const saveLastState = () => (_lastState = { ...store });
 
+  const notify = () => {
+    batchUpdateInProgress = false;
+    state$.next();
+  };
+
   const update = () => {
     updateIntercepts.forEach(fn => fn(mutableStore));
-    state$.next();
+    if (!batchUpdateInProgress) {
+      batchUpdateInProgress = true;
+      batchUpdateFn(notify);
+    }
   };
 
   const _set = (mountPoint, payload) => {
