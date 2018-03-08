@@ -2,9 +2,7 @@
   "name": "reduxless",
   "version": "1.0.33",
   "description": "",
-  "main": "dist/reduxless.cjs.js",
-  "module": "dist/reduxless.esm.js",
-  "browser": "dist/reduxless.umd.js",
+  "main": "dist/reduxless.js",
   "engines": {
     "node": ">=8"
   },

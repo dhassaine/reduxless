@@ -1,5 +1,5 @@
 import React from "react";
-import { mapper } from "../main";
+import { mapper } from "../containers/container";
 import { updateHistory } from "./index";
 
 const handleClick = (ev, update) => {

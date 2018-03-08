@@ -2,8 +2,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import renderer from "react-test-renderer";
-import createStore from "../state/store";
-import { Container, mapper } from "../main";
+import { Container, mapper, createStore } from "../main";
 
 class ErrorBoundary extends React.Component {
   componentDidCatch(error) {
