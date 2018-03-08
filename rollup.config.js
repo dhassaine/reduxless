@@ -4,39 +4,19 @@ import resolve from "rollup-plugin-node-resolve";
 import commonjs from "rollup-plugin-commonjs";
 import json from "rollup-plugin-json";
 
-export default [
-  {
-    input: "src/main.js",
-    external: [
-      "react",
-      "react-dom",
-      "preact",
-      "inferno-component",
-      "prop-types"
-    ],
-    dest: pkg.browser,
-    format: "umd",
-    moduleName: "reduxless",
-    plugins: [
-      json(),
-      resolve(),
-      commonjs(),
-      babel({
-        exclude: ["node_modules/**"]
-      })
-    ]
+export default {
+  input: "src/main.js",
+  external: ["react", "react-dom", "preact", "inferno-component", "prop-types"],
+  output: {
+    file: "dist/reduxless.js",
+    format: "cjs"
   },
-  {
-    input: "src/main.js",
-    external: ["react", "react-dom", "preact", "inferno-component"],
-    targets: [
-      { dest: pkg.main, format: "cjs" },
-      { dest: pkg.module, format: "es" }
-    ],
-    plugins: [
-      babel({
-        exclude: ["node_modules/**"]
-      })
-    ]
-  }
-];
+  plugins: [
+    json(),
+    resolve(),
+    commonjs(),
+    babel({
+      exclude: ["node_modules/**"]
+    })
+  ]
+};
