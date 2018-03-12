@@ -65,12 +65,12 @@ export const mapper = (propMappings = {}, actionMappings = {}) => Wrapped => {
       const { store, ...ownProps } = this.props; // eslint-disable-line no-unused-vars
 
       const mapped = {};
-      for (let key in propMappings) {
+      for (const key in propMappings) {
         mapped[key] = propMappings[key](this.store, ownProps);
       }
 
       const actions = {};
-      for (let key in actionMappings) {
+      for (const key in actionMappings) {
         actions[key] = (...args) =>
           actionMappings[key](this.store, ownProps, ...args);
       }
