@@ -64,19 +64,16 @@ export const mapper = (propMappings = {}, actionMappings = {}) => Wrapped => {
     render() {
       const { store, ...ownProps } = this.props; // eslint-disable-line no-unused-vars
 
-      const mapped = Object.assign(
-        {},
-        ...Object.entries(propMappings).map(([key, func]) => ({
-          [key]: func(this.store, ownProps)
-        }))
-      );
+      const mapped = {};
+      for (const key in propMappings) {
+        mapped[key] = propMappings[key](this.store, ownProps);
+      }
 
-      const actions = Object.assign(
-        {},
-        ...Object.entries(actionMappings).map(([key, func]) => ({
-          [key]: (...args) => func(this.store, ownProps, ...args)
-        }))
-      );
+      const actions = {};
+      for (const key in actionMappings) {
+        actions[key] = (...args) =>
+          actionMappings[key](this.store, ownProps, ...args);
+      }
 
       return <PerfComponent {...ownProps} {...mapped} {...actions} />;
     }
