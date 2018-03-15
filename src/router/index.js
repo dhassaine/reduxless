@@ -1,7 +1,6 @@
-const storeAndQuery = rawQuery => {
-  const params = decodeURIComponent(rawQuery)
-    .replace(/^\?/, "")
-    .split("&");
+const extractPartsFromPath = path => {
+  const [pathName, query = ""] = path.split("?");
+  const params = decodeURIComponent(query).split("&");
 
   return params.reduce(
     (acc, pair) => {
@@ -10,87 +9,68 @@ const storeAndQuery = rawQuery => {
       else acc.query += (acc.query ? "&" : "") + pair;
       return acc;
     },
-    { query: "", storeData: null }
+    { pathName: pathName || "/", query: "", storeData: null }
   );
 };
 
-export function extractStoreFromLocation(query) {
-  const { storeData } = storeAndQuery(query);
+export function extractStoreFromLocation(path) {
+  const { storeData } = extractPartsFromPath(path);
   if (!storeData) return {};
 
   try {
-    return JSON.parse(decodeURIComponent(storeData));
+    return JSON.parse(storeData);
   } catch (e) {
     return {};
   }
 }
 
+const pathFromWindowLocation = useHash => ({
+  path: useHash
+    ? window.location.hash.replace(/^#/, "/")
+    : window.location.pathname + window.location.search
+});
+
 export function syncLocationToStore(store, mountPoints) {
   store.syncedLocationToStore = true;
-  const parsed = extractStoreFromLocation(window.location.search);
+  const location = pathFromWindowLocation(store.useHash);
+
+  const storeData = extractStoreFromLocation(location.path);
 
   const query = {};
   const mountPointsSet = new Set(mountPoints);
-  Object.entries(parsed).forEach(([key, data]) => {
+  Object.entries(storeData).forEach(([key, data]) => {
     if (mountPointsSet.has(key)) query[key] = data;
   });
-
-  const location = {
-    href: window.location.href,
-    pathname: window.location.pathname,
-    queryString: window.location.search
-  };
 
   store.setAll({ location, ...query });
   store.syncedLocationToStore = false;
 }
 
-export const filter = (data, propsToKeep) => {
-  if (!propsToKeep) return data;
-
-  if (!Array.isArray(propsToKeep))
-    throw Error("filter must be called with (Object, Array)");
-
-  return propsToKeep.reduce((results, key) => {
-    results[key] = data[key];
-    return results;
-  }, {});
-};
-
-export const stringifyStoreDataHelper = (data, query = "", propsToKeep) => {
-  const { query: cleanQuery } = storeAndQuery(query);
+const getUrl = (store, newPath) => {
+  const { pathName, query } = extractPartsFromPath(
+    newPath || store.get("location").path
+  );
 
   const storeDataParam = `storeData=${encodeURIComponent(
-    JSON.stringify(filter(data, propsToKeep))
+    JSON.stringify(store.getAll(store.syncToLocations))
   )}`;
-  return cleanQuery ? `${cleanQuery}&${storeDataParam}` : storeDataParam;
-};
 
-export const getQuery = (store, propsToKeep) => {
-  if (!store.syncToLocations || store.syncToLocations.length == 0) return null;
+  let nextQuery = query;
 
-  return stringifyStoreDataHelper(
-    store.getAll(store.syncToLocations),
-    window.location.search,
-    propsToKeep
-  );
-};
+  const nextPath = newPath || pathName;
 
-const getUrl = (store, newPath) => {
-  const storeLocation = { ...store.get("location") };
-  const query = getQuery(store);
-  const path = newPath || storeLocation.pathname;
-  return query ? `${path}?${query}` : path;
+  if (store.syncToLocations && store.syncToLocations.length > 0) {
+    nextQuery += (query ? "&" : "") + storeDataParam;
+  }
+
+  const url = nextQuery ? `${nextPath}?${nextQuery}` : nextPath;
+  return store.useHash ? url.replace(/^\//, "#") : url;
 };
 
 export function updateHistory(store, newPath) {
   store.syncedLocationToStore = true;
   history.pushState(null, null, getUrl(store, newPath));
-  store.set("location", {
-    href: window.location.href,
-    pathname: window.location.pathname,
-    queryString: window.location.search
-  });
+  store.set("location", pathFromWindowLocation(store.useHash));
 }
 
 const hasChanged = (store, mountPoints) => {
@@ -118,7 +98,8 @@ export const debounce = (time, fn) => {
 };
 
 const defaultOptions = {
-  debounceTime: 500
+  debounceTime: 500,
+  useHash: false
 };
 
 export function enableHistory(
@@ -127,12 +108,13 @@ export function enableHistory(
   replaceStateMountPoints = [],
   options
 ) {
-  const { debounceTime } = {
+  const { debounceTime, useHash } = {
     ...defaultOptions,
     ...(options || {})
   };
 
   store.syncToLocations = pushStateMountPoints.concat(replaceStateMountPoints);
+  store.useHash = useHash;
 
   const update = () => syncLocationToStore(store, pushStateMountPoints);
 
@@ -154,10 +136,6 @@ export function enableHistory(
     }
 
     const url = getUrl(store);
-    const qs = "?" + getQuery(store);
-    const location = s.get("location");
-    location.queryString = qs;
-    s.set("location", location);
 
     if (
       pushStateMountPoints.length > 0 &&

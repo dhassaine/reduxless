@@ -10,9 +10,10 @@ module.exports = {
   entry: path.resolve(__dirname, "./index.js"),
   output: {
     path: path.resolve("dist"),
-    filename: "index_bundle.js"
+    filename: "index_bundle.js",
+    publicPath: "/"
   },
-  devtool: "source-map",
+  devtool: "inline-source-map",
   resolve: {
     extensions: [".jsx", ".js", ".css"]
   },
@@ -40,6 +41,7 @@ module.exports = {
   },
   plugins: [HtmlWebpackPluginConfig],
   devServer: {
-    historyApiFallback: true
+    historyApiFallback: true,
+    contentBase: path.resolve(__dirname, "dist")
   }
 };
