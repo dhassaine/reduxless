@@ -1,6 +1,7 @@
 /* global describe, it, expect, jest, afterEach */
 import React from "react";
 import { Container, createStore, enableHistory, Link, Match } from "../main";
+import { Match as MatchSimple } from "./Match";
 import {
   updateHistory,
   debounce,
@@ -448,6 +449,35 @@ describe("router/index", () => {
         expect(childComponent.mock.calls.length).toEqual(1);
       });
 
+      it("it can accept a function to match the path", () => {
+        const children = <span>hi</span>;
+        const pathMatch = path => path == "page1" || path == "page2";
+
+        expect(
+          mount(
+            <MatchSimple path={pathMatch} currentPath="page1">
+              {children}
+            </MatchSimple>
+          ).html()
+        ).toEqual("<div><span>hi</span></div>");
+
+        expect(
+          mount(
+            <MatchSimple path={pathMatch} currentPath="page2">
+              {children}
+            </MatchSimple>
+          ).html()
+        ).toEqual("<div><span>hi</span></div>");
+
+        expect(
+          mount(
+            <MatchSimple path={pathMatch} currentPath="page3">
+              {children}
+            </MatchSimple>
+          ).html()
+        ).toEqual(null);
+      });
+
       it("does not render children if the window.location path does not match", () => {
         const store = createStore();
         unsubscribe = enableHistory(store);
@@ -507,7 +537,7 @@ describe("router/index", () => {
         );
 
         expect(store.get("location")).toHaveProperty("pathname", "/page1");
-        component.simulate("click");
+        component.find("a").simulate("click");
         expect(store.get("location")).toHaveProperty("pathname", "/page2");
       });
     });

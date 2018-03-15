@@ -1,7 +1,10 @@
+import React from "react";
 import { mapper } from "../containers/container";
 
-const Match = ({ path, currentPath, children }) => {
-  return path == currentPath ? children : null;
+export const Match = ({ path, currentPath, children, ...rest }) => {
+  const predicate =
+    typeof path === "function" ? path(currentPath) : path == currentPath;
+  return predicate ? <div {...rest}>{children}</div> : null;
 };
 
 const propsFromStore = {

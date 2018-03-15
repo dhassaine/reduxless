@@ -1,9 +1,8 @@
 import React from "react";
-import { Match, Link } from "../dist/reduxless";
+import { Match, Link } from "../src/main";
 import Todos from "./features/todos";
 import Counter from "./features/counter";
 import Counter2 from "./features/counter2";
-import Combination from "./features/combination";
 
 export default () => (
   <div>
@@ -15,27 +14,20 @@ export default () => (
         <li>
           <Link href="/counter">Counters</Link>
         </li>
-        <li>
-          <Link href="/both">Both examples</Link>
-        </li>
       </ul>
     </div>
 
-    <div>
-      <Match path="/todos">
-        <Todos />
-      </Match>
+    <Match path="/todos">
+      <Todos />
+    </Match>
 
-      <Match path="/counter">
-        <Counter />
-        <Counter2 />
-      </Match>
-    </div>
+    <Match path="/counter">
+      <Counter />
+      <Counter2 />
+    </Match>
 
-    <div>
-      <Match path="/both">
-        <Combination />
-      </Match>
-    </div>
+    <Match path={() => true}>
+      <footer>Reduxless ftw!</footer>
+    </Match>
   </div>
 );
