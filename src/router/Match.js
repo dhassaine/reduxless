@@ -1,5 +1,6 @@
 import React from "react";
 import { mapper } from "../containers/container";
+import { getPath } from "./selectors";
 
 export const Match = ({ path, currentPath, children, ...rest }) => {
   let matched = false;
@@ -14,7 +15,7 @@ export const Match = ({ path, currentPath, children, ...rest }) => {
 };
 
 const propsFromStore = {
-  currentPath: store => store.get("location").path
+  currentPath: getPath
 };
 
 export default mapper(propsFromStore)(Match);

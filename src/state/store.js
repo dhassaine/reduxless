@@ -60,6 +60,13 @@ export default (incomingStore = {}, validators = {}, options = {}) => {
     state$.next();
   };
 
+  const ping = () => {
+    if (!batchUpdateInProgress) {
+      batchUpdateInProgress = true;
+      batchUpdateFn(notify);
+    }
+  };
+
   const update = () => {
     updateIntercepts.forEach(fn => fn(mutableStore));
     if (!batchUpdateInProgress) {
@@ -125,6 +132,7 @@ export default (incomingStore = {}, validators = {}, options = {}) => {
     getAll,
     withMutations,
     addUpdateIntercept,
+    ping,
     subscribe: func => state$.subscribe(() => func(storeApi))
   };
   Object.defineProperty(storeApi, "lastState", { get: () => _lastState });

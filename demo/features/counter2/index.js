@@ -12,13 +12,19 @@ export const Counter = ({
   onIncrement,
   onDecrement,
   onIncrementAsync
-}) => (
-  <div>
-    <span>Count: {value} times</span> <button onClick={onIncrement}>+</button>{" "}
-    <button onClick={onDecrement}>-</button>{" "}
-    <button onClick={onIncrementAsync}>Increment async</button>
-  </div>
-);
+}) => {
+  console.log("rendering counter 2");
+  return (
+    <div style={{ border: "1px solid black", padding: 10, margin: 10 }}>
+      <p>
+        Hitting the increment/decrement buttons will replace the browser history
+      </p>
+      <span>Count: {value} times</span> <button onClick={onIncrement}>+</button>{" "}
+      <button onClick={onDecrement}>-</button>{" "}
+      <button onClick={onIncrementAsync}>Increment async</button>
+    </div>
+  );
+};
 
 export default mapper(
   {
