@@ -129,7 +129,7 @@ export function enableHistory(
     history.replaceState(null, null, url);
   });
 
-  store.addUpdateIntercept(s => {
+  store.addUpdateIntercept(() => {
     if (store.syncedLocationToStore) {
       store.syncedLocationToStore = false;
       return;
