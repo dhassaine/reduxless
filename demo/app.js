@@ -1,27 +1,24 @@
 import React from "react";
-import { Match, Link } from "../dist/reduxless";
+import { Match, Link } from "../src/main";
 import Todos from "./features/todos";
 import Counter from "./features/counter";
 import Counter2 from "./features/counter2";
-import Combination from "./features/combination";
 
-export default () => (
-  <div>
+export default () => {
+  console.log("App!");
+  return (
     <div>
-      <ul>
-        <li>
-          <Link href="/todos">Todos</Link>
-        </li>
-        <li>
-          <Link href="/counter">Counters</Link>
-        </li>
-        <li>
-          <Link href="/both">Both examples</Link>
-        </li>
-      </ul>
-    </div>
+      <div>
+        <ul>
+          <li>
+            <Link href="/todos">Todos</Link>
+          </li>
+          <li>
+            <Link href="/counter">Counters</Link>
+          </li>
+        </ul>
+      </div>
 
-    <div>
       <Match path="/todos">
         <Todos />
       </Match>
@@ -30,12 +27,10 @@ export default () => (
         <Counter />
         <Counter2 />
       </Match>
-    </div>
 
-    <div>
-      <Match path="/both">
-        <Combination />
+      <Match path={() => true}>
+        <footer>Reduxless ftw!</footer>
       </Match>
     </div>
-  </div>
-);
+  );
+};

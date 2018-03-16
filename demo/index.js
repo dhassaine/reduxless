@@ -21,7 +21,9 @@ const store = createStore(
     [counterMountPoint2]: counterValidator2
   }
 );
-enableHistory(store, [counterMountPoint], [counterMountPoint2]);
+enableHistory(store, [counterMountPoint], [counterMountPoint2], {
+  useHash: false
+});
 ReactDOM.render(
   <Container store={store}>
     <App />

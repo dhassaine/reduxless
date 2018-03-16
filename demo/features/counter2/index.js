@@ -1,5 +1,5 @@
 import React from "react";
-import { mapper } from "../../../dist/reduxless";
+import { mapper } from "../../../src/main";
 import {
   selectCounter,
   incrementCounter,

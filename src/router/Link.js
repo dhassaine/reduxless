@@ -7,8 +7,8 @@ const handleClick = (ev, update) => {
   update();
 };
 
-const Link = ({ update, href, children }) => (
-  <a href={href} onClick={ev => handleClick(ev, update)}>
+const Link = ({ update, href, children, ...rest }) => (
+  <a href={href} onClick={ev => handleClick(ev, update)} {...rest}>
     {children}
   </a>
 );

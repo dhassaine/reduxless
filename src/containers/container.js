@@ -14,8 +14,8 @@ export class Container extends React.Component {
   }
 
   render() {
-    const { children, store } = this.props; // eslint-disable-line no-unused-vars
-    return children || null;
+    const { children, store, ...rest } = this.props; // eslint-disable-line no-unused-vars
+    return <div {...rest}>{children}</div>;
   }
 }
 
