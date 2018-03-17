@@ -2,7 +2,8 @@
 import React from "react";
 import { Container, createStore, enableHistory, Link, Match } from "../main";
 import { Match as MatchSimple } from "./Match";
-import { updateHistory, debounce, extractStoreFromLocation } from "./index";
+import { debounce } from "./index";
+import { navigate } from "./actions";
 import renderer from "react-test-renderer";
 import { mount } from "enzyme";
 
@@ -10,18 +11,6 @@ const url =
   "http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D";
 
 describe("router/index", () => {
-  describe("extractStoreFromLocation", () => {
-    it("extracts storeData parameter from query string", () => {
-      const query = `?storeData={"prop":2}&foo=bar`;
-      expect(extractStoreFromLocation(query)).toEqual({ prop: 2 });
-    });
-
-    it("returns an empty object if the no store is found or its baddly formed", () => {
-      expect(extractStoreFromLocation("")).toEqual({});
-      expect(extractStoreFromLocation(`storeData={"`)).toEqual({});
-    });
-  });
-
   describe("enableHistory", () => {
     describe("on initial page load", () => {
       let unsubscribe = null;
@@ -29,35 +18,6 @@ describe("router/index", () => {
       afterEach(() => {
         if (unsubscribe) unsubscribe();
         history.pushState(null, null, url);
-      });
-
-      it("syncs the url to the store", () => {
-        const store = createStore();
-        unsubscribe = enableHistory(store);
-        expect(store.get("location")).toHaveProperty(
-          "path",
-          "/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D"
-        );
-      });
-
-      it("syncs the pathname to the store", () => {
-        const store = createStore();
-        unsubscribe = enableHistory(store);
-
-        expect(store.get("location")).toHaveProperty(
-          "path",
-          "/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D"
-        );
-      });
-
-      it("syncs the query string to the store", () => {
-        const store = createStore();
-        unsubscribe = enableHistory(store);
-
-        expect(store.get("location")).toHaveProperty(
-          "path",
-          "/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D"
-        );
       });
 
       it("syncs storeData from the query parameters to the store", () => {
@@ -77,56 +37,7 @@ describe("router/index", () => {
         history.pushState(null, null, url);
       });
 
-      it("syncs browser location changes to the store", done => {
-        const store = createStore();
-        unsubscribe = enableHistory(store);
-        const assertions = [
-          () => {
-            expect(store.get("location")).toHaveProperty(
-              "path",
-              "/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D"
-            );
-          },
-
-          () => {
-            expect(store.get("location")).toHaveProperty("path", "/page2");
-          },
-
-          () => {
-            expect(store.get("location")).toHaveProperty(
-              "path",
-              "/page3?queryParam=queryValue&a[]=1&a[]=2"
-            );
-          }
-        ];
-
-        store.subscribe(() => {
-          const assert = assertions.pop();
-
-          try {
-            assert();
-          } catch (error) {
-            done(error);
-          }
-
-          if (assertions.length === 0) {
-            return done();
-          }
-
-          history.back();
-        });
-
-        history.pushState(null, null, "/page2");
-        history.pushState(
-          null,
-          null,
-          "/page3?queryParam=queryValue&a[]=1&a[]=2"
-        );
-        history.pushState(null, null, "/ignored");
-        history.back();
-      });
-
-      it("syncs registered storeData from location to the store", done => {
+      it("syncs registered storeData from window.location to the store", done => {
         const store = createStore();
         unsubscribe = enableHistory(store, ["counter", "counter2"]);
         const assertions = [
@@ -164,38 +75,26 @@ describe("router/index", () => {
         history.back();
       });
 
-      it("changes made directly to the registered sync data in the store automatically update the browser location and store location", done => {
+      it("changes made directly to the registered sync data in the store automatically update the browser location", done => {
+        jest.useFakeTimers();
         const store = createStore();
-        unsubscribe = enableHistory(store, ["counter", "counter2"]);
-
-        const assertions = [
-          () => {
-            expect(store.get("counter")).toEqual({ value: 2 });
-            expect(store.get("counter2")).toEqual({ value: 3 });
-            expect(store.get("location")).toHaveProperty(
-              "path",
-              "/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D"
-            );
-          }
-        ];
-
-        store.subscribe(() => {
-          const assert = assertions.pop();
-
-          try {
-            assert();
-          } catch (error) {
-            done(error);
-          }
-
-          if (assertions.length === 0) {
-            return done();
-          }
+        enableHistory(store, ["counter", "counter2"], {
+          debounceTime: 1000
         });
 
         expect(store.get("counter")).toEqual({ value: 1 });
         expect(store.get("counter2")).toEqual({ value: 2 });
         store.setAll({ counter: { value: 2 }, counter2: { value: 3 } });
+
+        setTimeout(() => {
+          expect(window.location).toHaveProperty(
+            "search",
+            "?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A2%7D%2C%22counter2%22%3A%7B%22value%22%3A3%7D%7D"
+          );
+          done();
+        });
+
+        jest.runOnlyPendingTimers();
       });
 
       it("changes made directly to the replaceStateMountPoints and pushStateMountPoints in the store replace the browser location", done => {
@@ -250,21 +149,24 @@ describe("router/index", () => {
 
         store.subscribe(() => {
           const assert = assertions.shift();
-
           try {
             assert();
           } catch (error) {
             window.history.pushState = oldPush;
             window.history.replaceState = oldReplace;
+            unsubscribe();
             done(error);
           }
 
           if (assertions.length === 0) {
+            setTimeout(() => {
+              expect(replaceState.mock.calls.length).toEqual(2);
+              window.history.pushState = oldPush;
+              window.history.replaceState = oldReplace;
+              unsubscribe();
+              done();
+            }, 2000);
             jest.runOnlyPendingTimers();
-            expect(replaceState.mock.calls.length).toEqual(2);
-            window.history.pushState = oldPush;
-            window.history.replaceState = oldReplace;
-            return done();
           }
         });
 
@@ -272,7 +174,6 @@ describe("router/index", () => {
         store.set("counter2", { value: 3 }); // replaceState
         store.set("counter", { value: 3 }); // pushState
         store.set("counter2", { value: 4 }); // replaceState
-        unsubscribe();
       });
 
       it("changes made directly to the replaceStateMountPoints in the store replace the browser location", done => {
@@ -439,8 +340,7 @@ describe("router/index", () => {
           </Container>
         );
         expect(childComponent.mock.calls.length).toEqual(0);
-        updateHistory(store, "/page2");
-        expect(location.search).toEqual("");
+        navigate(store, "/page2");
         expect(childComponent.mock.calls.length).toEqual(1);
       });
     });
@@ -467,9 +367,9 @@ describe("router/index", () => {
           </Container>
         );
 
-        expect(store.get("location").path.startsWith("/page1")).toBe(true);
+        expect(window.location.pathname.startsWith("/page1")).toBe(true);
         component.find("a").simulate("click");
-        expect(store.get("location").path.startsWith("/page2")).toBe(true);
+        expect(window.location.pathname.startsWith("/page2")).toBe(true);
       });
     });
 

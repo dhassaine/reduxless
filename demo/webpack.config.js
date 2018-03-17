@@ -13,7 +13,7 @@ module.exports = {
     filename: "index_bundle.js",
     publicPath: "/"
   },
-  devtool: "inline-source-map",
+  devtool: "source-map",
   resolve: {
     extensions: [".jsx", ".js", ".css"]
   },

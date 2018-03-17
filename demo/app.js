@@ -5,7 +5,7 @@ import Counter from "./features/counter";
 import Counter2 from "./features/counter2";
 
 export default () => {
-  console.log("App!");
+  console.log("Rendering App!");
   return (
     <div>
       <div>

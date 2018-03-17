@@ -12,7 +12,10 @@
             "Edge >= 15"
           ]
         },
-        "modules": false
+        "debug": false,
+        "loose": true,
+        "modules": false,
+        "useBuiltIns": true
       }
     ],
     "react",

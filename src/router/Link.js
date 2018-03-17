@@ -1,6 +1,6 @@
 import React from "react";
 import { mapper } from "../containers/container";
-import { updateHistory } from "./index";
+import { navigate } from "./actions";
 
 const handleClick = (ev, update) => {
   ev.preventDefault();
@@ -14,7 +14,7 @@ const Link = ({ update, href, children, ...rest }) => (
 );
 
 const actionsFromStore = {
-  update: (store, { href }) => updateHistory(store, href)
+  update: (store, { href }) => navigate(store, href)
 };
 
 export default mapper({}, actionsFromStore)(Link);
