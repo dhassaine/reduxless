@@ -1,6 +1,5 @@
 import babel from "rollup-plugin-babel";
 import resolve from "rollup-plugin-node-resolve";
-import commonjs from "rollup-plugin-commonjs";
 import json from "rollup-plugin-json";
 
 export default {
@@ -8,14 +7,14 @@ export default {
   external: ["react", "react-dom", "preact", "inferno-component", "prop-types"],
   output: {
     file: "dist/reduxless.js",
-    format: "cjs"
+    format: "es"
   },
   plugins: [
     json(),
     resolve(),
-    commonjs(),
     babel({
-      exclude: ["node_modules/**"]
+      exclude: ["node_modules/**"],
+      plugins: ["external-helpers"]
     })
   ]
 };
