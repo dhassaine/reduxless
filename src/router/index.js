@@ -43,11 +43,15 @@ export function enableHistory(
   store.syncToLocations = pushStateMountPoints.concat(replaceStateMountPoints);
   store.useHash = useHash;
 
-  const update = () => readUrl(store, pushStateMountPoints);
+  const update = mountpoints => {
+    store.syncedLocationToStore = true;
+    readUrl(store, mountpoints);
+    store.syncedLocationToStore = false;
+  };
 
-  window.addEventListener("popstate", update);
+  window.addEventListener("popstate", () => update(pushStateMountPoints));
 
-  readUrl(store, store.syncToLocations);
+  update(store.syncToLocations);
 
   if (store.syncToLocations.length > 0) replaceHistory(store);
 

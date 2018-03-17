@@ -69,10 +69,7 @@ export default (incomingStore = {}, validators = {}, options = {}) => {
 
   const update = () => {
     updateIntercepts.forEach(fn => fn(mutableStore));
-    if (!batchUpdateInProgress) {
-      batchUpdateInProgress = true;
-      batchUpdateFn(notify);
-    }
+    ping();
   };
 
   const _set = (mountPoint, payload) => {

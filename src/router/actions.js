@@ -20,10 +20,7 @@ const generateNewUrl = (store, newPath) => {
 };
 
 export const readUrl = (store, mountPoints) => {
-  store.syncedLocationToStore = true;
-
   const { storeData } = extractPartsFromPath(store);
-
   const filteredStoreData = {};
   const mountPointsSet = new Set(mountPoints);
   Object.entries(storeData).forEach(([key, data]) => {
@@ -31,7 +28,6 @@ export const readUrl = (store, mountPoints) => {
   });
 
   store.setAll(filteredStoreData);
-  store.syncedLocationToStore = false;
 };
 
 export const navigate = (store, newPath) => {
