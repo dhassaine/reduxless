@@ -1,6 +1,4 @@
 const parseStore = storeData => {
-  if (!storeData) return {};
-
   try {
     return JSON.parse(storeData);
   } catch (e) {
@@ -27,6 +25,6 @@ export const extractPartsFromPath = store => {
       else acc.query += (acc.query ? "&" : "") + pair;
       return acc;
     },
-    { pathName: pathName || "/", query: "", storeData: {} }
+    { pathName: pathName, query: "", storeData: {} }
   );
 };

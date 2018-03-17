@@ -11,20 +11,6 @@ const url =
   "http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D";
 
 describe("router/index", () => {
-  /*
-  describe("extractStoreFromLocation", () => {
-    it("extracts storeData parameter from query string", () => {
-      const query = `?storeData={"prop":2}&foo=bar`;
-      expect(extractStoreFromLocation(query)).toEqual({ prop: 2 });
-    });
-
-    it("returns an empty object if the no store is found or its baddly formed", () => {
-      expect(extractStoreFromLocation("")).toEqual({});
-      expect(extractStoreFromLocation(`storeData={"`)).toEqual({});
-    });
-  });
-  */
-
   describe("enableHistory", () => {
     describe("on initial page load", () => {
       let unsubscribe = null;
