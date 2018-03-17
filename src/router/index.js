@@ -49,7 +49,9 @@ export function enableHistory(
     store.syncedLocationToStore = false;
   };
 
-  window.addEventListener("popstate", () => update(pushStateMountPoints));
+  const popstate = () => update(pushStateMountPoints);
+
+  window.addEventListener("popstate", popstate);
 
   update(store.syncToLocations);
 
@@ -78,7 +80,7 @@ export function enableHistory(
       debouncedReplaceState();
     }
   });
-  return () => window.removeEventListener("popstate", update);
+  return () => window.removeEventListener("popstate", popstate);
 }
 
 export { default as Match } from "./Match";
