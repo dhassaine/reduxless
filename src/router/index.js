@@ -1,4 +1,4 @@
-import { readUrl, pushHistory, replaceHistory } from "./actions";
+import { updateStateFromUrl, pushHistory, replaceHistory } from "./actions";
 
 export const debounce = (time, fn) => {
   let timer = null;
@@ -45,7 +45,7 @@ export function enableHistory(
 
   const update = mountpoints => {
     store.syncedLocationToStore = true;
-    readUrl(store, mountpoints);
+    updateStateFromUrl(store, mountpoints);
     store.syncedLocationToStore = false;
   };
 

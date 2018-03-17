@@ -19,7 +19,7 @@ const generateNewUrl = (store, newPath) => {
   return store.useHash ? url.replace(/^\//, "#") : url;
 };
 
-export const readUrl = (store, mountPoints) => {
+export const updateStateFromUrl = (store, mountPoints) => {
   const { storeData } = extractPartsFromPath(store);
   const filteredStoreData = {};
   const mountPointsSet = new Set(mountPoints);
