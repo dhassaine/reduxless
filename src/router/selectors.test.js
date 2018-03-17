@@ -46,5 +46,16 @@ describe("router/selectors", () => {
         storeData: {}
       });
     });
+
+    it("pathName defaults to / when useHash is true", () => {
+      history.pushState(null, null, "http://example.com");
+      const store = { useHash: true };
+      const results = extractPartsFromPath(store);
+      expect(results).toEqual({
+        pathName: "/",
+        query: "",
+        storeData: {}
+      });
+    });
   });
 });

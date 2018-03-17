@@ -33,11 +33,11 @@ export function enableHistory(
   store,
   pushStateMountPoints = [],
   replaceStateMountPoints = [],
-  options
+  options = {}
 ) {
   const { debounceTime, useHash } = {
     ...defaultOptions,
-    ...(options || {})
+    ...options
   };
 
   store.syncToLocations = pushStateMountPoints.concat(replaceStateMountPoints);

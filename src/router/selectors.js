@@ -25,6 +25,6 @@ export const extractPartsFromPath = store => {
       else acc.query += (acc.query ? "&" : "") + pair;
       return acc;
     },
-    { pathName: pathName, query: "", storeData: {} }
+    { pathName: pathName || "/", query: "", storeData: {} }
   );
 };
