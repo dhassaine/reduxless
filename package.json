@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/reduxless.js",
   "minified:main": "dist/reduxless.min.js",
-  "module": "dist/reduxless.es.mjs",
+  "module": "dist/reduxless.esm.js",
   "engines": {
     "node": ">=8"
   },
