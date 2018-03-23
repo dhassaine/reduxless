@@ -6,7 +6,7 @@
 
 
 ## Introduction
-Reduxless simplifies some of the complexity of [Redux](https://github.com/reactjs/redux) and reduces the amount of necessary boiler plate code. This is mainly achieved by removing the need for an intermediate dispatch stage, followed by a reduction. Reduxless combines the roles of reducers and actions into one operation: the two key operations are actions and selectors. We lose the ability to perform time travelling on our state, but the advantages of simpler code can outweigh that benefit. The library ships with React bindings and a simple router.
+Reduxless simplifies some of the complexity of [Redux](https://github.com/reactjs/redux) and reduces the amount of necessary boiler plate code. This is mainly achieved by removing the need for an intermediate dispatch stage, followed by a reduction. Reduxless combines the roles of reducers and actions into one operation: the two key operations are actions and selectors. We lose the ability to perform time travelling on our state, but the advantages of simpler code can out weigh that benefit. The library ships with React bindings and a simple router.
 
 ## Installation
 
@@ -36,7 +36,7 @@ const MappedComponent = mapper(
   {
     // selectors
     name: store => store.get('name')
-  }, 
+  },
   {
     // actions
     updateName: (store, ownProps, newName) => store.set('name', newName)
@@ -49,6 +49,16 @@ render(
   </Container>
 )
 ```
+
+The `Container` component provides the `store` to all of it's nested children components via `Context`. Its use is optional and you can pass the store down manually if you prefer, for example:
+
+```js
+render(
+  <MappedComponent store={store}/>
+)
+```
+
+The `mapper` function is a performance convenience helper. It uses the given `selectors` to determine whether the mapped component should be rendered by doing shallow ref comparisons. This means it is important to create new objects when updating the store; otherwise, your components won't be updated. The actions are automatically injected with the `store` and the mapped component's props.
 
 ## Routing and browser history syncing
 Reduxless offers a very simple mechanism for both routing (i.e. which components to render based on the URL) and keeping the browser URL and store state in sync. You can choose which properties in the store will trigger a pushState event and also whether the popState event from the browser history navigation will update the store.
@@ -97,14 +107,15 @@ const app = () => (
 );
 ```
 
-For more configuration options, including how to validate the store data incoming for the URL and also controlling one-way or two-way binding between the store state and browser URL, see the detailed documentation section.
+The documentation section below describes the API in more detail, including configuration details for using hash; how to validate the data from the URL; and controlling one-way or two-way binding between the store state and browser URL.
 ## Documentation
 
 - API
   - [`createStore([initialState])`](https://dhassaine.github.io/reduxless/store)
   - [`<Container>, mapper()`](https://dhassaine.github.io/reduxless/container-mapper) for the react bindings.
-  - [`enableHistory()`](https://dhassaine.github.io/reduxless/enableHistory) for the browser history sync functionality.
+  - [`enableHistory()`](https://dhassaine.github.io/reduxless/enable-history) for the browser history sync functionality.
   - [`<Match>, <Link>`](https://dhassaine.github.io/reduxless/router) for the navigational components.
+  - [`selectorMemoizer(selectors, projectionFunction)`](https://dhassaine.github.io/reduxless/selector-memoizer) for improving rendering performance by wrapping your selectors with a memoizer.
 
 ## Change Log
 This project follows [semantic versioning](http://semver.org/)
