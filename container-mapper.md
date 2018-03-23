@@ -7,7 +7,7 @@ Here's an example using [Preact](https://preactjs.com/):
 
 ## Example usage
 
-```js
+```jsx
 import { h, render } from 'preact';
 import { createStore, Container } from 'reduxless';
 

@@ -18,7 +18,7 @@ npm install --save reduxless
 ## The general gist
 The following snippet of code demonstrates how reduxless can be used with a React-like library -- in this case [Preact](https://preactjs.com/):
 
-```js
+```jsx
 import { h, render } from 'preact';
 import { createStore, Container, mapper } from 'reduxless';
 
@@ -52,7 +52,7 @@ render(
 
 The `Container` component provides the `store` to all of it's nested children components via `Context`. Its use is optional and you can pass the store down manually if you prefer, for example:
 
-```js
+```jsx
 render(
   <MappedComponent store={store}/>
 )
@@ -75,7 +75,7 @@ enableHistory(
 ```
 
 Routing is as straight forward as:
-```js
+```jsx
 import {h} from "preact";
 import { Match, Link } from "reduxless";
 
