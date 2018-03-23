@@ -34,5 +34,5 @@ Instead of directly receiving the `store` via context and manually subscribing t
 
 Functions in `propsFromStore` are passed the store, the wrapped component's props and the remaining arguments during invocation.
  
-The component returned by `mapper` will only render it's children after the store has changed if the relevant props have also changed. It's also a good idea to wrap any computationally expensive operations with the [`selectorMemoizer()`](https://dhassaine.github.io/reduxless/selector-memoizer.md) function. Alternatively you can use a dedicated memoization library like [reselect](https://github.com/reactjs/reselect). 
+The component returned by `mapper` will only render it's children after the store has changed if the relevant props have also changed. It's also a good idea to wrap any computationally expensive operations with the [`selectorMemoizer()`](https://dhassaine.github.io/reduxless/selector-memoizer.md) function.
 

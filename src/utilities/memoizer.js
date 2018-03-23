@@ -1,26 +1,30 @@
-const selectorMemoizer = (selectors, fn) => {
+function selectorMemoizer(...selectors) {
+  const fn = selectors.pop();
   let lastResult = null;
-  let lastProps = {};
+  let lastProps = null;
 
   return store => {
-    const props = Object.entries(selectors).reduce(
-      (results, [key, selector]) => {
-        results[key] = selector(store);
-        return results;
-      },
-      {}
-    );
+    let hasPropsChanged = false;
 
-    const hasPropsChanged = Object.entries(props).some(
-      ([key, prop]) => lastProps[key] !== prop
-    );
+    if (lastProps === null) {
+      hasPropsChanged = true;
+      lastProps = [];
+      for (let i = 0; i < selectors.length; i++) {
+        lastProps.push(selectors[i](store));
+      }
+    } else {
+      for (let i = 0; i < selectors.length; i++) {
+        const prop = selectors[i](store);
+        if (prop !== lastProps[i]) hasPropsChanged = true;
+        lastProps[i] = prop;
+      }
+    }
 
     if (!hasPropsChanged) return lastResult;
 
-    lastProps = props;
-    lastResult = fn(props);
+    lastResult = fn.apply(null, lastProps);
     return lastResult;
   };
-};
+}
 
 export default selectorMemoizer;
