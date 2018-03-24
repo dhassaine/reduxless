@@ -1,16 +1,22 @@
 const Benchmark = require("benchmark");
 
 const suite = new Benchmark.Suite();
-const reduxTest = require("./redux");
-const reduxlessTest = require("./reduxless");
+const reduxTests = require("./redux");
+const reduxlessTests = require("./reduxless");
 
 // add tests
 suite
-  .add("redux", function() {
-    reduxTest();
+  .add("redux-action", function() {
+    reduxTests.actionTest();
   })
-  .add("reduxless", function() {
-    reduxlessTest();
+  .add("redux-action-and-selectors", function() {
+    reduxTests.actionAndSelectorTest();
+  })
+  .add("reduxless-action", function() {
+    reduxlessTests.actionTest();
+  })
+  .add("reduxless-action-and-selectors", function() {
+    reduxlessTests.actionAndSelectorTest();
   })
 
   // add listeners

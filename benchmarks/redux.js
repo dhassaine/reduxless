@@ -1,7 +1,13 @@
 const redux = require("redux");
+const STATE_SIZE = 1000;
 
 const ActionType1 = "ADD1";
-const reducer1 = (state = {}, action) => {
+
+const defaultState = {
+  value1: 1,
+  value2: 2
+};
+const reducer1 = (state = defaultState, action) => {
   switch (action.type) {
     case ActionType1:
       return {
@@ -15,7 +21,7 @@ const reducer1 = (state = {}, action) => {
 };
 
 const ActionType2 = "ADD2";
-const makeReducer2 = () => (state = {}, action) => {
+const makeReducer2 = () => (state = defaultState, action) => {
   switch (action.type) {
     case ActionType2:
       return {
@@ -29,7 +35,7 @@ const makeReducer2 = () => (state = {}, action) => {
 };
 
 const dummyReducers = {};
-for (let i = 2; i <= 100; i++) {
+for (let i = 2; i <= STATE_SIZE; i++) {
   dummyReducers[`mount${i}`] = makeReducer2();
 }
 
@@ -44,13 +50,13 @@ const setAction1 = (value1, value2) => ({
 });
 
 const selectors = [];
-for (let i = 1; i <= 100; i++) {
-  selectors.push(
-    state => state[`mount${i}`].value1 * state[`mount${i}`].value2
-  );
+for (let i = 1; i <= STATE_SIZE; i++) {
+  selectors.push(state => state[`mount${i}`].value1);
 }
 
-module.exports = () => {
+exports.actionTest = () => store.dispatch(setAction1(2, 3));
+
+exports.actionAndSelectorTest = () => {
   store.dispatch(setAction1(2, 3));
-  //selectors.forEach(selector => selector(store.getState()));
+  selectors.forEach(selector => selector(store.getState()));
 };
