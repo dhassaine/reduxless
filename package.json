@@ -1,6 +1,6 @@
 {
   "name": "reduxless",
-  "version": "1.0.42",
+  "version": "2.0.0",
   "description": "",
   "main": "dist/reduxless.js",
   "minified:main": "dist/reduxless.min.js",

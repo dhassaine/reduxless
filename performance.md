@@ -4,15 +4,15 @@
 
 ### Invoking/dispatching an action
 
-no reducers/mount points | redux ops/sec | reduxless ops/sec
+no of reducers/mount points | redux ops/sec | reduxless ops/sec
 --- | --- | ---
 10 | 405,947 | 9,531,412
 100 | 43,863 | 9,610,732
 1000 | 1,439 | 9,563,089
 
-### Invoking/dispatching an action followed by running all selectors
+### Invoking/dispatching an action followed by running all the selectors
 
-no reducers/mount points | redux ops/sec | reduxless ops/sec
+no of reducers/mount points | redux ops/sec | reduxless ops/sec
 --- | --- | ---
 10 | 210,653 | 434,939
 100 | 19,174 | 37,198
