@@ -109,7 +109,7 @@ const app = () => (
     <Match path="/counter">
       <Counter />
     </Match>
-  </div>
+  </Container>
 );
 ```
 
