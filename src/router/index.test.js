@@ -78,7 +78,7 @@ describe("router/index", () => {
       it("changes made directly to the registered sync data in the store automatically update the browser location", done => {
         jest.useFakeTimers();
         const store = createStore();
-        enableHistory(store, ["counter", "counter2"], {
+        enableHistory(store, ["counter", "counter2"], [], {
           debounceTime: 1000
         });
 

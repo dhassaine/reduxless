@@ -58,23 +58,6 @@ describe("Store", () => {
     expect(fn1.mock.calls).to.have.length(1);
   });
 
-  it("lastState can be retrieved from store", () => {
-    const store = createStore();
-    store.set("a", 1);
-    store.set("a", 2);
-    expect(store.lastState).to.deep.equal({ a: 1 });
-  });
-
-  it("lastState can be retrieved from a mutable store", () => {
-    const store = createStore();
-    store.set("a", 1);
-
-    store.withMutations(s => {
-      s.set("a", 2);
-      expect(s.lastState).to.deep.equal({ a: 1 });
-    });
-  });
-
   it("allows multiple mount points to be updated by using setAll", () => {
     const store = createStore();
     const fn1 = jest.fn();
