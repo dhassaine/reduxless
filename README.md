@@ -121,7 +121,7 @@ The documentation section below describes the API in more detail, including conf
   - [`selectorMemoizer(selectors, projectionFunction)`](https://dhassaine.github.io/reduxless/selector-memoizer) for improving rendering performance by wrapping your selectors with a memoizer.
 
 # Differences to Redux
-The state is not one nested object but multiple objects. This means libraries like reselect won't work as expected. Redux is expected to be given a new object for each reducer. Libraries like immutable can help with making modifications to the state as efficient as possible, but ultimately recreating an object with many properties just to get a new reference is expensive.
+The state is not one nested object but multiple objects. This means libraries like reselect won't work as expected. Redux is expected to be given a new object for each reducer. Libraries like immutable can help with making modifications to the state as efficient as possible, but ultimately recreating an object with many properties just to get a new reference is expensive. Another bottleneck with Redux is that every reducer has to run when an action is dispatched. See [perfomance analysis](https://dhassaine.github.io/reduxless/performance.md) for further details.
 ## Change Log
 This project follows [semantic versioning](http://semver.org/)
 ## LICENSE
