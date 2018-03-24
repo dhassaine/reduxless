@@ -1,5 +1,4 @@
 const reduxless = require("../dist/reduxless");
-require("jsdom-global")();
 
 const STATE_SIZE = 1000;
 
@@ -12,9 +11,13 @@ for (let i = 1; i <= STATE_SIZE; i++) {
 }
 
 const store = reduxless.createStore(initialState);
+
+/*
+//require("jsdom-global")();
 reduxless.enableHistory(store, [], [], {
   useHash: false
 });
+*/
 
 const setAction1 = (store, value1, value2) =>
   store.set("mount1", {

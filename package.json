@@ -21,7 +21,8 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "bump-version": "bin/bump-version.sh",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "bench": "node benchmarks/redux_vs_reduxless.js && node benchmarks/bench.js"
   },
   "files": [
     "dist"
