@@ -78,7 +78,7 @@ describe("router/index", () => {
       it("changes made directly to the registered sync data in the store automatically update the browser location", done => {
         jest.useFakeTimers();
         const store = createStore();
-        enableHistory(store, ["counter", "counter2"], {
+        enableHistory(store, ["counter", "counter2"], [], {
           debounceTime: 1000
         });
 
@@ -342,6 +342,41 @@ describe("router/index", () => {
         expect(childComponent.mock.calls.length).toEqual(0);
         navigate(store, "/page2");
         expect(childComponent.mock.calls.length).toEqual(1);
+      });
+    });
+
+    describe("navigate", () => {
+      let unsubscribe = null;
+
+      afterEach(() => {
+        if (unsubscribe) unsubscribe();
+        history.pushState(null, null, url);
+      });
+
+      it("pushes the path to the browser state", () => {
+        history.pushState(null, null, "http://example.com/page1");
+        const store = createStore();
+        unsubscribe = enableHistory(store);
+        navigate(store, "page2");
+        expect(window.location.href).toEqual("http://example.com/page2");
+      });
+
+      it("maintains the store data", () => {
+        history.pushState(null, null, "http://example.com/page1");
+        const store = createStore({ counter: { value: 1 } });
+        unsubscribe = enableHistory(store, ["counter"]);
+        navigate(store, "page2");
+        expect(window.location.href).toEqual(
+          "http://example.com/page2?storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%7D"
+        );
+      });
+
+      it("pushes the path to the browser state if hash is being used", () => {
+        history.pushState(null, null, "http://example.com/page1");
+        const store = createStore();
+        unsubscribe = enableHistory(store, [], [], { useHash: true });
+        navigate(store, "page2");
+        expect(window.location.href).toEqual("http://example.com/page2");
       });
     });
 

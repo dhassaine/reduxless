@@ -16,14 +16,6 @@ export const debounce = (time, fn) => {
   return debouncer;
 };
 
-const hasChanged = (store, mountPoints) => {
-  const props = store.getAll(mountPoints);
-
-  return mountPoints.some(
-    mountPoint => props[mountPoint] !== store.lastState[mountPoint]
-  );
-};
-
 const defaultOptions = {
   debounceTime: 500,
   useHash: false
@@ -61,22 +53,42 @@ export function enableHistory(
     replaceHistory(store);
   });
 
+  const lastPushState = [];
+  const lastReplaceState = [];
+  pushStateMountPoints.forEach(mountPoint =>
+    lastPushState.push(store.get(mountPoint))
+  );
+  replaceStateMountPoints.forEach(mountPoint =>
+    lastPushState.push(store.get(mountPoint))
+  );
+
   store.addUpdateIntercept(() => {
     if (store.syncedLocationToStore) {
       store.syncedLocationToStore = false;
       return;
     }
 
-    if (
-      pushStateMountPoints.length > 0 &&
-      hasChanged(store, pushStateMountPoints)
-    ) {
+    let shouldPushState = false;
+    let shouldReplaceState = false;
+
+    pushStateMountPoints.forEach((mountPoint, idx) => {
+      const nextProp = store.get(mountPoint);
+      if (lastPushState[idx] !== nextProp) shouldPushState = true;
+
+      lastPushState[idx] = nextProp;
+    });
+
+    replaceStateMountPoints.forEach((mountPoint, idx) => {
+      const nextProp = store.get(mountPoint);
+      if (lastReplaceState[idx] !== nextProp) shouldReplaceState = true;
+
+      lastReplaceState[idx] = nextProp;
+    });
+
+    if (shouldPushState) {
       pushHistory(store);
       debouncedReplaceState.cancel();
-    } else if (
-      replaceStateMountPoints.length > 0 &&
-      hasChanged(store, replaceStateMountPoints)
-    ) {
+    } else if (shouldReplaceState) {
       debouncedReplaceState();
     }
   });
