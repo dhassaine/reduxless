@@ -1,5 +1,5 @@
 import React from "react";
-import { Match, Link } from "../src/main";
+import { Match, Link } from "../src/react";
 import Todos from "./features/todos";
 import Counter from "./features/counter";
 import Counter2 from "./features/counter2";

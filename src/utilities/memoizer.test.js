@@ -1,6 +1,6 @@
 /* global describe, it, jest */
 import { expect } from "chai";
-import { createStore } from "../main";
+import createStore from "../state/store";
 import selectorMemoizer from "./memoizer";
 
 describe("selectorMemoizer", () => {

@@ -1,81 +1,87 @@
-import React from "react";
-import PropTypes from "prop-types";
-
-export class Container extends React.Component {
-  getChildContext() {
-    return {
-      store: this.props.store
+/* @jsx h */
+export const _Container = vdom => {
+  const h = vdom.h || vdom.createElement;
+  return class Container extends vdom.Component {
+    static childContextTypes = {
+      store: () => {}
     };
-  }
 
-  constructor(props) {
-    super(props);
-    if (!props.store) throw new Error("Store not found");
-  }
+    getChildContext() {
+      return {
+        store: this.props.store
+      };
+    }
 
-  render() {
-    const { children, store, ...rest } = this.props; // eslint-disable-line no-unused-vars
-    return <div {...rest}>{children}</div>;
-  }
-}
-
-Container.childContextTypes = {
-  store: PropTypes.object
-};
-
-const perf = (Wrapped, keys) =>
-  class Perf extends React.Component {
-    shouldComponentUpdate(nextProps) {
-      return keys.some(key => nextProps[key] !== this.props[key]);
+    constructor(props) {
+      super(props);
+      if (!props.store) throw new Error("Store not found");
     }
 
     render() {
-      return <Wrapped {...this.props} />;
+      const { children, store, ...rest } = this.props; // eslint-disable-line no-unused-vars
+      return <div {...rest}>{children}</div>;
     }
   };
+};
 
-export const mapper = (propMappings = {}, actionMappings = {}) => Wrapped => {
-  const PerfComponent = perf(Wrapped, Object.keys(propMappings));
+/* @jsx h */
+export const _mapper = vdom => {
+  const h = vdom.h || vdom.createElement;
 
-  return class Mapper extends React.Component {
-    static contextTypes = {
-      store: PropTypes.object
-    };
-
-    constructor(props, context) {
-      super(props, context);
-      this.unsubscribe = this.store.subscribe(this.handleStoreUpdate);
-    }
-
-    get store() {
-      const store = this.props.store || this.context.store;
-      if (!store) throw new Error("Store not found");
-      return store;
-    }
-
-    componentWillUnmount() {
-      this.unsubscribe();
-    }
-
-    handleStoreUpdate = () => {
-      this.forceUpdate();
-    };
-
-    render() {
-      const { store, ...ownProps } = this.props; // eslint-disable-line no-unused-vars
-
-      const mapped = {};
-      for (const key in propMappings) {
-        mapped[key] = propMappings[key](this.store, ownProps);
+  const perf = (Wrapped, keys) =>
+    class Perf extends vdom.Component {
+      shouldComponentUpdate(nextProps) {
+        return keys.some(key => nextProps[key] !== this.props[key]);
       }
 
-      const actions = {};
-      for (const key in actionMappings) {
-        actions[key] = (...args) =>
-          actionMappings[key](this.store, ownProps, ...args);
+      render() {
+        return <Wrapped {...this.props} />;
+      }
+    };
+
+  return (propMappings = {}, actionMappings = {}) => Wrapped => {
+    const PerfComponent = perf(Wrapped, Object.keys(propMappings));
+
+    return class Mapper extends vdom.Component {
+      static contextTypes = {
+        store: () => {}
+      };
+
+      constructor(props, context) {
+        super(props, context);
+        this.unsubscribe = this.store.subscribe(this.handleStoreUpdate);
       }
 
-      return <PerfComponent {...ownProps} {...mapped} {...actions} />;
-    }
+      get store() {
+        const store = this.props.store || this.context.store;
+        if (!store) throw new Error("Store not found");
+        return store;
+      }
+
+      componentWillUnmount() {
+        this.unsubscribe();
+      }
+
+      handleStoreUpdate = () => {
+        this.forceUpdate();
+      };
+
+      render() {
+        const { store, ...ownProps } = this.props; // eslint-disable-line no-unused-vars
+
+        const mapped = {};
+        for (const key in propMappings) {
+          mapped[key] = propMappings[key](this.store, ownProps);
+        }
+
+        const actions = {};
+        for (const key in actionMappings) {
+          actions[key] = (...args) =>
+            actionMappings[key](this.store, ownProps, ...args);
+        }
+
+        return <PerfComponent {...ownProps} {...mapped} {...actions} />;
+      }
+    };
   };
 };
