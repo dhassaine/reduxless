@@ -18,6 +18,27 @@ To install the stable version:
 npm install --save reduxless
 ```
 
+## Importing
+Reduxless can be used with any React-like library.
+
+To include it in a Preact project:
+```js
+  import reduxless from 'reduxless/preact'
+```
+
+And for a React based projects:
+```js
+  import reduxless from 'reduxless/react'
+```
+
+Alternatively if you are using a library other than React or Preact, for example, inferno, you can inject the module into Reduxless like so:
+```js
+import createReduxless from "reduxless";
+
+const reduxless = createReduxless(require("inferno"));
+```
+
+
 ## The general gist
 The following snippet of code demonstrates how reduxless can be used with a React-like library -- in this case [Preact](https://preactjs.com/):
 
