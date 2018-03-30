@@ -1,6 +1,6 @@
 const Benchmark = require("benchmark");
 const createSelector = require("reselect").createSelector;
-const selectorMemoizer = require("../dist/reduxless").selectorMemoizer;
+const selectorMemoizer = require("../react").selectorMemoizer;
 
 const selectorMemoizerOld = (selectors, fn) => {
   let lastResult = null;

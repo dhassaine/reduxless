@@ -22,7 +22,7 @@
   ],
   "rules": {
     "semi": ["error", "always"],
-    "no-unused-vars": ["error", { "varsIgnorePattern": "preact" }],
+    "no-unused-vars": ["error", { "varsIgnorePattern": "h" }],
     "no-global-assign": ["error"],
     "no-console": ["warn"],
     "react/react-in-jsx-scope": "off",

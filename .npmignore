@@ -6,7 +6,6 @@ index.md
 .eslintrc.json
 .gitignore
 .cache/
-node_modules/
 **/.DS_Store
 npm-debug.log
 storybook/
@@ -15,7 +14,6 @@ coverage/
 public/
 stats.json
 json-schemas
-dist
 .coveralls.yml
 reduxless
 assets
