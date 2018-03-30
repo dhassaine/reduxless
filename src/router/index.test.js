@@ -1,16 +1,12 @@
 /* global describe, it, expect, jest, afterEach */
 import React from "react";
 import { Container, createStore, enableHistory, Link, Match } from "../react";
-console.log(enableHistory);
 import { debounce } from "./index";
 import { navigate } from "./actions";
 import renderer from "react-test-renderer";
 import { mount } from "enzyme";
-
-/*
-import _Match from "./Match";
+import { Match as _Match } from "./Match";
 const MatchSimple = _Match(require("react"));
-*/
 
 const url =
   "http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D";
@@ -34,7 +30,6 @@ describe("router/index", () => {
       });
     });
 
-    /*
     describe("on history change", () => {
       let unsubscribe = null;
 
@@ -452,6 +447,5 @@ describe("router/index", () => {
         expect(callee.mock.calls[0]).toEqual(["dick", "tracy"]);
       });
     });
-    */
   });
 });
