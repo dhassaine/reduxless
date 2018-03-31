@@ -20,8 +20,9 @@ no of reducers/mount points | redux ops/sec | reduxless ops/sec
 
 # Reduxless selectorMemoizer memoization vs Reselect library
 
-reselect x 6,104,945 ops/sec ±1.65% (88 runs sampled)
-selectorMemoizer x 19,567,472 ops/sec ±1.44% (85 runs sampled)
+`Reselect` x 6,104,945 ops/sec ±1.65% (88 runs sampled)
+
+`selectorMemoizer` x 19,567,472 ops/sec ±1.44% (85 runs sampled)
 
 Speed up 3.2x
 
