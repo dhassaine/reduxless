@@ -1,4 +1,4 @@
-import { updateStateFromUrl, pushHistory, replaceHistory } from "./actions";
+import { getStateFromUrl, pushHistory, replaceHistory } from "./actions";
 
 export const debounce = (time, fn) => {
   let timer = null;
@@ -21,6 +21,22 @@ const defaultOptions = {
   useHash: false
 };
 
+const initialiseLastState = (
+  store,
+  pushStateMountPoints,
+  replaceStateMountPoints
+) => {
+  const lastPushState = [];
+  const lastReplaceState = [];
+  pushStateMountPoints.forEach(mountPoint =>
+    lastPushState.push(store.get(mountPoint))
+  );
+  replaceStateMountPoints.forEach(mountPoint =>
+    lastPushState.push(store.get(mountPoint))
+  );
+  return [lastPushState, lastReplaceState];
+};
+
 export function enableHistory(
   store,
   pushStateMountPoints = [],
@@ -35,9 +51,21 @@ export function enableHistory(
   store.syncToLocations = pushStateMountPoints.concat(replaceStateMountPoints);
   store.useHash = useHash;
 
+  let lastPushState;
+  let lastReplaceState;
+
   const update = mountpoints => {
     store.syncedLocationToStore = true;
-    updateStateFromUrl(store, mountpoints);
+    const filteredStoreData = getStateFromUrl(store, mountpoints);
+
+    store.withMutations(s => {
+      s.setAll(filteredStoreData);
+      [lastPushState, lastReplaceState] = initialiseLastState(
+        store,
+        pushStateMountPoints,
+        replaceStateMountPoints
+      );
+    });
     store.syncedLocationToStore = false;
   };
 
@@ -52,15 +80,6 @@ export function enableHistory(
   const debouncedReplaceState = debounce(debounceTime, () => {
     replaceHistory(store);
   });
-
-  const lastPushState = [];
-  const lastReplaceState = [];
-  pushStateMountPoints.forEach(mountPoint =>
-    lastPushState.push(store.get(mountPoint))
-  );
-  replaceStateMountPoints.forEach(mountPoint =>
-    lastPushState.push(store.get(mountPoint))
-  );
 
   store.addUpdateIntercept(() => {
     if (store.syncedLocationToStore) {
