@@ -24,7 +24,6 @@ export const _Container = vdom => {
   };
 };
 
-/* @jsx h */
 export const _mapper = vdom => {
   const h = vdom.h || vdom.createElement;
 
