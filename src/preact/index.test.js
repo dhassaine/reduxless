@@ -1,9 +1,13 @@
 /* global describe, it, expect */
+import * as api from "./index";
+import Wrapper from "../index";
 
-import { Container } from "./index";
+class Component {}
 
 describe("preact/index", () => {
   it("smoke test", () => {
-    expect(typeof Container).toBe("function");
+    Object.keys(Wrapper({ Component })).forEach(fn =>
+      expect(typeof api[fn]).toBe("function")
+    );
   });
 });
