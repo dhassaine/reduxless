@@ -66,6 +66,7 @@ export function enableHistory(
         replaceStateMountPoints
       );
     });
+    store.syncedLocationToStore = false;
   };
 
   const popstate = () => update(pushStateMountPoints);
