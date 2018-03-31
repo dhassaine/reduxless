@@ -9,7 +9,7 @@
 ## Introduction
 Reduxless simplifies some of the complexity of [Redux](https://github.com/reactjs/redux) and reduces the amount of necessary boilerplate code. It is also much more performant and scales linearly as the application's state grows (see [perfomance analysis](https://dhassaine.github.io/reduxless/performance.md)).
 
-Reduxless combines the roles of reducers and actions into one operation: the two key operations are actions and selectors. We lose the ability to perform time travelling on our state, but the advantages of simpler and faster code can outweigh that benefit. The library ships with React bindings and a simple router.
+Reduxless combines the roles of reducers and actions into one operation: the two key operations are actions and selectors. We lose the ability to perform time travelling on our state, but the advantages of simpler and faster code can outweigh that benefit.
 
 ## Installation
 
