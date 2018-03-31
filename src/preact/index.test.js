@@ -1,9 +1,9 @@
 /* global describe, it, expect */
 
-import { createStore } from "./index";
+import { Container } from "./index";
 
 describe("preact/index", () => {
   it("smoke test", () => {
-    expect(createStore).toBeTruthy();
+    expect(typeof Container).toBe("function");
   });
 });
