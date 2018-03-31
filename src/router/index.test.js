@@ -78,7 +78,7 @@ describe("router/index", () => {
       it("changes made directly to the registered sync data in the store automatically update the browser location", done => {
         jest.useFakeTimers();
         const store = createStore();
-        enableHistory(store, ["counter", "counter2"], [], {
+        unsubscribe = enableHistory(store, ["counter", "counter2"], [], {
           debounceTime: 1000
         });
 
@@ -265,7 +265,7 @@ describe("router/index", () => {
         );
       });
 
-      it("only renders children if the window.location path matches", () => {
+      it("renders children if the window.location path matches", () => {
         const store = createStore();
         unsubscribe = enableHistory(store);
         const childComponent = jest.fn(() => null);
@@ -444,6 +444,42 @@ describe("router/index", () => {
         jest.runOnlyPendingTimers();
         expect(callee.mock.calls.length).toEqual(1);
         expect(callee.mock.calls[0]).toEqual(["dick", "tracy"]);
+      });
+    });
+  });
+
+  describe("Integrations", () => {
+    it.only("pushState should not be called when updating a non sync mountpoint after using browser back", done => {
+      const oldPush = window.history.pushState;
+      const pushState = (window.history.pushState = jest.fn(
+        oldPush.bind(window.history)
+      ));
+
+      const store = createStore({
+        counter: { value: 1 },
+        counter2: { value: 1 }
+      });
+      const disableHistory = enableHistory(store, ["counter"]);
+      expect(pushState.mock.calls.length).toEqual(0);
+      navigate(store, "page2");
+      expect(pushState.mock.calls.length).toEqual(1);
+      history.back();
+      let navigated = false;
+      const unsubscribe = store.subscribe(() => {
+        if (!navigated) {
+          navigated = true;
+          unsubscribe();
+          navigate(store, "page2");
+          expect(pushState.mock.calls.length).toEqual(2);
+
+          store.set("counter2", { value: 2 });
+
+          expect(pushState.mock.calls.length).toEqual(2);
+
+          window.history.pushState = oldPush;
+          disableHistory();
+          done();
+        }
       });
     });
   });

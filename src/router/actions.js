@@ -19,7 +19,7 @@ const generateNewUrl = (store, newPath) => {
   return store.useHash ? url.replace(/^\//, "#") : url;
 };
 
-export const updateStateFromUrl = (store, mountPoints) => {
+export const getStateFromUrl = (store, mountPoints) => {
   const { storeData } = extractPartsFromPath(store);
   const filteredStoreData = {};
   const mountPointsSet = new Set(mountPoints);
@@ -27,7 +27,7 @@ export const updateStateFromUrl = (store, mountPoints) => {
     if (mountPointsSet.has(key)) filteredStoreData[key] = data;
   });
 
-  store.setAll(filteredStoreData);
+  return filteredStoreData;
 };
 
 export const navigate = (store, newPath) => {
