@@ -8,7 +8,6 @@ class ErrorBoundary extends React.Component {
   componentDidCatch(error) {
     this.props.onError(error);
   }
-  e;
 
   render() {
     return this.props.children;
