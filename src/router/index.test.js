@@ -1,4 +1,4 @@
-/* global describe, it, expect, jest, afterEach */
+/* global describe, it, expect, jest, afterEach, beforeEach */
 import React from "react";
 import { Container, createStore, enableHistory, Link, Match } from "../react";
 import { debounce } from "./index";
@@ -79,7 +79,7 @@ describe("router/index", () => {
       it("changes made directly to the registered sync data in the store automatically update the browser location", done => {
         jest.useFakeTimers();
         const store = createStore();
-        enableHistory(store, ["counter", "counter2"], [], {
+        unsubscribe = enableHistory(store, ["counter", "counter2"], [], {
           debounceTime: 1000
         });
 
@@ -92,6 +92,7 @@ describe("router/index", () => {
             "search",
             "?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A2%7D%2C%22counter2%22%3A%7B%22value%22%3A3%7D%7D"
           );
+          jest.useRealTimers();
           done();
         });
 
@@ -156,6 +157,7 @@ describe("router/index", () => {
             window.history.pushState = oldPush;
             window.history.replaceState = oldReplace;
             unsubscribe();
+            jest.useRealTimers();
             done(error);
           }
 
@@ -165,6 +167,7 @@ describe("router/index", () => {
               window.history.pushState = oldPush;
               window.history.replaceState = oldReplace;
               unsubscribe();
+              jest.useRealTimers();
               done();
             }, 2000);
             jest.runOnlyPendingTimers();
@@ -234,6 +237,7 @@ describe("router/index", () => {
           } catch (error) {
             window.history.pushState = oldPush;
             window.history.replaceState = oldReplace;
+            jest.useRealTimers();
             done(error);
           }
 
@@ -242,6 +246,7 @@ describe("router/index", () => {
             expect(replaceState.mock.calls.length).toEqual(2);
             window.history.pushState = oldPush;
             window.history.replaceState = oldReplace;
+            jest.useRealTimers();
             return done();
           }
         });
@@ -266,7 +271,7 @@ describe("router/index", () => {
         );
       });
 
-      it("only renders children if the window.location path matches", () => {
+      it("renders children if the window.location path matches", () => {
         const store = createStore();
         unsubscribe = enableHistory(store);
         const childComponent = jest.fn(() => null);
@@ -410,8 +415,11 @@ describe("router/index", () => {
     });
 
     describe("debounce", () => {
+      beforeEach(jest.useFakeTimers);
+
+      afterEach(jest.useRealTimers);
+
       it("should fire a function after the debounce time", () => {
-        jest.useFakeTimers();
         const callee = jest.fn();
         const timed = debounce(1000, callee);
         timed();
@@ -423,7 +431,6 @@ describe("router/index", () => {
       });
 
       it("should not trigger a pending call if interrupted by another", () => {
-        jest.useFakeTimers();
         const callee = jest.fn();
         const timed = debounce(1000, callee);
         timed();
@@ -438,7 +445,6 @@ describe("router/index", () => {
       });
 
       it("should forward arguments for debounced function", () => {
-        jest.useFakeTimers();
         const callee = jest.fn();
         const timed = debounce(1000, callee);
         timed("dick", "tracy");
@@ -446,6 +452,40 @@ describe("router/index", () => {
         expect(callee.mock.calls.length).toEqual(1);
         expect(callee.mock.calls[0]).toEqual(["dick", "tracy"]);
       });
+    });
+  });
+
+  describe("Integrations", () => {
+    it("pushState should not be called when updating a non sync mountpoint after using browser back", done => {
+      const oldPush = window.history.pushState;
+      const pushState = (window.history.pushState = jest.fn(
+        oldPush.bind(window.history)
+      ));
+
+      const store = createStore({
+        counter: { value: 1 },
+        counter2: { value: 1 }
+      });
+      const disableHistory = enableHistory(store, ["counter"]);
+      expect(pushState.mock.calls.length).toEqual(0);
+      navigate(store, "page2");
+      expect(pushState.mock.calls.length).toEqual(1);
+
+      let navigated = false;
+      const unsubscribe = store.subscribe(() => {
+        if (!navigated) {
+          navigated = true;
+          unsubscribe();
+          navigate(store, "page2");
+          expect(pushState.mock.calls.length).toEqual(2);
+          store.set("counter2", { value: 2 });
+          expect(pushState.mock.calls.length).toEqual(2);
+          window.history.pushState = oldPush;
+          disableHistory();
+          done();
+        }
+      });
+      history.back();
     });
   });
 });
