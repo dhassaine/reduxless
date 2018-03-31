@@ -7,7 +7,7 @@
 [Looking for the API? Click here](#documentation)
 
 ## Introduction
-Reduxless simplifies some of the complexity of [Redux](https://github.com/reactjs/redux) and reduces the amount of necessary boilerplate code. It is also much more performant and scales linearly as the application's state grows (see [perfomance analysis](https://dhassaine.github.io/reduxless/performance.md)).
+Reduxless simplifies some of the complexity of [Redux](https://github.com/reactjs/redux) and reduces the amount of necessary boilerplate code. It is also much more performant and scales linearly as the application's state grows (see [perfomance analysis](https://dhassaine.github.io/reduxless/performance)).
 
 Reduxless combines the roles of reducers and actions into one operation: the two key operations are actions and selectors. We lose the ability to perform time travelling on our state, but the advantages of simpler and faster code can outweigh that benefit.
 
@@ -126,7 +126,7 @@ The documentation section below describes the API in more detail, including conf
 
 # Differences to Redux
 
-The state is not one nested object but multiple objects. This means libraries like reselect won't work as expected. Redux is expected to be given a new object for each reducer. Libraries like ImmutableJS can help with making modifications to the state as efficient as possible, but ultimately recreating an object with many properties just to get a new reference is expensive. Another bottleneck with Redux is that every reducer has to run when an action is dispatched. See [perfomance analysis](https://dhassaine.github.io/reduxless/performance.md) for further details.
+The state is not one nested object but multiple objects. This means libraries like reselect won't work as expected. Redux is expected to be given a new object for each reducer. Libraries like ImmutableJS can help with making modifications to the state as efficient as possible, but ultimately recreating an object with many properties just to get a new reference is expensive. Another bottleneck with Redux is that every reducer has to run when an action is dispatched. See [perfomance analysis](https://dhassaine.github.io/reduxless/performance) for further details.
 
 ## Change Log
 
