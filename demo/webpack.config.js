@@ -15,7 +15,7 @@ module.exports = {
   },
   mode: "development",
   target: "web",
-  devtool: "none",
+  devtool: "source-map",
   resolve: {
     extensions: [".jsx", ".js", ".css"]
   },

@@ -1,12 +1,14 @@
 /* @jsx h */
 import { h } from "preact";
-import { Match, Link } from "../src/preact";
+import { Match, Link, mapper } from "../src/preact";
 import Todos from "./features/todos";
 import Counter from "./features/counter";
 import Counter2 from "./features/counter2";
+import Console from "./features/console";
+import { logMessage } from "./features/console/actions-selectors";
 
-export default () => {
-  console.log("Rendering App!");
+const App = ({ logMessage }) => {
+  logMessage("Rendering App!");
   return (
     <div>
       <div>
@@ -21,17 +23,26 @@ export default () => {
       </div>
 
       <Match path="/todos">
-        <Todos />
+        <Todos logMessage={logMessage} />
       </Match>
 
       <Match path="/counter">
-        <Counter />
-        <Counter2 />
+        <Counter logMessage={logMessage} />
+        <Counter2 logMessage={logMessage} />
       </Match>
 
       <Match path={() => true}>
         <footer>Reduxless ftw!</footer>
       </Match>
+
+      <Console />
     </div>
   );
 };
+
+export default mapper(
+  {},
+  {
+    logMessage
+  }
+)(App);

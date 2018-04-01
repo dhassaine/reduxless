@@ -30,12 +30,22 @@ const TodoList = ({ todos = [], onTodoClick }) => (
   </div>
 );
 
-const Todos = ({ submit, todos, onTodoClick }) => (
-  <div style={{ border: "2px solid black", width: "500px", padding: "10px" }}>
-    <AddTodo submit={submit} />
-    <TodoList todos={todos} onTodoClick={onTodoClick} />
-  </div>
-);
+const Todos = ({ submit, todos, onTodoClick, logMessage }) => {
+  logMessage("Rendering Todos");
+  return (
+    <div
+      style={{
+        border: "1px solid black",
+        padding: "10px",
+        margin: 10,
+        boxSizing: "border-box"
+      }}
+    >
+      <AddTodo submit={submit} />
+      <TodoList todos={todos} onTodoClick={onTodoClick} />
+    </div>
+  );
+};
 
 export default mapper(
   {
