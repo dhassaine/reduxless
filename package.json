@@ -6,8 +6,10 @@
   "minified:main": "dist/reduxless.min.js",
   "files": [
     "dist",
-    "preact",
-    "react"
+    "preact.js",
+    "preact.esm.js",
+    "react.js",
+    "react.esm.js"
   ],
   "engines": {
     "node": ">=8"
