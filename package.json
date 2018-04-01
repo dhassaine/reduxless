@@ -1,10 +1,14 @@
 {
   "name": "reduxless",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "",
   "main": "dist/reduxless.js",
   "minified:main": "dist/reduxless.min.js",
-  "module": "dist/reduxless.esm.js",
+  "files": [
+    "dist",
+    "preact",
+    "react"
+  ],
   "engines": {
     "node": ">=8"
   },
@@ -24,9 +28,6 @@
     "prepublish": "npm run build",
     "bench": "node benchmarks/redux_vs_reduxless.js && node benchmarks/bench.js"
   },
-  "files": [
-    "dist"
-  ],
   "authors": [
     "Djamel Hassaine <dhassaine@gmail.com> (https://github.com/dhassaine)",
     "Klemen Slavič <krof.drakula@gmail.com> (https://github.com/KrofDrakula)"
@@ -50,7 +51,6 @@
     "testURL": "http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D"
   },
   "optionalDependencies": {
-    "prop-types": ">=15",
     "react": ">=15"
   },
   "dependencies": {},
@@ -84,7 +84,6 @@
     "jsdom-global": "3.0.2",
     "path": "0.12.7",
     "preact": "8.2.7",
-    "preact-compat": "3.17.0",
     "preact-jsx-chai": "2.2.1",
     "react": "16.0.0",
     "react-dom": "16.2.0",

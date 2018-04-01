@@ -12,3 +12,7 @@ dist
 .coveralls.yml
 _site
 reduxless
+react.js
+react.esm.js
+preact.js
+preact.esm.js

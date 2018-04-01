@@ -1,4 +1,4 @@
-const reduxless = require("../dist/reduxless");
+const reduxless = require("../react");
 
 const STATE_SIZE = 1000;
 

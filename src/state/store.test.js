@@ -1,6 +1,6 @@
 /* global describe, it, jest */
 import { expect } from "chai";
-import { createStore } from "../main";
+import createStore from "./store";
 import Ajv from "ajv";
 const ajv = new Ajv();
 

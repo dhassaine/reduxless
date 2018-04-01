@@ -11,7 +11,7 @@ import {
   mountPoint as counterMountPoint2,
   validator as counterValidator2
 } from "./features/counter2/actions-selectors";
-import { createStore, Container, enableHistory } from "../src/main";
+import { createStore, Container, enableHistory } from "../src/react";
 import createDocsExample from "./docs-example";
 
 const store = createStore(

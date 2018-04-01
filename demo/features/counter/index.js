@@ -1,5 +1,5 @@
 import React from "react";
-import { mapper } from "../../../src/main";
+import { mapper } from "../../../src/react";
 import {
   selectCounter,
   incrementCounter,
