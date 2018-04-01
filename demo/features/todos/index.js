@@ -1,7 +1,8 @@
-import React from "react";
+/* @jsx h */
+import { h } from "preact";
 import { selectTodos, toggleTodo, addTodo } from "./actions-selectors";
 import AddTodo from "./add-todo";
-import { mapper } from "../../../src/react";
+import { mapper } from "../../../src/preact";
 
 export const Todo = ({ onClick, completed, text }) => (
   <li

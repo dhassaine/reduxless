@@ -1,5 +1,6 @@
-import React from "react";
-import { Match, Link } from "../src/react";
+/* @jsx h */
+import { h } from "preact";
+import { Match, Link } from "../src/preact";
 import Todos from "./features/todos";
 import Counter from "./features/counter";
 import Counter2 from "./features/counter2";

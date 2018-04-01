@@ -1,5 +1,5 @@
-import React from "react";
-import ReactDOM from "react-dom";
+/* @jsx h */
+import { h, render } from "preact";
 import App from "./app";
 import {
   initialState as counterInitialState,
@@ -11,7 +11,7 @@ import {
   mountPoint as counterMountPoint2,
   validator as counterValidator2
 } from "./features/counter2/actions-selectors";
-import { createStore, Container, enableHistory } from "../src/react";
+import { createStore, Container, enableHistory } from "../src/preact";
 import createDocsExample from "./docs-example";
 
 const store = createStore(
@@ -22,9 +22,9 @@ const store = createStore(
   }
 );
 enableHistory(store, [counterMountPoint], [counterMountPoint2], {
-  useHash: false
+  useHash: true
 });
-ReactDOM.render(
+render(
   <Container store={store}>
     <App />
   </Container>,

@@ -44,7 +44,7 @@ The following snippet of code demonstrates how reduxless can be used with a Reac
 
 ```jsx
 import { h, render } from 'preact';
-import { createStore, Container, mapper } from 'reduxless';
+import { createStore, Container, mapper } from 'reduxless/preact';
 
 const store = createStore({ name: 'Bart Simpson' });
 
@@ -90,7 +90,7 @@ Reduxless offers a straightforward mechanism for both routing (i.e. which compon
 In the example above if we wanted the `name` property synced, it would be as simple as:
 
 ```js
-import { createStore, enableHistory } from 'reduxless';
+import { createStore, enableHistory } from 'reduxless/preact';
 
 const store = createStore({ name: 'Bart Simpson' });
 enableHistory(
@@ -103,7 +103,7 @@ Routing is as straightforward as:
 
 ```jsx
 import { h } from "preact";
-import { Match, Link } from "reduxless";
+import { Match, Link } from "reduxless/preact";
 
 const store = createStore({ name: 'Bart Simpson' });
 

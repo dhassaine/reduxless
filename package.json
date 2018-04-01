@@ -24,6 +24,7 @@
     "coverage": "jest --coverage",
     "coveralls": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "start": "webpack-dev-server --config demo/webpack.config.js",
+    "build-demo": "webpack -p --config demo/webpack.config.js",
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "bump-version": "bin/bump-version.sh",
@@ -57,7 +58,6 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "ajv": "6.1.1",
     "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
     "babel-eslint": "8.0.0",

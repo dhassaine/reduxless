@@ -1,6 +1,6 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { mapper, Container, createStore } from "../../src/react";
+/* @jsx h */
+import { h, render } from "preact";
+import { mapper, Container, createStore } from "../../src/preact";
 
 const Component = ({ name, update }) => (
   <p
@@ -24,7 +24,7 @@ const MappedComponent = mapper(
 const createDocsExample = () => {
   const store = createStore({ name: "Bart Simpson" });
 
-  ReactDOM.render(
+  render(
     <Container store={store}>
       <MappedComponent />
     </Container>,

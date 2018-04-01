@@ -9,11 +9,11 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 module.exports = {
   entry: path.resolve(__dirname, "./index.js"),
   output: {
-    path: path.resolve("dist"),
-    filename: "index_bundle.js",
-    publicPath: "/"
+    path: path.resolve(__dirname, "public"),
+    filename: "demo.js",
+    publicPath: ""
   },
-  devtool: "source-map",
+  devtool: "none",
   resolve: {
     extensions: [".jsx", ".js", ".css"]
   },
@@ -34,8 +34,7 @@ module.exports = {
             ],
             plugins: [["transform-object-assign"]]
           }
-        },
-        exclude: /node_modules/
+        }
       }
     ]
   },

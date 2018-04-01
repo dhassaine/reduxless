@@ -1,5 +1,6 @@
-import React from "react";
-import { mapper } from "../../../src/react";
+/* @jsx h */
+import { h } from "preact";
+import { mapper } from "../../../src/preact";
 import {
   selectCounter,
   incrementCounter,
