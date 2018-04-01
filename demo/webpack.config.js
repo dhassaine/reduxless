@@ -13,12 +13,14 @@ module.exports = {
     filename: "demo.js",
     publicPath: ""
   },
+  mode: "development",
+  target: "web",
   devtool: "none",
   resolve: {
     extensions: [".jsx", ".js", ".css"]
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         use: {
