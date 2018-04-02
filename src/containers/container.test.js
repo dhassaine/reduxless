@@ -180,6 +180,39 @@ describe("Container", () => {
       expect(childComponent.mock.calls.length).toEqual(2);
     });
 
+    it("Nested mapped components update independently", () => {
+      const store = createStore({
+        mount1: { a: 1 },
+        mount2: { b: 2 }
+      });
+
+      const NestedComponent = jest.fn();
+      NestedComponent.mockReturnValue(null);
+
+      const NestedMappedComponent = mapper({
+        prop1: store => store.get("mount2").b
+      })(NestedComponent);
+
+      const Component = jest.fn();
+      Component.mockReturnValue(<NestedMappedComponent />);
+
+      const MappedComponent = mapper({
+        prop1: store => store.get("mount1").a
+      })(Component);
+
+      renderer.create(
+        <Container store={store}>
+          <div>
+            <MappedComponent />
+          </div>
+        </Container>
+      );
+      expect(Component.mock.calls.length).toEqual(1);
+      store.set("mount2", { b: 3 });
+      expect(Component.mock.calls.length).toEqual(1);
+      expect(NestedComponent.mock.calls.length).toEqual(2);
+    });
+
     it("skips rendering if the relevant section of the store does not change", () => {
       const store = createStore({
         mount1: { a: 1 },
