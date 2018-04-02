@@ -35,7 +35,9 @@ export const _mapper = vdom => {
 
       constructor(props, context) {
         super(props, context);
-        this.unsubscribe = this.store.subscribe(this.handleStoreUpdate);
+        if (Object.keys(propMappings).length !== 0)
+          this.unsubscribe = this.store.subscribe(this.handleStoreUpdate);
+
         this.mappedProps = {};
         for (const key in propMappings) {
           this.mappedProps[key] = propMappings[key](this.store, this.props);
@@ -54,12 +56,18 @@ export const _mapper = vdom => {
         return store;
       }
 
-      shouldComponentUpdate() {
+      shouldComponentUpdate(nextProps) {
+        for (const key in nextProps) {
+          if (this.props[key] !== nextProps[key]) return true;
+        }
         return false;
       }
 
       componentWillUnmount() {
-        this.unsubscribe();
+        if (this.unsubscribe) {
+          this.unsubscribe();
+          this.unsubscribe = null;
+        }
       }
 
       handleStoreUpdate = () => {
