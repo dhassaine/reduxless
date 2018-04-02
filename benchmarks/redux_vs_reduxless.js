@@ -2,7 +2,9 @@ const Benchmark = require("benchmark");
 
 const suite = new Benchmark.Suite();
 const reduxTests = require("./redux");
+const reduxContainerTest = require("./redux_container");
 const reduxlessTests = require("./reduxless");
+const reduxlessContainerTest = require("./reduxless_container");
 
 // add tests
 suite
@@ -12,11 +14,17 @@ suite
   .add("redux-action-and-selectors", function() {
     reduxTests.actionAndSelectorTest();
   })
+  .add("redux-container", function() {
+    reduxContainerTest.containerTest();
+  })
   .add("reduxless-action", function() {
     reduxlessTests.actionTest();
   })
   .add("reduxless-action-and-selectors", function() {
     reduxlessTests.actionAndSelectorTest();
+  })
+  .add("reduxless-container", function() {
+    reduxlessContainerTest.containerTest();
   })
 
   // add listeners

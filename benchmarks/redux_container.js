@@ -1,4 +1,7 @@
+const React = require("react");
+const renderer = require("react-test-renderer");
 const redux = require("redux");
+const reduxReact = require("react-redux");
 const STATE_SIZE = require("./constants").STATE_SIZE;
 
 const ActionType1 = "ADD1";
@@ -49,6 +52,8 @@ const setAction1 = (value1, value2) => ({
   value2: value2
 });
 
+const noopAction = () => ({ type: "noop" });
+
 const selectors = [];
 for (let i = 1; i <= STATE_SIZE; i++) {
   selectors.push(state => state[`mount${i}`].value1);
@@ -59,4 +64,28 @@ exports.actionTest = () => store.dispatch(setAction1(2, 3));
 exports.actionAndSelectorTest = () => {
   store.dispatch(setAction1(2, 3));
   selectors.forEach(selector => selector(store.getState()));
+};
+
+const childComponent = () => null;
+const mapStateToProps = state =>
+  selectors.reduce((result, fn, i) => {
+    result[`mount${i}`] = fn(state);
+    return result;
+  }, {});
+
+const Component = reduxReact.connect(mapStateToProps)(childComponent);
+renderer.create(
+  React.createElement(
+    reduxReact.Provider,
+    { store },
+    React.createElement(Component, null, null)
+  )
+);
+
+exports.containerTest = () => {
+  // doesn't re-render
+  store.dispatch(noopAction());
+
+  // does re-render
+  store.dispatch(setAction1(20, 30));
 };
