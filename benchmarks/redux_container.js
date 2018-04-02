@@ -42,7 +42,19 @@ for (let i = 2; i <= STATE_SIZE; i++) {
   dummyReducers[`mount${i}`] = makeReducer2();
 }
 
-const reducers = { mount1: reducer1, ...dummyReducers };
+const nestedReducer = (state = { value: 1 }, action) => {
+  switch (action.type) {
+    case "NESTED_CHANGE":
+      return {
+        value: action.value
+      };
+
+    default:
+      return state;
+  }
+};
+
+const reducers = { mount1: reducer1, ...dummyReducers, nested: nestedReducer };
 
 const store = redux.createStore(redux.combineReducers(reducers));
 
@@ -66,26 +78,33 @@ exports.actionAndSelectorTest = () => {
   selectors.forEach(selector => selector(store.getState()));
 };
 
-const childComponent = () => null;
+const NestedComponent = () => null;
+const MappedNestedComponent = reduxReact.connect(state => ({
+  prop: state.nested
+}))(NestedComponent);
+
+const Component = () => React.createElement(MappedNestedComponent, null, null);
+
 const mapStateToProps = state =>
   selectors.reduce((result, fn, i) => {
     result[`mount${i}`] = fn(state);
     return result;
   }, {});
 
-const Component = reduxReact.connect(mapStateToProps)(childComponent);
+const MappedComponent = reduxReact.connect(mapStateToProps)(Component);
 renderer.create(
   React.createElement(
     reduxReact.Provider,
     { store },
-    React.createElement(Component, null, null)
+    React.createElement(MappedComponent, null, null)
   )
 );
 
 exports.containerTest = () => {
   // doesn't re-render
   store.dispatch(noopAction());
-
-  // does re-render
+  // re-renders outer connected component
   store.dispatch(setAction1(20, 30));
+  // re-renders nested mapped component
+  store.dispatch({ type: "NESTED_CHANGE", value: 4 });
 };

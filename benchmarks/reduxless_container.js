@@ -3,7 +3,7 @@ const React = require("react");
 const reduxless = require("../react");
 const STATE_SIZE = require("./constants").STATE_SIZE;
 
-const initialState = {};
+const initialState = { nested: { value: 1 } };
 for (let i = 1; i <= STATE_SIZE; i++) {
   initialState[`mount${i}`] = {
     value1: 1,
@@ -24,17 +24,23 @@ for (let i = 1; i <= STATE_SIZE; i++) {
   selectors.push(store => store.get(`mount${i}`).value1);
 }
 
-const childComponent = () => null;
 const props = selectors.reduce((result, fn, i) => {
   result[`mount${i}`] = fn;
   return result;
 }, {});
-const Component = reduxless.mapper(props)(childComponent);
+
+const NestedComponent = () => null;
+const MappedNestedComponent = reduxless.mapper({
+  prop: store => store.get("nested")
+})(NestedComponent);
+
+const Component = () => React.createElement(MappedNestedComponent, null, null);
+const MappedComponent = reduxless.mapper(props)(Component);
 renderer.create(
   React.createElement(
     reduxless.Container,
     { store },
-    React.createElement(Component, null, null)
+    React.createElement(MappedComponent, null, null)
   )
 );
 
@@ -42,6 +48,9 @@ exports.containerTest = () => {
   // doesn't re-render
   store.set("newMount", { b: 3 });
 
-  // does re-render
+  // re-renders outer mapped component
   setAction1(store, 20, 30);
+
+  // re-renders nested mapped component
+  store.set("nested", { value: 2 });
 };
