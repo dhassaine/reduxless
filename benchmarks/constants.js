@@ -1,1 +1,1 @@
-exports.STATE_SIZE = 10;
+exports.STATE_SIZE = 1000;

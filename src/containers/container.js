@@ -36,10 +36,8 @@ export const _mapper = vdom => {
       constructor(props, context) {
         super(props, context);
         this.unsubscribe = this.store.subscribe(this.handleStoreUpdate);
-        this.propMappingKeys = Object.keys(propMappings);
         this.mappedProps = {};
-        for (let i = 0; i < this.propMappingKeys.length; i++) {
-          const key = this.propMappingKeys[i];
+        for (const key in propMappings) {
           this.mappedProps[key] = propMappings[key](this.store, this.props);
         }
 
@@ -66,8 +64,7 @@ export const _mapper = vdom => {
 
       handleStoreUpdate = () => {
         let hasPropsChanged = false;
-        for (let i = 0; i < this.propMappingKeys.length; i++) {
-          const key = this.propMappingKeys[i];
+        for (const key in propMappings) {
           const prop = propMappings[key](this.store, this.props);
           if (prop !== this.mappedProps[key]) hasPropsChanged = true;
           this.mappedProps[key] = prop;
