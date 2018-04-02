@@ -78,6 +78,32 @@ describe("Container", () => {
       );
     });
 
+    it("re-renders if a prop changes", () => {
+      const store = createStore();
+      const Component = jest.fn(() => null);
+      const prop = { a: 1 };
+
+      const Mapped = mapper()(Component);
+      const rendered = renderer.create(
+        <Container store={store}>
+          <Mapped prop={prop} />
+        </Container>
+      );
+      expect(Component.mock.calls.length).toEqual(1);
+      rendered.update(
+        <Container store={store}>
+          <Mapped prop={prop} />
+        </Container>
+      );
+      expect(Component.mock.calls.length).toEqual(1);
+      rendered.update(
+        <Container store={store}>
+          <Mapped prop={{ b: 2 }} />
+        </Container>
+      );
+      expect(Component.mock.calls.length).toEqual(2);
+    });
+
     it("maps state to props and actions on given children", () => {
       const store = createStore();
       store.set("mount", { a: 1, b: 2 });
