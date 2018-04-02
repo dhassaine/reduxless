@@ -201,6 +201,33 @@ describe("Container", () => {
       expect(childComponent.mock.calls.length).toEqual(2);
     });
 
+    it("does not subscribe to store changes if there are no propMappings", () => {
+      const store = createStore({
+        mount1: { a: 1 },
+        mount2: { b: 2 }
+      });
+      const subscribe = store.subscribe.bind(store);
+      let unsubscribeMock;
+      store.subscribe = jest.fn(() => {
+        unsubscribeMock = jest.fn(subscribe());
+        return unsubscribeMock;
+      });
+
+      const childComponent = jest.fn();
+      childComponent.mockReturnValue(null);
+
+      const Component = mapper({})(childComponent);
+
+      const rendered = renderer.create(
+        <Container store={store}>{<Component />}</Container>
+      );
+      expect(childComponent.mock.calls.length).toEqual(1);
+      store.set("mount2", { b: 3 });
+      expect(childComponent.mock.calls.length).toEqual(1);
+      rendered.unmount();
+      expect(store.subscribe.mock.calls.length).toEqual(0);
+    });
+
     it("Stateful components under container can still re-render even if the store has not changed", () => {
       const store = createStore({
         mount1: { a: 1 },
