@@ -274,10 +274,10 @@ describe("Container", () => {
       expect(unsubscribeMock.mock.calls.length).toEqual(1);
     });
 
-    it("throws an exception up if store is unavailable", () => {
+    it("throws an exception if store is unavailable", () => {
       const onError = jest.fn();
 
-      const Component = mapper()(() => null);
+      const Component = mapper({ a: store => store.get("a") })(() => null);
 
       renderer.create(
         <ErrorBoundary onError={onError}>
