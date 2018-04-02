@@ -78,13 +78,39 @@ describe("Container", () => {
       );
     });
 
+    it("re-renders if a prop changes", () => {
+      const store = createStore();
+      const Component = jest.fn(() => null);
+      const prop = { a: 1 };
+
+      const Mapped = mapper()(Component);
+      const rendered = renderer.create(
+        <Container store={store}>
+          <Mapped prop={prop} />
+        </Container>
+      );
+      expect(Component.mock.calls.length).toEqual(1);
+      rendered.update(
+        <Container store={store}>
+          <Mapped prop={prop} />
+        </Container>
+      );
+      expect(Component.mock.calls.length).toEqual(1);
+      rendered.update(
+        <Container store={store}>
+          <Mapped prop={{ b: 2 }} />
+        </Container>
+      );
+      expect(Component.mock.calls.length).toEqual(2);
+    });
+
     it("maps state to props and actions on given children", () => {
       const store = createStore();
       store.set("mount", { a: 1, b: 2 });
 
       const action = jest.fn();
 
-      const childComponent = ({ prop1, prop2, onAction }) => {
+      const ChildComponent = ({ prop1, prop2, onAction }) => {
         expect(prop1).toEqual(1);
         expect(prop2).toEqual(2);
         onAction(5);
@@ -100,7 +126,7 @@ describe("Container", () => {
           prop2: store => store.get("mount").b
         },
         { onAction: action }
-      )(childComponent);
+      )(ChildComponent);
 
       const BasicComponent = props => {
         expect(props).toHaveProperty("nameProp");
@@ -154,6 +180,39 @@ describe("Container", () => {
       expect(childComponent.mock.calls.length).toEqual(2);
     });
 
+    it("Nested mapped components update independently", () => {
+      const store = createStore({
+        mount1: { a: 1 },
+        mount2: { b: 2 }
+      });
+
+      const NestedComponent = jest.fn();
+      NestedComponent.mockReturnValue(null);
+
+      const NestedMappedComponent = mapper({
+        prop1: store => store.get("mount2").b
+      })(NestedComponent);
+
+      const Component = jest.fn();
+      Component.mockReturnValue(<NestedMappedComponent />);
+
+      const MappedComponent = mapper({
+        prop1: store => store.get("mount1").a
+      })(Component);
+
+      renderer.create(
+        <Container store={store}>
+          <div>
+            <MappedComponent />
+          </div>
+        </Container>
+      );
+      expect(Component.mock.calls.length).toEqual(1);
+      store.set("mount2", { b: 3 });
+      expect(Component.mock.calls.length).toEqual(1);
+      expect(NestedComponent.mock.calls.length).toEqual(2);
+    });
+
     it("skips rendering if the relevant section of the store does not change", () => {
       const store = createStore({
         mount1: { a: 1 },
@@ -175,7 +234,34 @@ describe("Container", () => {
       expect(childComponent.mock.calls.length).toEqual(2);
     });
 
-    it("Stateful components under container can still re-render even if the store has not change", () => {
+    it("does not subscribe to store changes if there are no propMappings", () => {
+      const store = createStore({
+        mount1: { a: 1 },
+        mount2: { b: 2 }
+      });
+      const subscribe = store.subscribe.bind(store);
+      let unsubscribeMock;
+      store.subscribe = jest.fn(() => {
+        unsubscribeMock = jest.fn(subscribe());
+        return unsubscribeMock;
+      });
+
+      const childComponent = jest.fn();
+      childComponent.mockReturnValue(null);
+
+      const Component = mapper({})(childComponent);
+
+      const rendered = renderer.create(
+        <Container store={store}>{<Component />}</Container>
+      );
+      expect(childComponent.mock.calls.length).toEqual(1);
+      store.set("mount2", { b: 3 });
+      expect(childComponent.mock.calls.length).toEqual(1);
+      rendered.unmount();
+      expect(store.subscribe.mock.calls.length).toEqual(0);
+    });
+
+    it("Stateful components under container can still re-render even if the store has not changed", () => {
       const store = createStore({
         mount1: { a: 1 },
         mount2: { b: 2 }
@@ -274,10 +360,10 @@ describe("Container", () => {
       expect(unsubscribeMock.mock.calls.length).toEqual(1);
     });
 
-    it("throws an exception up if store is unavailable", () => {
+    it("throws an exception if store is unavailable", () => {
       const onError = jest.fn();
 
-      const Component = mapper()(() => null);
+      const Component = mapper({ a: store => store.get("a") })(() => null);
 
       renderer.create(
         <ErrorBoundary onError={onError}>

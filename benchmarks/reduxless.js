@@ -1,6 +1,5 @@
 const reduxless = require("../react");
-
-const STATE_SIZE = 1000;
+const STATE_SIZE = require("./constants").STATE_SIZE;
 
 const initialState = {};
 for (let i = 1; i <= STATE_SIZE; i++) {
