@@ -84,7 +84,7 @@ describe("Container", () => {
 
       const action = jest.fn();
 
-      const childComponent = ({ prop1, prop2, onAction }) => {
+      const ChildComponent = ({ prop1, prop2, onAction }) => {
         expect(prop1).toEqual(1);
         expect(prop2).toEqual(2);
         onAction(5);
@@ -100,7 +100,7 @@ describe("Container", () => {
           prop2: store => store.get("mount").b
         },
         { onAction: action }
-      )(childComponent);
+      )(ChildComponent);
 
       const BasicComponent = props => {
         expect(props).toHaveProperty("nameProp");
@@ -175,7 +175,7 @@ describe("Container", () => {
       expect(childComponent.mock.calls.length).toEqual(2);
     });
 
-    it("Stateful components under container can still re-render even if the store has not change", () => {
+    it("Stateful components under container can still re-render even if the store has not changed", () => {
       const store = createStore({
         mount1: { a: 1 },
         mount2: { b: 2 }

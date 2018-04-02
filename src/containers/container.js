@@ -27,20 +27,7 @@ export const _Container = vdom => {
 export const _mapper = vdom => {
   const h = vdom.h || vdom.createElement;
 
-  const perf = (Wrapped, keys) =>
-    class Perf extends vdom.Component {
-      shouldComponentUpdate(nextProps) {
-        return keys.some(key => nextProps[key] !== this.props[key]);
-      }
-
-      render() {
-        return <Wrapped {...this.props} />;
-      }
-    };
-
   return (propMappings = {}, actionMappings = {}) => Wrapped => {
-    const PerfComponent = perf(Wrapped, Object.keys(propMappings));
-
     return class Mapper extends vdom.Component {
       static contextTypes = {
         store: () => {}
@@ -49,6 +36,18 @@ export const _mapper = vdom => {
       constructor(props, context) {
         super(props, context);
         this.unsubscribe = this.store.subscribe(this.handleStoreUpdate);
+        this.propMappingKeys = Object.keys(propMappings);
+        this.mappedProps = {};
+        for (let i = 0; i < this.propMappingKeys.length; i++) {
+          const key = this.propMappingKeys[i];
+          this.mappedProps[key] = propMappings[key](this.store, this.props);
+        }
+
+        this.mappedActions = {};
+        for (const key in actionMappings) {
+          this.mappedActions[key] = (...args) =>
+            actionMappings[key](this.store, this.props, ...args);
+        }
       }
 
       get store() {
@@ -57,29 +56,34 @@ export const _mapper = vdom => {
         return store;
       }
 
+      shouldComponentUpdate() {
+        return false;
+      }
+
       componentWillUnmount() {
         this.unsubscribe();
       }
 
       handleStoreUpdate = () => {
-        this.forceUpdate();
+        let hasPropsChanged = false;
+        for (let i = 0; i < this.propMappingKeys.length; i++) {
+          const key = this.propMappingKeys[i];
+          const prop = propMappings[key](this.store, this.props);
+          if (prop !== this.mappedProps[key]) hasPropsChanged = true;
+          this.mappedProps[key] = prop;
+        }
+
+        if (hasPropsChanged) this.forceUpdate();
       };
 
       render() {
-        const { store, ...ownProps } = this.props; // eslint-disable-line no-unused-vars
-
-        const mapped = {};
-        for (const key in propMappings) {
-          mapped[key] = propMappings[key](this.store, ownProps);
-        }
-
-        const actions = {};
-        for (const key in actionMappings) {
-          actions[key] = (...args) =>
-            actionMappings[key](this.store, ownProps, ...args);
-        }
-
-        return <PerfComponent {...ownProps} {...mapped} {...actions} />;
+        return (
+          <Wrapped
+            {...this.props}
+            {...this.mappedProps}
+            {...this.mappedActions}
+          />
+        );
       }
     };
   };
