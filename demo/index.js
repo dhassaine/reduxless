@@ -12,7 +12,6 @@ import {
   validator as counterValidator2
 } from "./features/counter2/actions-selectors";
 import { createStore, Container, enableHistory } from "../src/preact";
-import createDocsExample from "./docs-example";
 
 const store = createStore(
   Object.assign(counterInitialState, counterInitialState2),
@@ -30,5 +29,3 @@ render(
   </Container>,
   document.getElementById("root")
 );
-
-createDocsExample();
