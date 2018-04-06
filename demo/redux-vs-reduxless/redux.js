@@ -9,10 +9,7 @@ const addTodo = text => ({
   id: nextTodoId++,
   text
 });
-const setVisibilityFilter = filter => ({
-  type: "SET_VISIBILITY_FILTER",
-  filter
-});
+
 const toggleTodo = id => ({
   type: "TOGGLE_TODO",
   id
@@ -39,6 +36,23 @@ const todosReducer = (state = [], action) => {
   }
 };
 
+const getVisibleTodos = (todos, filter) => {
+  switch (filter) {
+    case "SHOW_COMPLETED":
+      return todos.filter(t => t.completed);
+    case "SHOW_ACTIVE":
+      return todos.filter(t => !t.completed);
+    case "SHOW_ALL":
+    default:
+      return todos;
+  }
+};
+
+const setVisibilityFilter = filter => ({
+  type: "SET_VISIBILITY_FILTER",
+  filter
+});
+
 const visibilityFilterReducer = (state = "SHOW_ALL", action) => {
   switch (action.type) {
     case "SET_VISIBILITY_FILTER":
@@ -47,6 +61,8 @@ const visibilityFilterReducer = (state = "SHOW_ALL", action) => {
       return state;
   }
 };
+
+// Components and Containers
 
 const AddTodo = ({ dispatch }) => {
   let input;
@@ -69,6 +85,7 @@ const AddTodo = ({ dispatch }) => {
   );
 };
 const ConnectedAddTodo = connect()(AddTodo);
+
 const Todo = ({ onClick, completed, text }) => (
   <li
     onClick={onClick}
@@ -87,18 +104,6 @@ const TodoList = ({ todos, toggleTodo }) => (
     ))}
   </ul>
 );
-
-const getVisibleTodos = (todos, filter) => {
-  switch (filter) {
-    case "SHOW_COMPLETED":
-      return todos.filter(t => t.completed);
-    case "SHOW_ACTIVE":
-      return todos.filter(t => !t.completed);
-    case "SHOW_ALL":
-    default:
-      return todos;
-  }
-};
 
 const VisibleTodoList = connect(
   state => ({
