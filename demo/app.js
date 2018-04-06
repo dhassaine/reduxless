@@ -46,7 +46,7 @@ export default () => {
         <Wrapper render={createReduxlessExample} />
       </Match>
 
-      <Match path={path => !path.startsWith("/redux")}>
+      <Match path={path => !path.match(/redux($|\?)/)}>
         <footer>Reduxless ftw!</footer>
       </Match>
     </div>
