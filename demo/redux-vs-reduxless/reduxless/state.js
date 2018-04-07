@@ -27,6 +27,8 @@ const setVisibilityFilter = (store, ownProps) =>
 
 const todos = store => store.get("todos");
 const filter = store => store.get("visibilityFilter");
+// If a selector does anything more than a simple get or one line operation
+// then wrap it with selectorMemoizer
 const getVisibleTodos = selectorMemoizer(todos, filter, (todos, filter) => {
   switch (filter) {
     case "SHOW_COMPLETED":
