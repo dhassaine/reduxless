@@ -1,53 +1,7 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import { createStore, mapper, Container } from "../../src/react";
-
-// actions
-let nextTodoId = 0;
-const addTodo = (store, ownProps, text) =>
-  store.set("todos", [
-    ...store.get("todos"),
-    {
-      id: nextTodoId++,
-      text,
-      completed: false
-    }
-  ]);
-
-const toggleTodo = (store, ownProps, id) =>
-  store.set(
-    "todos",
-    store
-      .get("todos")
-      .map(
-        todo =>
-          todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-  );
-
-const setVisibilityFilter = (store, ownProps) =>
-  store.set("visibilityFilter", ownProps.filter);
-
-// selectors
-const getVisibleTodos = store => {
-  const todos = store.get("todos");
-  const filter = store.get("visibilityFilter");
-
-  switch (filter) {
-    case "SHOW_COMPLETED":
-      return todos.filter(t => t.completed);
-    case "SHOW_ACTIVE":
-      return todos.filter(t => !t.completed);
-    case "SHOW_ALL":
-    default:
-      return todos;
-  }
-};
-
-const getVisibilityFilter = (store, ownProps) =>
-  ownProps.filter === store.get("visibilityFilter");
-
-// Components and Containers
+import { mapper, Container } from "../../../src/react";
+import { actions, selectors, store } from "./state";
 
 const AddTodo = ({ addTodo }) => {
   let input;
@@ -70,7 +24,7 @@ const AddTodo = ({ addTodo }) => {
   );
 };
 
-const ConnectedAddTodo = mapper({}, { addTodo })(AddTodo);
+const ConnectedAddTodo = mapper({}, { addTodo: actions.addTodo })(AddTodo);
 
 const Todo = ({ onClick, completed, text }) => (
   <li
@@ -93,10 +47,10 @@ const TodoList = ({ todos, toggleTodo }) => (
 
 const VisibleTodoList = mapper(
   {
-    todos: getVisibleTodos
+    todos: selectors.getVisibleTodos
   },
   {
-    toggleTodo
+    toggleTodo: actions.toggleTodo
   }
 )(TodoList);
 
@@ -114,10 +68,10 @@ const Link = ({ active, children, onClick }) => (
 
 const FilterLink = mapper(
   {
-    active: getVisibilityFilter
+    active: selectors.getVisibilityFilter
   },
   {
-    onClick: setVisibilityFilter
+    onClick: actions.setVisibilityFilter
   }
 )(Link);
 
@@ -137,8 +91,6 @@ const App = () => (
     <Footer />
   </div>
 );
-
-const store = createStore({ todos: [], visibilityFilter: "SHOW_ALL" });
 
 export default dom => {
   render(
