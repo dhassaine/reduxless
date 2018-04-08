@@ -1,0 +1,49 @@
+.app {
+  display: grid;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: auto 1fr;
+}
+
+.navigation {
+  display: flex;
+  grid-row: 1;
+  grid-column: 1 / -1;
+  background-color: black;
+  padding: 20px;
+}
+
+.navigation a {
+  color: white;
+}
+
+.content {
+  grid-row: 2;
+  grid-column: 1;
+  padding: 10px;
+}
+
+.console {
+  grid-row: 2;
+  grid-column: 2;
+  height: 100%;
+}
+
+.ftw {
+  color: crimson;
+}
+
+@media only screen and (max-width: 600px) {
+  .app {
+    grid-template-columns: 1fr;
+  }
+
+  .console {
+    grid-row: 3;
+    grid-column: 1;
+  }
+}

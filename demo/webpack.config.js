@@ -1,4 +1,7 @@
 const path = require("path");
+const postcssImport = require("postcss-import");
+const autoprefixer = require("autoprefixer");
+const precss = require("precss");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   template: path.resolve(__dirname, "./index.html"),
@@ -37,6 +40,27 @@ module.exports = {
             plugins: [["transform-object-assign"]]
           }
         }
+      },
+      {
+        test: /\.css$/,
+        exclude: /node_modules/,
+        use: [
+          { loader: "style-loader" },
+          {
+            loader: "css-loader",
+            options: {
+              modules: true,
+              localIdentName: "[name]-[local]--[hash:base64:8]",
+              importLoaders: 1
+            }
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              plugins: () => [postcssImport, autoprefixer, precss]
+            }
+          }
+        ]
       }
     ]
   },

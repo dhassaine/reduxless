@@ -11,18 +11,23 @@ export class Console extends Component {
     }
   }
 
-  render({ clearConsole, consoleMessage }) {
+  render({ clearConsole, consoleMessage, style = {}, ...rest }) {
     return (
-      <div>
+      <div
+        style={{
+          backgroundColor: "black",
+          padding: 20,
+          lineHeight: "1.5em",
+          minHeight: 100,
+          overflow: "auto",
+          ...style
+        }}
+        {...rest}
+      >
         <pre
           ref={ref => (this.container = ref)}
           style={{
-            backgroundColor: "black",
-            color: "#ffeb3b",
-            padding: 20,
-            lineHeight: "1.5em",
-            height: 100,
-            overflow: "auto"
+            color: "Chartreuse"
           }}
         >
           {consoleMessage}

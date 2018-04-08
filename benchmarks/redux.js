@@ -1,5 +1,5 @@
 const redux = require("redux");
-const STATE_SIZE = 1000;
+const STATE_SIZE = require("./constants").STATE_SIZE;
 
 const ActionType1 = "ADD1";
 
