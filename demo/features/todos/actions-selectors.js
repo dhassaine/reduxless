@@ -1,27 +1,33 @@
-const mountPoint = 'todo/todos';
+const mountPoint = "todo/todos";
 
-export const selectTodos = state => 
-  state.get(mountPoint, state) || [];
+const initialState = [];
+export const selectTodos = store =>
+  store.get(mountPoint, store) || initialState;
 
-export const setTodos = (state, todos) => 
-  state.set(mountPoint, todos);
+export const setTodos = (store, todos) => store.set(mountPoint, todos);
 
-export const toggleTodo = (state, _, id) => {
-  const todos = selectTodos(state);
+export const toggleTodo = (store, _, id) => {
+  const todos = selectTodos(store);
   const newState = todos.map(todo => {
-    return todo.id == id ? 
-      {id: todo.id, text: todo.text, completed: !(todo.completed)} :
-      todo;
+    return todo.id == id
+      ? { id: todo.id, text: todo.text, completed: !todo.completed }
+      : todo;
   });
-  setTodos(state, newState);
+  setTodos(store, newState);
 };
 
-export const addTodo = (state, _, text) => {
-  const todos = selectTodos(state);
-  const id = todos.reduce((max, todo) => todo.id > max ? todo.id : max, 0) + 1;
-  setTodos(state, todos.concat([{
-    id,
-    completed: false,
-    text
-  }]));
+export const addTodo = (store, _, text) => {
+  const todos = selectTodos(store);
+  const id =
+    todos.reduce((max, todo) => (todo.id > max ? todo.id : max), 0) + 1;
+  setTodos(
+    store,
+    todos.concat([
+      {
+        id,
+        completed: false,
+        text
+      }
+    ])
+  );
 };

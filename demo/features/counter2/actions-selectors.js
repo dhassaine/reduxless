@@ -4,12 +4,6 @@ export const validator = data => ({
   valid: typeof data == "object" && typeof data.value == "number"
 });
 
-export const initialState = {
-  [mountPoint]: {
-    value: 0
-  }
-};
-
 export const selectCounter = state => {
   const counter = state.get(mountPoint, state);
   if (counter) {

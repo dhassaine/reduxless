@@ -12,11 +12,19 @@ export const Counter = ({
   value,
   onIncrement,
   onDecrement,
-  onIncrementAsync
+  onIncrementAsync,
+  logMessage
 }) => {
-  console.log("rendering counter 2");
+  logMessage("Rendering Counter2");
   return (
-    <div style={{ border: "1px solid black", padding: 10, margin: 10 }}>
+    <div
+      style={{
+        border: "1px solid black",
+        padding: "10px",
+        margin: 10,
+        boxSizing: "border-box"
+      }}
+    >
       <p>
         Hitting the increment/decrement buttons will replace the browser history
       </p>
