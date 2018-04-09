@@ -13,7 +13,7 @@ module.exports = {
   entry: path.resolve(__dirname, "./index.js"),
   output: {
     path: path.resolve(__dirname, "public"),
-    filename: "demo.js",
+    filename: "demo-[name]-[chunkhash:10].js",
     publicPath: ""
   },
   mode: "development",
