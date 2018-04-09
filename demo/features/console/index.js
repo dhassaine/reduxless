@@ -23,9 +23,9 @@ export class Console extends Component {
           ...style
         }}
         {...rest}
+        ref={ref => (this.container = ref)}
       >
         <pre
-          ref={ref => (this.container = ref)}
           style={{
             color: "Chartreuse"
           }}
