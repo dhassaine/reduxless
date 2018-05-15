@@ -5,7 +5,7 @@ import _Match from "./router/Match";
 import createStore from "./state/store";
 import selectorMemoizer from "./utilities/memoizer";
 
-export { createStore };
+export { createStore, selectorMemoizer, enableHistory };
 
 export default vdom => ({
   Container: _Container(vdom),
