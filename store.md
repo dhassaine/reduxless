@@ -100,4 +100,4 @@ store.withMutations(s => {
 Adds `fn` to a list of observers that will be executed every time the store is updated. It returns an `unsubscribe` function so you can remove the observer later.
 
 ### `addUpdateIntercept(fn)` <a id="addUpdateIntercept"></a>
-This is low-level API for adding middleware functionality to the store on state changes.
+This registers a function that will be called on every state update before the observers are notified.
