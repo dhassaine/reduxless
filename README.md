@@ -38,6 +38,12 @@ import createReduxless from "reduxless";
 const reduxless = createReduxless(require("inferno"));
 ```
 
+### Server-side
+If you don't need the bindings then you can do:
+```js
+import {createStore, selectorMemoizer} from "reduxless";
+```
+
 
 ## The general gist
 The following snippet of code demonstrates how reduxless can be used with a React-like library -- in this case [Preact](https://preactjs.com/):
