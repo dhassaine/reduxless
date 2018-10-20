@@ -2,6 +2,7 @@ import babel from "rollup-plugin-babel";
 import resolve from "rollup-plugin-node-resolve";
 import json from "rollup-plugin-json";
 import minify from "rollup-plugin-babel-minify";
+import typescript from "rollup-plugin-typescript2";
 
 const base = {
   external: ["react", "react-dom", "preact", "inferno-component", "prop-types"]
@@ -10,6 +11,10 @@ const base = {
 const plugins = [
   json(),
   resolve(),
+  typescript({
+    useTsconfigDeclarationDir: true,
+    tsconfig: "tsconfig.json"
+  }),
   babel({
     exclude: ["node_modules/**"],
     plugins: ["external-helpers"]
@@ -19,68 +24,74 @@ const plugins = [
 export default [
   {
     ...base,
-    input: "src/index.js",
+    input: "src/index.ts",
     output: {
-      file: "dist/reduxless.esm.js",
+      file: "dist/core/index.esm.js",
       format: "es"
     },
+    sourcemap: true,
     plugins
   },
   {
     ...base,
-    input: "src/index.js",
+    input: "src/index.ts",
     output: {
-      file: "dist/reduxless.js",
+      file: "dist/core/index.js",
       format: "cjs"
     },
+    sourcemap: true,
     plugins
   },
   {
     ...base,
-    input: "src/index.js",
+    input: "src/index.ts",
     output: {
-      file: "dist/reduxless.min.js",
+      file: "dist/core/index.min.js",
       format: "cjs"
     },
     plugins: [...plugins, minify({ comments: false, sourceMap: false })]
   },
   {
     ...base,
-    input: "src/react/index.js",
+    input: "src/react/index.ts",
     output: {
-      file: "react.js",
+      file: "dist/react/index.js",
       format: "cjs"
     },
+    sourcemap: true,
     plugins
   },
 
   {
     ...base,
-    input: "src/react/index.js",
+    input: "src/react/index.ts",
     output: {
-      file: "react.esm.js",
+      file: "dist/react/index.esm.js",
       format: "es"
     },
+    sourcemap: true,
     plugins
   },
 
   {
     ...base,
-    input: "src/preact/index.js",
+    input: "src/preact/index.ts",
     output: {
-      file: "preact.js",
+      file: "dist/preact/index.js",
       format: "cjs"
     },
+    sourcemap: true,
     plugins
   },
 
   {
     ...base,
-    input: "src/preact/index.js",
+    input: "src/preact/index.ts",
     output: {
-      file: "preact.esm.js",
+      file: "dist/preact/index.esm.js",
       format: "es"
     },
+    sourcemap: true,
     plugins
   }
 ];

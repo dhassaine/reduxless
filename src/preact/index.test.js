@@ -1,5 +1,5 @@
 /* global describe, it, expect */
-import * as api from "./index";
+import * as api from ".";
 import Wrapper from "../index";
 
 class Component {}

@@ -20,7 +20,15 @@ const defaultOptions = {
   batchUpdateFn: fn => fn()
 };
 
-export default (incomingStore = {}, validators = {}, options = {}) => {
+export interface Validators {
+  [index: string]: (...args: any[]) => { valid: boolean; errors: any[] };
+}
+
+export default (
+  incomingStore = {},
+  validators: Validators = {},
+  options = {}
+) => {
   const { throwOnValidation, throwOnMissingSchemas, batchUpdateFn } = {
     ...defaultOptions,
     ...options

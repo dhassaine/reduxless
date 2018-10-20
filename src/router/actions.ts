@@ -1,6 +1,6 @@
 import { extractPartsFromPath } from "./selectors";
 
-const generateNewUrl = (store, newPath) => {
+const generateNewUrl = (store, newPath?) => {
   const { pathName, query } = extractPartsFromPath(store);
 
   const storeDataParam = `storeData=${encodeURIComponent(
