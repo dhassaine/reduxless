@@ -1,5 +1,11 @@
-function selectorMemoizer(...selectors) {
-  const fn = selectors.pop();
+import { Store } from "../state/store";
+
+type selector = (store: Store) => any;
+
+function selectorMemoizer<T>(
+  mapper: (...props) => T,
+  ...selectors: selector[]
+): (store: Store) => T {
   let lastResult = null;
   let lastProps = null;
 
@@ -22,7 +28,7 @@ function selectorMemoizer(...selectors) {
 
     if (!hasPropsChanged) return lastResult;
 
-    lastResult = fn.apply(null, lastProps);
+    lastResult = mapper.apply(null, lastProps);
     return lastResult;
   };
 }

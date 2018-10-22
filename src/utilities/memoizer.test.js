@@ -10,7 +10,7 @@ describe("selectorMemoizer", () => {
       a: 1
     };
     const fakeStore = createStore(data);
-    const memoisedA = selectorMemoizer(store => store.get("a"), fn);
+    const memoisedA = selectorMemoizer(fn, store => store.get("a"));
     expect(memoisedA(fakeStore)).to.equal(1);
     expect(fn.mock.calls.length).to.equal(1);
     expect(memoisedA(fakeStore)).to.equal(1);
@@ -31,9 +31,9 @@ describe("selectorMemoizer", () => {
     };
     const fakeStore = createStore(data);
     const memoisedA = selectorMemoizer(
+      fn,
       store => store.get("a"),
-      store => store.get("b"),
-      fn
+      store => store.get("b")
     );
     expect(memoisedA(fakeStore)).to.equal(3);
     expect(fn.mock.calls.length).to.equal(1);
