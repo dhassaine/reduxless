@@ -1,4 +1,3 @@
-/* @jsx h */
 export const _Container = vdom => {
   const h = vdom.h || vdom.createElement;
   return class Container extends vdom.Component {
@@ -19,7 +18,8 @@ export const _Container = vdom => {
 
     render() {
       const { children, store, ...rest } = this.props; // eslint-disable-line no-unused-vars
-      return <div {...rest}>{children}</div>;
+
+      return h("div", rest, children);
     }
   };
 };
@@ -82,12 +82,15 @@ export const _mapper = vdom => {
       };
 
       render() {
-        return (
-          <Wrapped
-            {...this.props}
-            {...this.mappedProps}
-            {...this.mappedActions}
-          />
+        const { children, ...rest } = this.props;
+        return h(
+          Wrapped,
+          {
+            ...rest,
+            ...this.mappedProps,
+            ...this.mappedActions
+          },
+          children
         );
       }
     };

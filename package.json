@@ -1,5 +1,5 @@
 {
-  "name": "reduxless",
+  "name": "@reduxless/core",
   "version": "4.0.0",
   "description": "A small and performant state management and routing library with unidirectional data flow",
   "main": "dist/index.js",

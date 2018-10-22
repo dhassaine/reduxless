@@ -39,5 +39,5 @@ export const pushHistory = store => {
   history.pushState(null, null, generateNewUrl(store));
 };
 
-export const replaceHistory = (store, newPath) =>
+export const replaceHistory = (store, newPath?) =>
   history.replaceState(null, null, generateNewUrl(store, newPath));

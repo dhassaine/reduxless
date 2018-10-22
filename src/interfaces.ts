@@ -12,8 +12,11 @@ export interface Store {
   setAll: (mountPointsToValues: MountPointsToValues) => void;
   get: (mountPoint: MountPoint) => any;
   getAll: (mountPoints: MountPoint[]) => MountPointsToValues;
-  withMutations: (mutableStore: Store) => void;
+  withMutations: (fn: ((mutableStore: Store) => void)) => void;
   addUpdateIntercept: (fn: () => any) => void;
   ping: () => void;
   subscribe: (fn: () => any) => () => void;
+  syncToLocations?: string[];
+  useHash?: boolean;
+  syncedLocationToStore?: boolean;
 }

@@ -1,4 +1,5 @@
 import { getStateFromUrl, pushHistory, replaceHistory } from "./actions";
+import { Store } from "../interfaces";
 
 export const debounce = (time, fn) => {
   let timer = null;
@@ -38,7 +39,7 @@ const initialiseLastState = (
 };
 
 export function enableHistory(
-  store,
+  store: Store,
   pushStateMountPoints = [],
   replaceStateMountPoints = [],
   options = {}
