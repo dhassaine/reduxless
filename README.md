@@ -18,7 +18,7 @@ Reduxless combines the roles of reducers and actions into one operation: the two
 To install the stable version:
 
 ```
-npm install reduxless
+npm install @reduxless/core
 ```
 
 ## Importing
@@ -33,7 +33,7 @@ Reduxless can be used with any React-like library. There are two libraries with 
 import reduxless from "@reduxless/preact";
 ```
 
-### To include it in a Rreact project:
+### To include it in a React project:
 
 `npm install @reduxless/react`
 
@@ -46,9 +46,9 @@ import reduxless from "@reduxless/react";
 Alternatively if you are using a library other than React or Preact, for example, inferno, you can inject the module into Reduxless like so:
 
 ```js
-import createReduxless from "reduxless";
+import { makeComponents } from "@reduxless/core";
 
-const reduxless = createReduxless(require("inferno"));
+const reduxless = makeComponents(require("inferno"));
 ```
 
 ### Server-side
@@ -56,7 +56,7 @@ const reduxless = createReduxless(require("inferno"));
 If you don't need the bindings then you can do:
 
 ```js
-import { createStore, selectorMemoizer } from "reduxless";
+import { createStore, selectorMemoizer } from "@reduxless/core";
 ```
 
 ## The general gist
@@ -65,7 +65,8 @@ The following snippet of code demonstrates how reduxless can be used with a Reac
 
 ```jsx
 import { h, render } from "preact";
-import { createStore, Container, mapper } from "@reduxless/preact";
+import { createStore } from "@reduxless/core";
+import { Container, mapper } from "@reduxless/preact";
 
 const store = createStore({ name: "Bart Simpson" });
 
@@ -112,7 +113,7 @@ Reduxless offers a straightforward mechanism for both routing (i.e. which compon
 In the example above if we wanted the `name` property synced, it would be as simple as:
 
 ```js
-import { createStore, enableHistory } from "@reduxless/preact";
+import { createStore, enableHistory } from "@reduxless/core";
 
 const store = createStore({ name: "Bart Simpson" });
 enableHistory(this.store, ["name"]);
@@ -122,6 +123,7 @@ Routing is as straightforward as:
 
 ```jsx
 import { h } from "preact";
+import { createStore } from "@reduxless/core";
 import { Match, Link } from "@reduxless/preact";
 
 const store = createStore({ name: "Bart Simpson" });
