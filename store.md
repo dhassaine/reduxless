@@ -20,7 +20,7 @@
 ## Basic example
 
 ```js
-import { createStore } from 'reduxless/preact';
+import { createStore } from 'preact-reduxless';
 
 const initialValues = { name: 'Bart', surname: 'Simpson' };
 const store = createStore(initialValues);

@@ -1,6 +1,6 @@
 {
   "name": "reduxless",
-  "version": "3.0.3",
+  "version": "4.0.0",
   "description": "A small and performant state management and routing library with unidirectional data flow",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",

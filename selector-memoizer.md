@@ -7,7 +7,7 @@ This function takes an object, `selectors`, containing the functions necessary t
 You may have a selector that maps the raw JSON response from an API call to something more usable like a map of ID's to resources. You really don't want to perform this operation every time the component is re-rendered as that would kill performance and create a lot of garbage on the memory. Memoizing this operation is the way to go.
 
 ```js
-import { selectorMemoizer } from 'reduxless/preact'
+import { selectorMemoizer } from 'preact-reduxless'
 
 export const resources = selectorMemoizer(
   {

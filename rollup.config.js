@@ -4,10 +4,6 @@ import json from "rollup-plugin-json";
 import minify from "rollup-plugin-babel-minify";
 import typescript from "rollup-plugin-typescript2";
 
-const base = {
-  external: ["react", "react-dom", "preact", "inferno-component", "prop-types"]
-};
-
 const plugins = [
   json(),
   resolve(),
@@ -23,75 +19,29 @@ const plugins = [
 
 export default [
   {
-    ...base,
     input: "src/index.ts",
     output: {
-      file: "dist/core/index.esm.js",
+      file: "dist/index.esm.js",
       format: "es"
     },
     sourcemap: true,
     plugins
   },
   {
-    ...base,
     input: "src/index.ts",
     output: {
-      file: "dist/core/index.js",
+      file: "dist/index.js",
       format: "cjs"
     },
     sourcemap: true,
     plugins
   },
   {
-    ...base,
     input: "src/index.ts",
     output: {
-      file: "dist/core/index.min.js",
+      file: "dist/index.min.js",
       format: "cjs"
     },
     plugins: [...plugins, minify({ comments: false, sourceMap: false })]
-  },
-  {
-    ...base,
-    input: "src/react/index.ts",
-    output: {
-      file: "dist/react/index.js",
-      format: "cjs"
-    },
-    sourcemap: true,
-    plugins
-  },
-
-  {
-    ...base,
-    input: "src/react/index.ts",
-    output: {
-      file: "dist/react/index.esm.js",
-      format: "es"
-    },
-    sourcemap: true,
-    plugins
-  },
-
-  {
-    ...base,
-    input: "src/preact/index.ts",
-    output: {
-      file: "dist/preact/index.js",
-      format: "cjs"
-    },
-    sourcemap: true,
-    plugins
-  },
-
-  {
-    ...base,
-    input: "src/preact/index.ts",
-    output: {
-      file: "dist/preact/index.esm.js",
-      format: "es"
-    },
-    sourcemap: true,
-    plugins
   }
 ];
