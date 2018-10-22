@@ -2,19 +2,17 @@
   "compilerOptions": {
     "target": "es2015",
     "lib": ["dom", "es2018"],
-    "declarationDir": "./dist",
     "outDir": "./dist",
     "rootDir": "./src",
-    "sourceMap": true,
     "module": "es6",
+    "moduleResolution": "node",
+    "sourceMap": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
     "declaration": true,
-    "jsx": "react",
-    "declarationMap": false
+    "declarationDir": "./dist",
+    "resolveJsonModule": true,
+    "jsx": "react"
   },
   "typeAcquisition": {
     "enable": true
