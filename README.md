@@ -27,10 +27,10 @@ Reduxless can be used with any React-like library. There are two libraries with 
 
 ### To include it in a Preact project:
 
-`npm install @preact-reduxless`
+`npm install @reduxless/preact`
 
 ```js
-import reduxless from "preact-reduxless";
+import reduxless from "@reduxless/preact";
 ```
 
 ### To include it in a Rreact project:
@@ -38,7 +38,7 @@ import reduxless from "preact-reduxless";
 `npm install @reduxless/react`
 
 ```js
-import reduxless from "reduxless/react";
+import reduxless from "@reduxless/react";
 ```
 
 ### Other libraries
