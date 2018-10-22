@@ -1,7 +1,10 @@
 import { getStateFromUrl, pushHistory, replaceHistory } from "./actions";
-import { Store } from "../interfaces";
+import { RouterEnabledStore, Validators } from "../interfaces";
+import createStore from "../state/store";
 
-export const debounce = (time, fn) => {
+type GenericFunction = (...args: any[]) => any;
+
+export const debounce = (time: number, fn: GenericFunction) => {
   let timer = null;
   const cancel = () => {
     if (timer) clearTimeout(timer);
@@ -23,12 +26,12 @@ const defaultOptions = {
 };
 
 const initialiseLastState = (
-  store,
-  pushStateMountPoints,
-  replaceStateMountPoints
+  store: RouterEnabledStore,
+  pushStateMountPoints: string[],
+  replaceStateMountPoints: string[]
 ) => {
-  const lastPushState = [];
-  const lastReplaceState = [];
+  const lastPushState: string[] = [];
+  const lastReplaceState: string[] = [];
   pushStateMountPoints.forEach(mountPoint =>
     lastPushState.push(store.get(mountPoint))
   );
@@ -38,53 +41,73 @@ const initialiseLastState = (
   return [lastPushState, lastReplaceState];
 };
 
-export function enableHistory(
-  store: Store,
-  pushStateMountPoints = [],
-  replaceStateMountPoints = [],
-  options = {}
-) {
+export function createRoutedStore(
+  incomingStore: any = {},
+  validators: Validators = {},
+  storeOptions = {},
+  pushStateMountPoints: string[] = [],
+  replaceStateMountPoints: string[] = [],
+  routerOptions = {}
+): RouterEnabledStore {
   const { debounceTime, useHash } = {
     ...defaultOptions,
-    ...options
+    ...routerOptions
   };
 
-  store.syncToLocations = pushStateMountPoints.concat(replaceStateMountPoints);
-  store.useHash = useHash;
+  const routedStore = createStore(
+    incomingStore,
+    validators,
+    storeOptions
+  ) as RouterEnabledStore;
+
+  const _subscribe = routedStore.subscribe;
+  routedStore.subscribe = (listener: GenericFunction) => {
+    window.addEventListener("popstate", popstate);
+    update(routedStore.syncToLocations);
+    if (routedStore.syncToLocations.length > 0) replaceHistory(routedStore);
+    const unsubscribe = _subscribe(listener);
+    return () => {
+      window.removeEventListener("popstate", popstate);
+      unsubscribe();
+    };
+  };
+
+  routedStore.syncToLocations = pushStateMountPoints.concat(
+    replaceStateMountPoints
+  );
+  routedStore.useHash = useHash;
 
   let lastPushState;
   let lastReplaceState;
 
-  const update = mountpoints => {
-    store.syncedLocationToStore = true;
-    const filteredStoreData = getStateFromUrl(store, mountpoints);
+  const update = (mountPoints: string[]) => {
+    console.log("update", mountPoints);
+    routedStore.syncedLocationToStore = true;
+    const filteredStoreData = getStateFromUrl(routedStore, mountPoints);
 
-    store.withMutations(s => {
+    routedStore.withMutations(s => {
       s.setAll(filteredStoreData);
       [lastPushState, lastReplaceState] = initialiseLastState(
-        store,
+        routedStore,
         pushStateMountPoints,
         replaceStateMountPoints
       );
     });
-    store.syncedLocationToStore = false;
+    routedStore.syncedLocationToStore = false;
   };
 
-  const popstate = () => update(pushStateMountPoints);
-
-  window.addEventListener("popstate", popstate);
-
-  update(store.syncToLocations);
-
-  if (store.syncToLocations.length > 0) replaceHistory(store);
+  const popstate = () => {
+    console.warn("POP!");
+    update(pushStateMountPoints);
+  };
 
   const debouncedReplaceState = debounce(debounceTime, () => {
-    replaceHistory(store);
+    replaceHistory(routedStore);
   });
 
-  store.addUpdateIntercept(() => {
-    if (store.syncedLocationToStore) {
-      store.syncedLocationToStore = false;
+  routedStore.addUpdateIntercept(() => {
+    if (routedStore.syncedLocationToStore) {
+      routedStore.syncedLocationToStore = false;
       return;
     }
 
@@ -92,27 +115,28 @@ export function enableHistory(
     let shouldReplaceState = false;
 
     pushStateMountPoints.forEach((mountPoint, idx) => {
-      const nextProp = store.get(mountPoint);
+      const nextProp = routedStore.get(mountPoint);
       if (lastPushState[idx] !== nextProp) shouldPushState = true;
 
       lastPushState[idx] = nextProp;
     });
 
     replaceStateMountPoints.forEach((mountPoint, idx) => {
-      const nextProp = store.get(mountPoint);
+      const nextProp = routedStore.get(mountPoint);
       if (lastReplaceState[idx] !== nextProp) shouldReplaceState = true;
 
       lastReplaceState[idx] = nextProp;
     });
 
     if (shouldPushState) {
-      pushHistory(store);
+      pushHistory(routedStore);
       debouncedReplaceState.cancel();
     } else if (shouldReplaceState) {
       debouncedReplaceState();
     }
   });
-  return () => window.removeEventListener("popstate", popstate);
+
+  return routedStore;
 }
 
 export { default as Match } from "./Match";

@@ -17,7 +17,10 @@ export interface Store {
   addUpdateIntercept: (fn: () => any) => void;
   ping: () => void;
   subscribe: (fn: () => any) => () => void;
-  syncToLocations?: string[];
-  useHash?: boolean;
-  syncedLocationToStore?: boolean;
+}
+
+export interface RouterEnabledStore extends Store {
+  syncToLocations: string[];
+  useHash: boolean;
+  syncedLocationToStore: boolean;
 }

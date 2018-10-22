@@ -1,5 +1,5 @@
 import { _Container, _mapper } from "./containers/container";
-import { enableHistory } from "./router";
+import { createRoutedStore } from "./router";
 import _Link from "./router/Link";
 import _Match from "./router/Match";
 import createStore from "./state/store";
@@ -12,4 +12,4 @@ const makeComponents = vdom => ({
   Match: _Match(vdom)
 });
 
-export { createStore, selectorMemoizer, enableHistory, makeComponents };
+export { createStore, selectorMemoizer, createRoutedStore, makeComponents };

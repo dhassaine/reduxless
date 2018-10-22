@@ -8,7 +8,9 @@ const makeSubject = () => {
       const id = idPtr;
       idPtr++;
       observers.set(id, callback);
-      return () => observers.delete(id);
+      return () => {
+        observers.delete(id);
+      };
     },
     next: (...args) => {
       observers.forEach(callback => callback(...args));

@@ -5,7 +5,7 @@ import { navigate } from "./actions";
 import renderer from "react-test-renderer";
 import { mount } from "enzyme";
 import { Match as _Match } from "./Match";
-import { makeComponents, createStore, enableHistory } from "../index";
+import { makeComponents, createStore, createRoutedStore } from "../index";
 const MatchSimple = _Match(require("react"));
 const { Container, Link, Match } = makeComponents(React);
 
@@ -19,12 +19,15 @@ describe("router/index", () => {
 
       afterEach(() => {
         if (unsubscribe) unsubscribe();
-        history.pushState(null, null, url);
+        window.history.pushState(null, null, url);
       });
 
       it("syncs storeData from the query parameters to the store", () => {
-        const store = createStore();
-        unsubscribe = enableHistory(store, ["counter", "counter2"]);
+        const store = createRoutedStore(undefined, undefined, undefined, [
+          "counter",
+          "counter2"
+        ]);
+        unsubscribe = store.subscribe(jest.fn());
 
         expect(store.get("counter")).toEqual({ value: 1 });
         expect(store.get("counter2")).toEqual({ value: 2 });
@@ -36,12 +39,15 @@ describe("router/index", () => {
 
       afterEach(() => {
         if (unsubscribe) unsubscribe();
-        history.pushState(null, null, url);
+        window.history.pushState(null, null, url);
       });
 
       it("syncs registered storeData from window.location to the store", done => {
-        const store = createStore();
-        unsubscribe = enableHistory(store, ["counter", "counter2"]);
+        const store = createRoutedStore(undefined, undefined, undefined, [
+          "counter",
+          "counter2"
+        ]);
+
         const assertions = [
           () => {
             expect(store.get("counter")).toEqual({ value: 1 });
@@ -65,24 +71,31 @@ describe("router/index", () => {
           if (assertions.length === 0) {
             return done();
           }
-          history.back();
+          window.history.back();
         });
 
-        history.pushState(
+        window.history.pushState(
           null,
           null,
           "http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A2%7D%2C%22counter2%22%3A%7B%22value%22%3A3%7D%7D"
         );
-        history.pushState(null, null, "/ignored");
-        history.back();
+        window.history.pushState(null, null, "/ignored");
+        window.history.back();
       });
 
       it("changes made directly to the registered sync data in the store automatically update the browser location", done => {
         jest.useFakeTimers();
-        const store = createStore();
-        unsubscribe = enableHistory(store, ["counter", "counter2"], [], {
-          debounceTime: 1000
-        });
+        const store = createRoutedStore(
+          undefined,
+          undefined,
+          undefined,
+          ["counter", "counter2"],
+          [],
+          {
+            debounceTime: 1000
+          }
+        );
+        unsubscribe = store.subscribe(jest.fn());
 
         expect(store.get("counter")).toEqual({ value: 1 });
         expect(store.get("counter2")).toEqual({ value: 2 });
@@ -100,7 +113,7 @@ describe("router/index", () => {
         jest.runOnlyPendingTimers();
       });
 
-      it("changes made directly to the replaceStateMountPoints and pushStateMountPoints in the store replace the browser location", done => {
+      it.only("changes made directly to the replaceStateMountPoints and pushStateMountPoints in the store replace the browser location", done => {
         jest.useFakeTimers();
 
         const oldPush = window.history.pushState;
@@ -113,12 +126,16 @@ describe("router/index", () => {
           oldReplace.bind(window.history)
         ));
 
-        const store = createStore();
-        expect(replaceState.mock.calls.length).toEqual(0);
-        unsubscribe = enableHistory(store, ["counter"], ["counter2"], {
-          debounceTime: 1000
-        });
-        expect(replaceState.mock.calls.length).toEqual(1);
+        const store = createRoutedStore(
+          undefined,
+          undefined,
+          undefined,
+          ["counter", "counter2"],
+          [],
+          {
+            debounceTime: 1000
+          }
+        );
 
         const assertions = [
           () => {
@@ -147,10 +164,9 @@ describe("router/index", () => {
           }
         ];
 
-        expect(store.get("counter")).toEqual({ value: 1 });
-        expect(store.get("counter2")).toEqual({ value: 2 });
+        expect(replaceState.mock.calls.length).toEqual(0);
 
-        store.subscribe(() => {
+        unsubscribe = store.subscribe(() => {
           const assert = assertions.shift();
           try {
             assert();
@@ -175,6 +191,11 @@ describe("router/index", () => {
           }
         });
 
+        expect(store.get("counter")).toEqual({ value: 1 });
+        expect(store.get("counter2")).toEqual({ value: 2 });
+
+        expect(replaceState.mock.calls.length).toEqual(1);
+
         store.set("counter", { value: 2 }); // pushState
         store.set("counter2", { value: 3 }); // replaceState
         store.set("counter", { value: 3 }); // pushState
@@ -196,7 +217,7 @@ describe("router/index", () => {
 
         const store = createStore();
         expect(replaceState.mock.calls.length).toEqual(0);
-        unsubscribe = enableHistory(store, [], ["counter2"], {
+        unsubscribe = createRoutedStore(store, [], ["counter2"], {
           debounceTime: 1000
         });
         expect(replaceState.mock.calls.length).toEqual(1);
@@ -274,7 +295,7 @@ describe("router/index", () => {
 
       it("renders children if the window.location path matches", () => {
         const store = createStore();
-        unsubscribe = enableHistory(store);
+        unsubscribe = createRoutedStore(store);
         const childComponent = jest.fn(() => null);
         const Component = () => childComponent();
 
@@ -319,7 +340,7 @@ describe("router/index", () => {
 
       it("does not render children if the window.location path does not match", () => {
         const store = createStore();
-        unsubscribe = enableHistory(store);
+        unsubscribe = createRoutedStore(store);
         const childComponent = jest.fn(() => null);
         const Component = () => childComponent();
 
@@ -335,7 +356,7 @@ describe("router/index", () => {
 
       it("renders children when the store updates and the paths match", () => {
         const store = createStore();
-        unsubscribe = enableHistory(store);
+        unsubscribe = createRoutedStore(store);
         const childComponent = jest.fn(() => null);
         const Component = () => childComponent();
 
@@ -363,7 +384,7 @@ describe("router/index", () => {
       it("pushes the path to the browser state", () => {
         history.pushState(null, null, "http://example.com/page1");
         const store = createStore();
-        unsubscribe = enableHistory(store);
+        unsubscribe = createRoutedStore(store);
         navigate(store, "page2");
         expect(window.location.href).toEqual("http://example.com/page2");
       });
@@ -371,7 +392,7 @@ describe("router/index", () => {
       it("maintains the store data", () => {
         history.pushState(null, null, "http://example.com/page1");
         const store = createStore({ counter: { value: 1 } });
-        unsubscribe = enableHistory(store, ["counter"]);
+        unsubscribe = createRoutedStore(store, ["counter"]);
         navigate(store, "page2");
         expect(window.location.href).toEqual(
           "http://example.com/page2?storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%7D"
@@ -381,7 +402,7 @@ describe("router/index", () => {
       it("pushes the path to the browser state if hash is being used", () => {
         history.pushState(null, null, "http://example.com/page1");
         const store = createStore();
-        unsubscribe = enableHistory(store, [], [], { useHash: true });
+        unsubscribe = createRoutedStore(store, [], [], { useHash: true });
         navigate(store, "page2");
         expect(window.location.href).toEqual("http://example.com/page2");
       });
@@ -401,7 +422,7 @@ describe("router/index", () => {
 
       it("updates location and store when clicked on", () => {
         const store = createStore();
-        unsubscribe = enableHistory(store);
+        unsubscribe = createRoutedStore(store);
 
         const component = mount(
           <Container store={store}>
@@ -467,7 +488,7 @@ describe("router/index", () => {
         counter: { value: 1 },
         counter2: { value: 1 }
       });
-      const disableHistory = enableHistory(store, ["counter"]);
+      const disableHistory = createRoutedStore(store, ["counter"]);
       expect(pushState.mock.calls.length).toEqual(0);
       navigate(store, "page2");
       expect(pushState.mock.calls.length).toEqual(1);
