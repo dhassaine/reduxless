@@ -1,6 +1,6 @@
 const Benchmark = require("benchmark");
 const createSelector = require("reselect").createSelector;
-const selectorMemoizer = require("../react").selectorMemoizer;
+const selectorMemoizer = require("../dist").selectorMemoizer;
 
 const suite = new Benchmark.Suite();
 
@@ -8,7 +8,7 @@ const selector1 = store => store.a;
 const selector2 = store => store.b;
 const fn = (a, b) => a.value * b.value;
 
-const reduxlessSelector = selectorMemoizer(selector1, selector2, fn);
+const reduxlessSelector = selectorMemoizer(fn, selector1, selector2);
 const reselectSelector = createSelector(selector1, selector2, fn);
 
 const store1 = {

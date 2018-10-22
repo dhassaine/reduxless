@@ -33,12 +33,12 @@ export default (
   };
   const state$ = makeSubject();
   const updateIntercepts = [];
-  const store = {};
+  const memory = new Map<string, any>();
   let batchUpdateInProgress = false;
 
   const validatorsMap = new Map(Object.entries(validators));
 
-  const validate = (mountPoint, payload) => {
+  const validate = (mountPoint: string, payload: any) => {
     let valid = true;
     if (validatorsMap.has(mountPoint)) {
       const validator = validatorsMap.get(mountPoint);
@@ -76,7 +76,7 @@ export default (
   };
 
   const _set = (mountPoint, payload) => {
-    if (validate(mountPoint, payload)) store[mountPoint] = payload;
+    if (validate(mountPoint, payload)) memory.set(mountPoint, payload);
   };
 
   const setAll = mountPointsAndPayloads => {
@@ -94,17 +94,17 @@ export default (
 
   const addUpdateIntercept = fn => updateIntercepts.push(fn);
 
-  const set = (mountPoint, payload) => {
+  const set = (mountPoint: string, payload: any) => {
     _set(mountPoint, payload);
     update();
   };
 
-  const get = mountPoint => store[mountPoint];
+  const get = (mountPoint: string) => memory.get(mountPoint);
 
-  const getAll = mountPoints =>
+  const getAll = (mountPoints: string[]) =>
     mountPoints.reduce(
       (results, mountPoint) => (
-        (results[mountPoint] = store[mountPoint]), results
+        (results[mountPoint] = memory.get(mountPoint)), results
       ),
       {}
     );

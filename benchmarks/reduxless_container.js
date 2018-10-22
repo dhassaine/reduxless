@@ -1,7 +1,10 @@
 const renderer = require("react-test-renderer");
 const React = require("react");
-const reduxless = require("../react");
+const reduxless = require("../dist");
 const STATE_SIZE = require("./constants").STATE_SIZE;
+
+const { createStore } = reduxless;
+const { mapper, Container } = reduxless.makeComponents(React);
 
 const initialState = { nested: { value: 1 } };
 for (let i = 1; i <= STATE_SIZE; i++) {
@@ -11,7 +14,7 @@ for (let i = 1; i <= STATE_SIZE; i++) {
   };
 }
 
-const store = reduxless.createStore(initialState);
+const store = createStore(initialState);
 
 const setAction1 = (store, value1, value2) =>
   store.set("mount1", {
@@ -30,15 +33,15 @@ const props = selectors.reduce((result, fn, i) => {
 }, {});
 
 const NestedComponent = () => null;
-const MappedNestedComponent = reduxless.mapper({
+const MappedNestedComponent = mapper({
   prop: store => store.get("nested")
 })(NestedComponent);
 
 const Component = () => React.createElement(MappedNestedComponent, null, null);
-const MappedComponent = reduxless.mapper(props)(Component);
+const MappedComponent = mapper(props)(Component);
 renderer.create(
   React.createElement(
-    reduxless.Container,
+    Container,
     { store },
     React.createElement(MappedComponent, null, null)
   )
