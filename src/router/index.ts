@@ -81,7 +81,6 @@ export function createRoutedStore(
   let lastReplaceState;
 
   const update = (mountPoints: string[]) => {
-    console.log("update", mountPoints);
     routedStore.syncedLocationToStore = true;
     const filteredStoreData = getStateFromUrl(routedStore, mountPoints);
 
@@ -97,7 +96,6 @@ export function createRoutedStore(
   };
 
   const popstate = () => {
-    console.warn("POP!");
     update(pushStateMountPoints);
   };
 
