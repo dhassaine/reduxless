@@ -1,5 +1,4 @@
-import { Store } from "../state/store";
-
+import { Store } from "../interfaces";
 type selector = (store: Store) => any;
 
 function selectorMemoizer<T>(
