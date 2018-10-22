@@ -1,14 +1,13 @@
 /* global describe, it, expect, jest, afterEach, beforeEach */
 import React from "react";
-import Wrapper from "../index";
 import { debounce } from "./index";
 import { navigate } from "./actions";
 import renderer from "react-test-renderer";
 import { mount } from "enzyme";
 import { Match as _Match } from "./Match";
+import { makeComponents, createStore, enableHistory } from "../index";
 const MatchSimple = _Match(require("react"));
-
-const { Container, createStore, enableHistory, Link, Match } = Wrapper(React);
+const { Container, Link, Match } = makeComponents(React);
 
 const url =
   "http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D";

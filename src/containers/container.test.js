@@ -2,9 +2,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import renderer from "react-test-renderer";
-import Wrapper from "../index";
-
-const { Container, createStore, mapper } = Wrapper(React);
+import { makeComponents, createStore } from "../index";
+const { Container, mapper } = makeComponents(React);
 
 class ErrorBoundary extends React.Component {
   componentDidCatch(error) {
