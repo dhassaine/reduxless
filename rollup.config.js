@@ -22,18 +22,18 @@ export default [
     input: "src/index.ts",
     output: {
       file: "dist/index.esm.js",
-      format: "es"
+      format: "es",
+      sourcemap: true
     },
-    sourcemap: true,
     plugins
   },
   {
     input: "src/index.ts",
     output: {
       file: "dist/index.js",
-      format: "cjs"
+      format: "cjs",
+      sourcemap: true
     },
-    sourcemap: true,
     plugins
   },
   {
