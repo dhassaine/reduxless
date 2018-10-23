@@ -1,4 +1,4 @@
-import { extractPartsFromPath } from "./selectors";
+import { extractPartsFromPath, getPath } from "./selectors";
 import { RouterEnabledStore } from "../interfaces";
 
 const generateNewUrl = (store: RouterEnabledStore, newPath?: string) => {
@@ -38,8 +38,13 @@ export const navigate = (store: RouterEnabledStore, newPath: string) => {
   store.ping();
 };
 
-export const pushHistory = (store: RouterEnabledStore) =>
-  history.pushState(null, null, generateNewUrl(store));
+export const pushHistory = (store: RouterEnabledStore) => {
+  const newUrl = generateNewUrl(store);
+  const currentUrl = getPath(store);
+  if (newUrl != currentUrl) {
+    history.pushState(null, null, newUrl);
+  }
+};
 
 export const replaceHistory = (store: RouterEnabledStore, newPath?: string) =>
   history.replaceState(null, null, generateNewUrl(store, newPath));

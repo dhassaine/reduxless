@@ -146,6 +146,13 @@ describe("router/index", () => {
           },
           () => {
             expect(store.get("counter")).toEqual({ value: 2 });
+            expect(pushState.mock.calls.length).toEqual(
+              1,
+              "it shouldnt increment as the url hasnt changed"
+            );
+          },
+          () => {
+            expect(store.get("counter")).toEqual({ value: 2 });
             expect(store.get("counter2")).toEqual({ value: 3 });
             expect(pushState.mock.calls.length).toEqual(1);
             expect(replaceState.mock.calls.length).toEqual(1);
@@ -197,6 +204,7 @@ describe("router/index", () => {
         expect(store.get("counter2")).toEqual({ value: 2 });
         expect(replaceState.mock.calls.length).toEqual(1);
 
+        store.set("counter", { value: 2 }); // pushState
         store.set("counter", { value: 2 }); // pushState
         store.set("counter2", { value: 3 }); // replaceState
         store.set("counter", { value: 3 }); // pushState
