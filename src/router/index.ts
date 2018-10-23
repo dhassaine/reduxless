@@ -2,6 +2,8 @@ import { getStateFromUrl, pushHistory, replaceHistory } from "./actions";
 import { RouterEnabledStore, Validators } from "../interfaces";
 import createStore from "../state/store";
 
+// todo: only push history if url contains changes
+
 type GenericFunction = (...args: any[]) => any;
 
 export const debounce = (time: number, fn: GenericFunction) => {
