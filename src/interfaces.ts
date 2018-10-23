@@ -91,13 +91,82 @@ export type CreateRouterEnabledStore = (
 
 /** The store instance */
 export interface Store {
+  /**
+   * To modify the store, you can call `set()` with the key or mountpoint
+   * in the store and the data to replace the mountpoint with. After the
+   * `set` function is executed all the subscribers to the store will be
+   * notified.
+   *
+   * ```js
+   * store.set("name", "Homer");
+   * ```
+   */
   set: (mountPoint: MountPoint, value: any) => void;
+  /**
+   * Use this if you wish to modify multiple mountpoints simultaneously
+   * and have a single notification emit to the subscribers.
+   *
+   * ```js
+   * store.setAll({
+   *   name: "Homer",
+   *   score: 1
+   * });
+   * ```
+   */
   setAll: (mountPointsToValues: MountPointsToValues) => void;
+  /**
+   * To retrieve a single property from the store use `get` with the appropriate
+   * mountpoint.
+   *
+   * ```js
+   * store.get("name");
+   * ```
+   */
   get: (mountPoint: MountPoint) => any;
+  /**
+   * To retrieve multiple properties from the store use `getAll` with an array
+   * containing all the desired mountpoints.
+   *
+   * ```js
+   * store.getAll(["name", "score"]); // returns {name: 'Homer', score: 1}
+   * ```
+   */
   getAll: (mountPoints: MountPoint[]) => MountPointsToValues;
+  /**
+   * This function allows you to control the update phase of the store with more
+   * precision. The function argument is called with a store containing the
+   * setter and getter functions. The subscribers are only notified once after
+   * the `fn` argument has executed. Any calls to `set` or `setAll` in `fn` will
+   * not cause an unnecessary subscriber notification.
+   *
+   * A good example use case is where you wish to set two properties at the same
+   * time, but one property relies on a projection of the other:
+   *
+   * ```js
+   * store.withMutations(s => {
+   *   const oldTop = selectors.top(store);
+   *   const oldCellHeight = selectors.cellHeight(store);
+   *   s.set("isZoomedIn", !!zoom);
+   *   s.set("top", (oldTop / oldCellHeight) * selectors.cellHeight(store));
+   * });
+```
+   */
   withMutations: (fn: ((mutableStore: Store) => void)) => void;
+  /**
+   * This registers a function that will be called on every state update before
+   * the observers are notified.
+   */
   addUpdateIntercept: (fn: () => any) => void;
+  /**
+   * Notifies the subscribers to the store, even when no changes occured to the
+   * store.
+   */
   ping: () => void;
+  /**
+   * Adds `fn` to a list of observers that will be executed every time the store
+   * is updated. It returns an `unsubscribe` function so you can remove the
+   * observer later.
+   */
   subscribe: (fn: () => any) => () => void;
 }
 
@@ -121,3 +190,11 @@ export interface ReactVDOM extends VDOMComponent {
 }
 
 export type VDOMProvider = ReactVDOM | PreactVDOM;
+
+export interface PropMappings {
+  [index: string]: (store, ownProps) => any;
+}
+
+export interface ActionMappings {
+  [index: string]: (store, ownProps, ...args: any[]) => any;
+}

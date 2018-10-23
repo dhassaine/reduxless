@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>CreateStoreOptions | @reduxless/core</title>
+	<title>ActionMappings | @reduxless/core</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,132 +54,51 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="createstoreoptions.html">CreateStoreOptions</a>
+					<a href="actionmappings.html">ActionMappings</a>
 				</li>
 			</ul>
-			<h1>Interface CreateStoreOptions</h1>
+			<h1>Interface ActionMappings</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>The validation behaviour can be tweaked with the <code>options</code> object.</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">CreateStoreOptions</span>
+						<span class="target">ActionMappings</span>
 					</li>
 				</ul>
 			</section>
-			<section class="tsd-panel-group tsd-index-group">
-				<h2>Index</h2>
-				<section class="tsd-panel tsd-index-panel">
-					<div class="tsd-index-content">
-						<section class="tsd-index-section ">
-							<h3>Properties</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="createstoreoptions.html#batchupdatefn" class="tsd-kind-icon">batch<wbr>Update<wbr>Fn</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="createstoreoptions.html#throwonmissingschemas" class="tsd-kind-icon">throw<wbr>OnMissing<wbr>Schemas</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="createstoreoptions.html#throwonvalidation" class="tsd-kind-icon">throw<wbr>OnValidation</a></li>
-							</ul>
-						</section>
-					</div>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="batchupdatefn" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> batch<wbr>Update<wbr>Fn</h3>
-					<div class="tsd-signature tsd-kind-icon">batch<wbr>Update<wbr>Fn<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/0d9036a/src/interfaces.ts#L30">interfaces.ts:30</a></li>
+			<section class="tsd-panel tsd-kind-interface">
+				<h3 class="tsd-before-signature">Indexable</h3>
+				<div class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">[</span>index: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">function</span></div>
+				<ul class="tsd-parameters">
+					<li class="tsd-parameter-siganture">
+						<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+							<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>store<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, ownProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, <span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
 						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>TBD</p>
-						</div>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-siganture">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>fn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-parameters-title">Parameters</h4>
-										<ul class="tsd-parameters">
-											<li>
-												<h5>fn: <span class="tsd-signature-type">function</span></h5>
-												<ul class="tsd-parameters">
-													<li class="tsd-parameter-siganture">
-														<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-															<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-														</ul>
-														<ul class="tsd-descriptions">
-															<li class="tsd-description">
-																<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-															</li>
-														</ul>
-													</li>
-												</ul>
-											</li>
-										</ul>
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						<ul class="tsd-descriptions">
+							<li class="tsd-description">
+								<h4 class="tsd-parameters-title">Parameters</h4>
+								<ul class="tsd-parameters">
+									<li>
+										<h5>store: <span class="tsd-signature-type">any</span></h5>
+									</li>
+									<li>
+										<h5>ownProps: <span class="tsd-signature-type">any</span></h5>
+									</li>
+									<li>
+										<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
 									</li>
 								</ul>
+								<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 							</li>
 						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="throwonmissingschemas" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> throw<wbr>OnMissing<wbr>Schemas</h3>
-					<div class="tsd-signature tsd-kind-icon">throw<wbr>OnMissing<wbr>Schemas<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/0d9036a/src/interfaces.ts#L26">interfaces.ts:26</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<ul>
-								<li><code>false</code> mountpoints without a validator function are allowed</li>
-								<li><code>true</code> if a mountpoint does not have a corresponding validator function the <code>createStore</code> function will throw an error.</li>
-							</ul>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="throwonvalidation" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> throw<wbr>OnValidation</h3>
-					<div class="tsd-signature tsd-kind-icon">throw<wbr>OnValidation<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/0d9036a/src/interfaces.ts#L21">interfaces.ts:21</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<ul>
-								<li><code>false</code>: if a validator returns a falsy value, reduxless won&#39;t update the store with that data.</li>
-								<li><code>true</code>: if a validator returns a truthy value, reduxless will throw an error.</li>
-							</ul>
-						</div>
-					</div>
-				</section>
+					</li>
+				</ul>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -195,18 +114,7 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="createstoreoptions.html" class="tsd-kind-icon">Create<wbr>Store<wbr>Options</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="createstoreoptions.html#batchupdatefn" class="tsd-kind-icon">batch<wbr>Update<wbr>Fn</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="createstoreoptions.html#throwonmissingschemas" class="tsd-kind-icon">throw<wbr>OnMissing<wbr>Schemas</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="createstoreoptions.html#throwonvalidation" class="tsd-kind-icon">throw<wbr>OnValidation</a>
-							</li>
-						</ul>
+						<a href="actionmappings.html" class="tsd-kind-icon">Action<wbr>Mappings</a>
 					</li>
 				</ul>
 				<ul class="after-current">

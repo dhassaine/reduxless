@@ -186,35 +186,14 @@ The documentation section below describes the API in more detail, including conf
 
 The state is not one nested object but multiple objects. This means libraries like reselect won't work as expected. Redux is expected to be given a new object for each reducer. Libraries like ImmutableJS can help with making modifications to the state as efficient as possible, but ultimately recreating an object with many properties just to get a new reference is expensive. Another bottleneck with Redux is that every reducer has to run when an action is dispatched. See [perfomance analysis](#TODO) for further details.
 
-# Store
-
-> `createStore([initialState], [validators], [options])`
-
-## Arguments
-
-- `[initialState]` (object): pairs of keys (mountpoints) and data
-- `[validators]` (object): pairs of mountpoints and validator functions
-- `[options]` (object): validation behaviour options
-
-## Returns
-
-`createStore()` returns an object containing the following functions:
-
-- [`set(mountPoint, data)`](#set)
-- [`get(mountPoint)`](#get)
-- [`getAll(mountPoints)`](#getall)
-- [`setAll(mountPointsWithPayload)`](#setall)
-- [`withMutations(fn)`](#withmutations)
-- [`subscribe(fn)`](#subscribe)
-- [`addUpdateIntercept(fn)`](#addUpdateIntercept)
-
-## Basic example
+# Subscribing directly to the store
 
 ```js
-import { createStore } from "@reduxless/preact";
+import { createStore } from "@reduxless/core";
 
-const initialValues = { name: "Bart", surname: "Simpson" };
-const store = createStore(initialValues);
+const store = createStore({
+  initialState: { name: "Bart", surname: "Simpson" }
+});
 
 const report = () =>
   console.log(
@@ -238,76 +217,18 @@ const validators = {
 };
 ```
 
-The validation behaviour can be tweaked with the `options` object. The properties are
+The validation behaviour can be tweaked with the `routerOptions` object. The properties are
 
-- `throwOnValidation` (default: false)
+- `throwOnValidation` (default: `false`)
   - `false`: if a validator returns a falsy value, reduxless won't update the store with that data.
   - `true`: if a validator returns a truthy value, reduxless will throw an error.
-- `throwOnMissingSchemas` (default: false)
+- `throwOnMissingSchemas` (default: `false`)
   - `false` mountpoints without a validator function are allowed
-  - `true` if a mountpoint does not have a corresponding validator function the `createStore` function will throw an error.
+  - `true` if a mountpoint does not have a corresponding validator function the `createRouterEnabledStore` function will throw an error.
 
 By default if a validator returns a falsey value, redux won't update the store with that data. If you want the store to throw an error instead, set `throwOnValidation` to `true`.
 
-### `set(mountPoint, data)` <a id="set"></a>
-
-To modify the store, you can call `set()` with the key or mountpoint in the store and the data to replace the mountpoint with. After the `set` function is executed all the subscribers to the store will be notified.
-
-```js
-store.set("name", "Homer");
-```
-
-### `setAll(mountPointsWithPayload)` <a id="setall"></a>
-
-Use this if you wish to modify multiple mountpoints simultaneously and have a single notification emit to the subscribers. `mountPointsWithPayload` is an object containing pairs of mountpoints with data.
-
-```js
-store.setAll({
-  name: "Homer",
-  score: 1
-});
-```
-
-### `get(mountPoint)` <a id="get"></a>
-
-To retrieve a single property from the store use `get` with the appropriate mountpoint.
-
-```js
-store.get("name");
-```
-
-### `getAll(mountPoints)` <a id="getall"></a>
-
-To retrieve multiple properties from the store use `getAll` with an array containing all the desired mountpoints.
-
-```js
-store.getAll(["name", score]); // returns {name: 'Homer', score: 1}
-```
-
-### `withMutations(fn)` <a id="withmutations"></a>
-
-This function allows you to control the update phase of the store with more precision. The function argument is called with a store containing the setter and getter functions. The subscribers are only notified once after the `fn` argument has executed. Any calls to `set` or `setAll` in `fn` will not cause an unnecessary subscriber notification.
-
-A good example use case is where you wish to set two properties at the same time, but one property relies on a projection of the other:
-
-```js
-store.withMutations(s => {
-  const oldTop = selectors.top(store);
-  const oldCellHeight = selectors.cellHeight(store);
-  s.set("isZoomedIn", !!zoom);
-  s.set("top", (oldTop / oldCellHeight) * selectors.cellHeight(store));
-});
-```
-
-### `subscribe(fn)` <a id="subscribe"></a>
-
-Adds `fn` to a list of observers that will be executed every time the store is updated. It returns an `unsubscribe` function so you can remove the observer later.
-
-### `addUpdateIntercept(fn)` <a id="addUpdateIntercept"></a>
-
-This registers a function that will be called on every state update before the observers are notified.
-
-# React bindings
+# React component value providers
 
 > `<Container store>`
 
@@ -331,16 +252,18 @@ render(
 
 # Mapping store to props and actions
 
-> `mapper(propsFromStore, [actionsToProps])`
+```
+mapper(propMappings, [actionMappings])
+```
 
 Instead of directly receiving the `store` via context and manually subscribing to it, you should use the `mapper` HOC; it behaves in a similar manner to Redux's `connect` function. Two arguments can be passed in:
 
-- `propsFromStore`: this is an object with prop names and functions to retrieve the corresponding values from the store.
-- `actionsToProps`: this is an object with prop names and functions to make changes to the store.
+- [`propMappings`](interfaces/propmappings.html): this is an object with prop names and functions to retrieve the corresponding values from the store.
+- [`actionMappings`](interfaces/actionmappings.html): this is an object with prop names and functions to make changes to the store.
 
-Functions in `propsFromStore` are passed the store, the wrapped component's props and the remaining arguments during invocation.
+Functions in `propMappings` are passed the store, the wrapped component's props and the remaining arguments during invocation.
 
-The component returned by `mapper` will only render it's children after the store has changed if the relevant props have also changed. It's also a good idea to wrap any computationally expensive operations with the [`selectorMemoizer()`](https://dhassaine.github.io/reduxless/selector-memoizer.md) function.
+The component returned by `mapper` will only render it's children after the store has changed if the relevant props have also changed. It's also a good idea to wrap any computationally expensive operations with the [`selectorMemoizer()`](globals.html#selectormemoizer) function.
 
 # Router
 
@@ -348,7 +271,9 @@ Reduxless exposes two components that can be used for navigating different views
 
 # React bindings
 
-> `selectorMemoizer(projectionFunction, selectors)`
+```
+selectorMemoizer(projectionFunction, selectors)
+```
 
 The first argument of `selectorMemoizer` is a `projectionFunction` which is given inputs from the selectors. The selectors retrieve the relevant data form the `store`. The result is memoized so that if the component is re-rendered but the inputs haven't changed the last known results are returned and the `projectionFunction` isn't invoked.
 

@@ -184,32 +184,12 @@ render(
 				<p>The documentation section below describes the API in more detail, including configuration details for using hash; how to validate the data from the URL; and controlling one-way or two-way binding between the store state and browser URL.</p>
 				<h1 id="differences-to-redux">Differences to Redux</h1>
 				<p>The state is not one nested object but multiple objects. This means libraries like reselect won&#39;t work as expected. Redux is expected to be given a new object for each reducer. Libraries like ImmutableJS can help with making modifications to the state as efficient as possible, but ultimately recreating an object with many properties just to get a new reference is expensive. Another bottleneck with Redux is that every reducer has to run when an action is dispatched. See <a href="#TODO">perfomance analysis</a> for further details.</p>
-				<h1 id="store">Store</h1>
-				<blockquote>
-					<p><code>createStore([initialState], [validators], [options])</code></p>
-				</blockquote>
-				<h2 id="arguments">Arguments</h2>
-				<ul>
-					<li><code>[initialState]</code> (object): pairs of keys (mountpoints) and data</li>
-					<li><code>[validators]</code> (object): pairs of mountpoints and validator functions</li>
-					<li><code>[options]</code> (object): validation behaviour options</li>
-				</ul>
-				<h2 id="returns">Returns</h2>
-				<p><code>createStore()</code> returns an object containing the following functions:</p>
-				<ul>
-					<li><a href="#set"><code>set(mountPoint, data)</code></a></li>
-					<li><a href="#get"><code>get(mountPoint)</code></a></li>
-					<li><a href="#getall"><code>getAll(mountPoints)</code></a></li>
-					<li><a href="#setall"><code>setAll(mountPointsWithPayload)</code></a></li>
-					<li><a href="#withmutations"><code>withMutations(fn)</code></a></li>
-					<li><a href="#subscribe"><code>subscribe(fn)</code></a></li>
-					<li><a href="#addUpdateIntercept"><code>addUpdateIntercept(fn)</code></a></li>
-				</ul>
-				<h2 id="basic-example">Basic example</h2>
-				<pre><code class="language-js"><span class="hljs-keyword">import</span> { createStore } <span class="hljs-keyword">from</span> <span class="hljs-string">"@reduxless/preact"</span>;
+				<h1 id="subscribing-directly-to-the-store">Subscribing directly to the store</h1>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { createStore } <span class="hljs-keyword">from</span> <span class="hljs-string">"@reduxless/core"</span>;
 
-<span class="hljs-keyword">const</span> initialValues = { <span class="hljs-attr">name</span>: <span class="hljs-string">"Bart"</span>, <span class="hljs-attr">surname</span>: <span class="hljs-string">"Simpson"</span> };
-<span class="hljs-keyword">const</span> store = createStore(initialValues);
+<span class="hljs-keyword">const</span> store = createStore({
+  <span class="hljs-attr">initialState</span>: { <span class="hljs-attr">name</span>: <span class="hljs-string">"Bart"</span>, <span class="hljs-attr">surname</span>: <span class="hljs-string">"Simpson"</span> }
+});
 
 <span class="hljs-keyword">const</span> report = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span>
   <span class="hljs-built_in">console</span>.log(
@@ -227,49 +207,21 @@ unsubscribe();</code></pre>
   <span class="hljs-attr">name</span>: isString,
   <span class="hljs-attr">score</span>: isNumber
 };</code></pre>
-				<p>The validation behaviour can be tweaked with the <code>options</code> object. The properties are</p>
+				<p>The validation behaviour can be tweaked with the <code>routerOptions</code> object. The properties are</p>
 				<ul>
-					<li><code>throwOnValidation</code> (default: false)<ul>
+					<li><code>throwOnValidation</code> (default: <code>false</code>)<ul>
 							<li><code>false</code>: if a validator returns a falsy value, reduxless won&#39;t update the store with that data.</li>
 							<li><code>true</code>: if a validator returns a truthy value, reduxless will throw an error.</li>
 						</ul>
 					</li>
-					<li><code>throwOnMissingSchemas</code> (default: false)<ul>
+					<li><code>throwOnMissingSchemas</code> (default: <code>false</code>)<ul>
 							<li><code>false</code> mountpoints without a validator function are allowed</li>
-							<li><code>true</code> if a mountpoint does not have a corresponding validator function the <code>createStore</code> function will throw an error.</li>
+							<li><code>true</code> if a mountpoint does not have a corresponding validator function the <code>createRouterEnabledStore</code> function will throw an error.</li>
 						</ul>
 					</li>
 				</ul>
 				<p>By default if a validator returns a falsey value, redux won&#39;t update the store with that data. If you want the store to throw an error instead, set <code>throwOnValidation</code> to <code>true</code>.</p>
-				<h3 id="set-mountpoint-data-a-id-set-a-"><code>set(mountPoint, data)</code> <a id="set"></a></h3>
-				<p>To modify the store, you can call <code>set()</code> with the key or mountpoint in the store and the data to replace the mountpoint with. After the <code>set</code> function is executed all the subscribers to the store will be notified.</p>
-				<pre><code class="language-js">store.set(<span class="hljs-string">"name"</span>, <span class="hljs-string">"Homer"</span>);</code></pre>
-				<h3 id="setall-mountpointswithpayload-a-id-setall-a-"><code>setAll(mountPointsWithPayload)</code> <a id="setall"></a></h3>
-				<p>Use this if you wish to modify multiple mountpoints simultaneously and have a single notification emit to the subscribers. <code>mountPointsWithPayload</code> is an object containing pairs of mountpoints with data.</p>
-				<pre><code class="language-js">store.setAll({
-  <span class="hljs-attr">name</span>: <span class="hljs-string">"Homer"</span>,
-  <span class="hljs-attr">score</span>: <span class="hljs-number">1</span>
-});</code></pre>
-				<h3 id="get-mountpoint-a-id-get-a-"><code>get(mountPoint)</code> <a id="get"></a></h3>
-				<p>To retrieve a single property from the store use <code>get</code> with the appropriate mountpoint.</p>
-				<pre><code class="language-js">store.get(<span class="hljs-string">"name"</span>);</code></pre>
-				<h3 id="getall-mountpoints-a-id-getall-a-"><code>getAll(mountPoints)</code> <a id="getall"></a></h3>
-				<p>To retrieve multiple properties from the store use <code>getAll</code> with an array containing all the desired mountpoints.</p>
-				<pre><code class="language-js">store.getAll([<span class="hljs-string">"name"</span>, score]); <span class="hljs-comment">// returns {name: 'Homer', score: 1}</span></code></pre>
-				<h3 id="withmutations-fn-a-id-withmutations-a-"><code>withMutations(fn)</code> <a id="withmutations"></a></h3>
-				<p>This function allows you to control the update phase of the store with more precision. The function argument is called with a store containing the setter and getter functions. The subscribers are only notified once after the <code>fn</code> argument has executed. Any calls to <code>set</code> or <code>setAll</code> in <code>fn</code> will not cause an unnecessary subscriber notification.</p>
-				<p>A good example use case is where you wish to set two properties at the same time, but one property relies on a projection of the other:</p>
-				<pre><code class="language-js">store.withMutations(<span class="hljs-function"><span class="hljs-params">s</span> =&gt;</span> {
-  <span class="hljs-keyword">const</span> oldTop = selectors.top(store);
-  <span class="hljs-keyword">const</span> oldCellHeight = selectors.cellHeight(store);
-  s.set(<span class="hljs-string">"isZoomedIn"</span>, !!zoom);
-  s.set(<span class="hljs-string">"top"</span>, (oldTop / oldCellHeight) * selectors.cellHeight(store));
-});</code></pre>
-				<h3 id="subscribe-fn-a-id-subscribe-a-"><code>subscribe(fn)</code> <a id="subscribe"></a></h3>
-				<p>Adds <code>fn</code> to a list of observers that will be executed every time the store is updated. It returns an <code>unsubscribe</code> function so you can remove the observer later.</p>
-				<h3 id="addupdateintercept-fn-a-id-addupdateintercept-a-"><code>addUpdateIntercept(fn)</code> <a id="addUpdateIntercept"></a></h3>
-				<p>This registers a function that will be called on every state update before the observers are notified.</p>
-				<h1 id="react-bindings">React bindings</h1>
+				<h1 id="react-component-value-providers">React component value providers</h1>
 				<blockquote>
 					<p><code>&lt;Container store&gt;</code></p>
 				</blockquote>
@@ -396,6 +348,9 @@ render(
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/actionmappings.html" class="tsd-kind-icon">Action<wbr>Mappings</a>
+					</li>
 					<li class=" tsd-kind-interface tsd-is-not-exported">
 						<a href="interfaces/createrouterenabledstoreargs.html" class="tsd-kind-icon">Create<wbr>Router<wbr>Enabled<wbr>Store<wbr>Args</a>
 					</li>
@@ -410,6 +365,9 @@ render(
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/preactvdom.html" class="tsd-kind-icon">PreactVDOM</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/propmappings.html" class="tsd-kind-icon">Prop<wbr>Mappings</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/reactvdom.html" class="tsd-kind-icon">ReactVDOM</a>

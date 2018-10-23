@@ -116,9 +116,15 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="store.html">Store</a>.<a href="store.html#addupdateintercept">addUpdateIntercept</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/98f9488/src/interfaces.ts#L99">interfaces.ts:99</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/0d9036a/src/interfaces.ts#L159">interfaces.ts:159</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>This registers a function that will be called on every state update before
+							the observers are notified.</p>
+						</div>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -160,9 +166,16 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="store.html">Store</a>.<a href="store.html#get">get</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/98f9488/src/interfaces.ts#L96">interfaces.ts:96</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/0d9036a/src/interfaces.ts#L125">interfaces.ts:125</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>To retrieve a single property from the store use <code>get</code> with the appropriate
+							mountpoint.</p>
+						</div>
+						<pre><code class="language-js">store.get(<span class="hljs-string">"name"</span>);</code></pre>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -192,9 +205,16 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="store.html">Store</a>.<a href="store.html#getall">getAll</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/98f9488/src/interfaces.ts#L97">interfaces.ts:97</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/0d9036a/src/interfaces.ts#L134">interfaces.ts:134</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>To retrieve multiple properties from the store use <code>getAll</code> with an array
+							containing all the desired mountpoints.</p>
+						</div>
+						<pre><code class="language-js">store.getAll([<span class="hljs-string">"name"</span>, <span class="hljs-string">"score"</span>]); <span class="hljs-comment">// returns {name: 'Homer', score: 1}</span></code></pre>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -224,9 +244,15 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="store.html">Store</a>.<a href="store.html#ping">ping</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/98f9488/src/interfaces.ts#L100">interfaces.ts:100</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/0d9036a/src/interfaces.ts#L164">interfaces.ts:164</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Notifies the subscribers to the store, even when no changes occured to the
+							store.</p>
+						</div>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -250,9 +276,18 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="store.html">Store</a>.<a href="store.html#set">set</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/98f9488/src/interfaces.ts#L94">interfaces.ts:94</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/0d9036a/src/interfaces.ts#L104">interfaces.ts:104</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>To modify the store, you can call <code>set()</code> with the key or mountpoint
+								in the store and the data to replace the mountpoint with. After the
+								<code>set</code> function is executed all the subscribers to the store will be
+							notified.</p>
+						</div>
+						<pre><code class="language-js">store.set(<span class="hljs-string">"name"</span>, <span class="hljs-string">"Homer"</span>);</code></pre>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -285,9 +320,19 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="store.html">Store</a>.<a href="store.html#setall">setAll</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/98f9488/src/interfaces.ts#L95">interfaces.ts:95</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/0d9036a/src/interfaces.ts#L116">interfaces.ts:116</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Use this if you wish to modify multiple mountpoints simultaneously
+							and have a single notification emit to the subscribers.</p>
+						</div>
+						<pre><code class="language-js">store.setAll({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">"Homer"</span>,
+  <span class="hljs-attr">score</span>: <span class="hljs-number">1</span>
+});</code></pre>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -317,9 +362,16 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="store.html">Store</a>.<a href="store.html#subscribe">subscribe</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/98f9488/src/interfaces.ts#L101">interfaces.ts:101</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/0d9036a/src/interfaces.ts#L170">interfaces.ts:170</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Adds <code>fn</code> to a list of observers that will be executed every time the store
+								is updated. It returns an <code>unsubscribe</code> function so you can remove the
+							observer later.</p>
+						</div>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -372,7 +424,7 @@
 					<div class="tsd-signature tsd-kind-icon">sync<wbr>ToLocations<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/98f9488/src/interfaces.ts#L106">interfaces.ts:106</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/0d9036a/src/interfaces.ts#L175">interfaces.ts:175</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -382,7 +434,7 @@
 					<div class="tsd-signature tsd-kind-icon">synced<wbr>Location<wbr>ToStore<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/98f9488/src/interfaces.ts#L108">interfaces.ts:108</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/0d9036a/src/interfaces.ts#L177">interfaces.ts:177</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -392,7 +444,7 @@
 					<div class="tsd-signature tsd-kind-icon">use<wbr>Hash<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/98f9488/src/interfaces.ts#L107">interfaces.ts:107</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/0d9036a/src/interfaces.ts#L176">interfaces.ts:176</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -403,9 +455,26 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="store.html">Store</a>.<a href="store.html#withmutations">withMutations</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/98f9488/src/interfaces.ts#L98">interfaces.ts:98</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/0d9036a/src/interfaces.ts#L154">interfaces.ts:154</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>This function allows you to control the update phase of the store with more
+								precision. The function argument is called with a store containing the
+								setter and getter functions. The subscribers are only notified once after
+								the <code>fn</code> argument has executed. Any calls to <code>set</code> or <code>setAll</code> in <code>fn</code> will
+							not cause an unnecessary subscriber notification.</p>
+						</div>
+						<p>A good example use case is where you wish to set two properties at the same
+						time, but one property relies on a projection of the other:</p>
+						<pre><code class="language-js">store.withMutations(<span class="hljs-function"><span class="hljs-params">s</span> =&gt;</span> {
+  <span class="hljs-keyword">const</span> oldTop = selectors.top(store);
+  <span class="hljs-keyword">const</span> oldCellHeight = selectors.cellHeight(store);
+  s.set(<span class="hljs-string">"isZoomedIn"</span>, !!zoom);
+  s.set(<span class="hljs-string">"top"</span>, (oldTop / oldCellHeight) * selectors.cellHeight(store));
+});</code></pre>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">

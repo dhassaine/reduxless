@@ -1,4 +1,10 @@
-import { VDOMProvider, PreactVDOM, ReactVDOM } from "../interfaces";
+import {
+  VDOMProvider,
+  PreactVDOM,
+  ReactVDOM,
+  PropMappings,
+  ActionMappings
+} from "../interfaces";
 
 export const _Container = (vdom: VDOMProvider) => {
   const h = (<PreactVDOM>vdom).h || (<ReactVDOM>vdom).createElement;
@@ -19,8 +25,7 @@ export const _Container = (vdom: VDOMProvider) => {
     }
 
     render() {
-      const { children, store, ...rest } = this.props; // eslint-disable-line no-unused-vars
-
+      const { children, store, ...rest } = this.props;
       return h("div", rest, children);
     }
   };
@@ -29,7 +34,10 @@ export const _Container = (vdom: VDOMProvider) => {
 export const _mapper = (vdom: VDOMProvider) => {
   const h = (<PreactVDOM>vdom).h || (<ReactVDOM>vdom).createElement;
 
-  return (propMappings = {}, actionMappings = {}) => Wrapped => {
+  return (
+    propMappings: PropMappings = {},
+    actionMappings: ActionMappings = {}
+  ) => (Wrapped: any) => {
     return class Mapper extends vdom.Component {
       static contextTypes = {
         store: () => {}
