@@ -1,3 +1,5 @@
+import { Validators, Store, CreateStore } from "../interfaces";
+
 const makeSubject = () => {
   const observers = new Map();
   let idPtr = 0;
@@ -6,7 +8,9 @@ const makeSubject = () => {
       const id = idPtr;
       idPtr++;
       observers.set(id, callback);
-      return () => observers.delete(id);
+      return () => {
+        observers.delete(id);
+      };
     },
     next: (...args) => {
       observers.forEach(callback => callback(...args));
@@ -17,22 +21,26 @@ const makeSubject = () => {
 const defaultOptions = {
   throwOnValidation: false,
   throwOnMissingSchemas: false,
-  batchUpdateFn: fn => fn()
+  batchUpdateFn: (fn: () => void) => fn()
 };
 
-export default (incomingStore = {}, validators = {}, options = {}) => {
+const createStore: CreateStore = ({
+  initialState = {},
+  validators = {},
+  options = {}
+} = {}): Store => {
   const { throwOnValidation, throwOnMissingSchemas, batchUpdateFn } = {
     ...defaultOptions,
     ...options
   };
   const state$ = makeSubject();
   const updateIntercepts = [];
-  const store = {};
+  const memory = new Map<string, any>();
   let batchUpdateInProgress = false;
 
   const validatorsMap = new Map(Object.entries(validators));
 
-  const validate = (mountPoint, payload) => {
+  const validate = (mountPoint: string, payload: any) => {
     let valid = true;
     if (validatorsMap.has(mountPoint)) {
       const validator = validatorsMap.get(mountPoint);
@@ -70,7 +78,7 @@ export default (incomingStore = {}, validators = {}, options = {}) => {
   };
 
   const _set = (mountPoint, payload) => {
-    if (validate(mountPoint, payload)) store[mountPoint] = payload;
+    if (validate(mountPoint, payload)) memory.set(mountPoint, payload);
   };
 
   const setAll = mountPointsAndPayloads => {
@@ -84,21 +92,21 @@ export default (incomingStore = {}, validators = {}, options = {}) => {
     );
   };
 
-  setAll(incomingStore);
+  setAll(initialState);
 
   const addUpdateIntercept = fn => updateIntercepts.push(fn);
 
-  const set = (mountPoint, payload) => {
+  const set = (mountPoint: string, payload: any) => {
     _set(mountPoint, payload);
     update();
   };
 
-  const get = mountPoint => store[mountPoint];
+  const get = (mountPoint: string) => memory.get(mountPoint);
 
-  const getAll = mountPoints =>
+  const getAll = (mountPoints: string[]) =>
     mountPoints.reduce(
       (results, mountPoint) => (
-        (results[mountPoint] = store[mountPoint]), results
+        (results[mountPoint] = memory.get(mountPoint)), results
       ),
       {}
     );
@@ -128,3 +136,5 @@ export default (incomingStore = {}, validators = {}, options = {}) => {
 
   return storeApi;
 };
+
+export default createStore;

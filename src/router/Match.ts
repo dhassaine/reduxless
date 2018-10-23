@@ -1,10 +1,20 @@
 import { _mapper } from "../containers/container";
 import { getPath } from "./selectors";
 
-/* @jsx h */
+type CallablePath = (path: string) => boolean;
+
 export const Match = vdom => {
   const h = vdom.h || vdom.createElement;
-  return ({ path, currentPath, children, ...rest }) => {
+  return ({
+    path,
+    currentPath,
+    children,
+    ...rest
+  }: {
+    path: string | CallablePath;
+    currentPath: string;
+    children?: any[];
+  }) => {
     let matched = false;
 
     if (typeof path === "function") {
@@ -13,7 +23,7 @@ export const Match = vdom => {
       matched = currentPath.split("?")[0] == path;
     }
 
-    return matched ? <div {...rest}>{children}</div> : null;
+    return matched ? h("div", rest, children) : null;
   };
 };
 

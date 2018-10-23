@@ -1,10 +1,14 @@
-const renderer = require("react-test-renderer");
-const React = require("react");
+const { render, Component } = require("inferno");
+const createElement = require("inferno-create-element").createElement;
 const reduxless = require("../dist");
 const STATE_SIZE = require("./constants").STATE_SIZE;
+require("undom/register");
 
 const { createStore } = reduxless;
-const { mapper, Container } = reduxless.makeComponents(React);
+const { mapper, Container } = reduxless.makeComponents({
+  createElement,
+  Component
+});
 
 const initialState = { nested: { value: 1 } };
 for (let i = 1; i <= STATE_SIZE; i++) {
@@ -37,15 +41,16 @@ const MappedNestedComponent = mapper({
   prop: store => store.get("nested")
 })(NestedComponent);
 
-const Component = () => React.createElement(MappedNestedComponent, null, null);
-const MappedComponent = mapper(props)(Component);
-renderer.create(
-  React.createElement(
-    Container,
-    { store },
-    React.createElement(MappedComponent, null, null)
-  )
+const TestComponent = () => createElement(MappedNestedComponent, null, null);
+
+const MappedComponent = mapper(props)(TestComponent);
+const vNodeTree = createElement(
+  Container,
+  { store },
+  createElement(MappedComponent, null, null)
 );
+
+render(vNodeTree, document.body);
 
 exports.containerTest = () => {
   // doesn't re-render

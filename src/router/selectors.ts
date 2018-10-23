@@ -1,3 +1,5 @@
+import { RouterEnabledStore } from "../interfaces";
+
 const parseStore = storeData => {
   try {
     return JSON.parse(storeData);
@@ -6,12 +8,12 @@ const parseStore = storeData => {
   }
 };
 
-export const getPath = store =>
+export const getPath = (store: RouterEnabledStore) =>
   store.useHash
     ? window.location.hash.replace(/^#/, "/")
     : window.location.pathname + window.location.search;
 
-export const extractPartsFromPath = store => {
+export const extractPartsFromPath = (store: RouterEnabledStore) => {
   const path = getPath(store);
   const [pathName, query = ""] = path.split("?");
   const params = decodeURIComponent(query).split("&");

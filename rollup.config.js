@@ -2,14 +2,15 @@ import babel from "rollup-plugin-babel";
 import resolve from "rollup-plugin-node-resolve";
 import json from "rollup-plugin-json";
 import minify from "rollup-plugin-babel-minify";
-
-const base = {
-  external: ["react", "react-dom", "preact", "inferno-component", "prop-types"]
-};
+import typescript from "rollup-plugin-typescript2";
 
 const plugins = [
   json(),
   resolve(),
+  typescript({
+    useTsconfigDeclarationDir: true,
+    tsconfig: "tsconfig.json"
+  }),
   babel({
     exclude: ["node_modules/**"],
     plugins: ["external-helpers"]
@@ -18,69 +19,29 @@ const plugins = [
 
 export default [
   {
-    ...base,
-    input: "src/index.js",
+    input: "src/index.ts",
     output: {
-      file: "dist/reduxless.esm.js",
-      format: "es"
+      file: "dist/index.esm.js",
+      format: "es",
+      sourcemap: true
     },
     plugins
   },
   {
-    ...base,
-    input: "src/index.js",
+    input: "src/index.ts",
     output: {
-      file: "dist/reduxless.js",
-      format: "cjs"
+      file: "dist/index.js",
+      format: "cjs",
+      sourcemap: true
     },
     plugins
   },
   {
-    ...base,
-    input: "src/index.js",
+    input: "src/index.ts",
     output: {
-      file: "dist/reduxless.min.js",
+      file: "dist/index.min.js",
       format: "cjs"
     },
     plugins: [...plugins, minify({ comments: false, sourceMap: false })]
-  },
-  {
-    ...base,
-    input: "src/react/index.js",
-    output: {
-      file: "react.js",
-      format: "cjs"
-    },
-    plugins
-  },
-
-  {
-    ...base,
-    input: "src/react/index.js",
-    output: {
-      file: "react.esm.js",
-      format: "es"
-    },
-    plugins
-  },
-
-  {
-    ...base,
-    input: "src/preact/index.js",
-    output: {
-      file: "preact.js",
-      format: "cjs"
-    },
-    plugins
-  },
-
-  {
-    ...base,
-    input: "src/preact/index.js",
-    output: {
-      file: "preact.esm.js",
-      format: "es"
-    },
-    plugins
   }
 ];

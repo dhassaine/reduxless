@@ -6,14 +6,10 @@ const handleClick = (ev, update) => {
   update();
 };
 
-/* @jsx h */
 const Link = vdom => {
   const h = vdom.h || vdom.createElement;
-  return ({ update, href, children, ...rest }) => (
-    <a href={href} onClick={ev => handleClick(ev, update)} {...rest}>
-      {children}
-    </a>
-  );
+  return ({ update, href, children, ...rest }) =>
+    h("a", { href, onClick: ev => handleClick(ev, update), ...rest }, children);
 };
 
 const actionsFromStore = {

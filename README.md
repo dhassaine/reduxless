@@ -1,4 +1,5 @@
 # Reduxless
+
 > A small and performant state management and routing library with unidirectional data flow.
 
 [![npm version](https://badge.fury.io/js/reduxless.svg)](https://badge.fury.io/js/reduxless) [![Build Status](https://travis-ci.org/dhassaine/reduxless.svg?branch=master)](https://travis-ci.org/dhassaine/reduxless) [![Coverage Status](https://coveralls.io/repos/github/dhassaine/reduxless/badge.svg?branch=master)](https://coveralls.io/github/dhassaine/reduxless?branch=master)
@@ -7,6 +8,7 @@
 [Looking for the API? Click here](#documentation)
 
 ## Introduction
+
 Reduxless simplifies some of the complexity of [Redux](https://github.com/reactjs/redux) and reduces the amount of necessary boilerplate code. It is also much more performant and scales linearly as the application's state grows (see [perfomance analysis](https://dhassaine.github.io/reduxless/performance)).
 
 Reduxless combines the roles of reducers and actions into one operation: the two key operations are actions and selectors. We lose the ability to perform time travelling on our state, but the advantages of simpler and faster code can outweigh that benefit.
@@ -14,50 +16,68 @@ Reduxless combines the roles of reducers and actions into one operation: the two
 ## Installation
 
 To install the stable version:
+
 ```
-npm install --save reduxless
+npm install @reduxless/core
 ```
 
 ## Importing
-Reduxless can be used with any React-like library.
 
-To include it in a Preact project:
+Reduxless can be used with any React-like library. There are two libraries with the relevant bindings:
+
+### To include it in a Preact project:
+
+`npm install @reduxless/preact`
+
 ```js
-  import reduxless from 'reduxless/preact'
+import reduxless from "@reduxless/preact";
 ```
 
-And for a React based projects:
+### To include it in a React project:
+
+`npm install @reduxless/react`
+
 ```js
-  import reduxless from 'reduxless/react'
+import reduxless from "@reduxless/react";
 ```
+
+### Other libraries
 
 Alternatively if you are using a library other than React or Preact, for example, inferno, you can inject the module into Reduxless like so:
-```js
-import createReduxless from "reduxless";
 
-const reduxless = createReduxless(require("inferno"));
+```js
+import { makeComponents } from "@reduxless/core";
+import { Component } from "inferno";
+import { createElement } from "inferno-create-element";
+
+const reduxless = makeComponents({ createElement, Component });
 ```
 
 ### Server-side
+
 If you don't need the bindings then you can do:
+
 ```js
-import {createStore, selectorMemoizer} from "reduxless";
+import { createStore, selectorMemoizer } from "@reduxless/core";
 ```
 
-
 ## The general gist
+
 The following snippet of code demonstrates how reduxless can be used with a React-like library -- in this case [Preact](https://preactjs.com/):
 
 ```jsx
-import { h, render } from 'preact';
-import { createStore, Container, mapper } from 'reduxless/preact';
+import { h, render } from "preact";
+import { createStore } from "@reduxless/core";
+import { Container, mapper } from "@reduxless/preact";
 
-const store = createStore({ name: 'Bart Simpson' });
+const store = createStore({ initialState: { name: "Bart Simpson" } });
 
-const Component = ({name, updateName}) => (
-  <p onClick={
-    () => updateName(name == 'Bart Simpson' ? 'Lisa Simpson' : 'Bart Simpson')
-  }>
+const Component = ({ name, updateName }) => (
+  <p
+    onClick={() =>
+      updateName(name == "Bart Simpson" ? "Lisa Simpson" : "Bart Simpson")
+    }
+  >
     Hello there, {name}! Click to change me.
   </p>
 );
@@ -65,11 +85,11 @@ const Component = ({name, updateName}) => (
 const MappedComponent = mapper(
   {
     // selectors
-    name: store => store.get('name')
+    name: store => store.get("name")
   },
   {
     // actions
-    updateName: (store, ownProps, newName) => store.set('name', newName)
+    updateName: (store, ownProps, newName) => store.set("name", newName)
   }
 )(Component);
 
@@ -77,46 +97,40 @@ render(
   <Container store={store}>
     <MappedComponent />
   </Container>
-)
+);
 ```
 
 The `Container` component provides the `store` to all of it's nested children components via `context`. Its use is optional and you can pass the store down manually if you prefer, for example:
 
 ```jsx
-render(
-  <MappedComponent store={store}/>
-)
+render(<MappedComponent store={store} />);
 ```
 
 The `mapper` function is a performance convenience helper. It uses the given `selectors` to determine whether the mapped component should be rendered by doing shallow ref comparisons. This means it is important to create new objects when updating the store; otherwise, your components won't be updated. The actions are automatically injected with the `store` and the mapped component's props.
 
 ## Routing and browser history syncing
+
 Reduxless offers a straightforward mechanism for both routing (i.e. which components to render based on the URL) and keeping the browser URL and store state in sync. You can choose which properties in the store will trigger a `pushState` event and also whether the `popstate` event from the browser history navigation will update the store.
 
 In the example above if we wanted the `name` property synced, it would be as simple as:
 
 ```js
-import { createStore, enableHistory } from 'reduxless/preact';
+import { createStore, enableHistory } from "@reduxless/core";
 
-const store = createStore({ name: 'Bart Simpson' });
-enableHistory(
-  this.store,
-  ['name']
-);
+const store = createStore({ initialState: { name: "Bart Simpson" } });
+enableHistory(this.store, ["name"]);
 ```
 
 Routing is as straightforward as:
 
 ```jsx
 import { h } from "preact";
-import { Match, Link } from "reduxless/preact";
+import { createStore } from "@reduxless/core";
+import { Match, Link } from "@reduxless/preact";
 
-const store = createStore({ name: 'Bart Simpson' });
+const store = createStore({ initialState: { name: "Bart Simpson" } });
 
-enableHistory(
-  this.store,
-  ['name']
-);
+enableHistory(this.store, ["name"]);
 
 const app = () => (
   <Container store={store}>

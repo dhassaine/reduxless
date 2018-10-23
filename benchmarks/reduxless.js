@@ -1,5 +1,7 @@
-const reduxless = require("../react");
+const reduxless = require("../dist");
 const STATE_SIZE = require("./constants").STATE_SIZE;
+
+const { createStore } = reduxless;
 
 const initialState = {};
 for (let i = 1; i <= STATE_SIZE; i++) {
@@ -9,14 +11,7 @@ for (let i = 1; i <= STATE_SIZE; i++) {
   };
 }
 
-const store = reduxless.createStore(initialState);
-
-/*
-//require("jsdom-global")();
-reduxless.enableHistory(store, [], [], {
-  useHash: false
-});
-*/
+const store = createStore(initialState);
 
 const setAction1 = (store, value1, value2) =>
   store.set("mount1", {
