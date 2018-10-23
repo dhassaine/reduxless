@@ -70,7 +70,7 @@ import { h, render } from "preact";
 import { createStore } from "@reduxless/core";
 import { Container, mapper } from "@reduxless/preact";
 
-const store = createStore({ name: "Bart Simpson" });
+const store = createStore({ initialState: { name: "Bart Simpson" } });
 
 const Component = ({ name, updateName }) => (
   <p
@@ -117,7 +117,7 @@ In the example above if we wanted the `name` property synced, it would be as sim
 ```js
 import { createStore, enableHistory } from "@reduxless/core";
 
-const store = createStore({ name: "Bart Simpson" });
+const store = createStore({ initialState: { name: "Bart Simpson" } });
 enableHistory(this.store, ["name"]);
 ```
 
@@ -128,7 +128,7 @@ import { h } from "preact";
 import { createStore } from "@reduxless/core";
 import { Match, Link } from "@reduxless/preact";
 
-const store = createStore({ name: "Bart Simpson" });
+const store = createStore({ initialState: { name: "Bart Simpson" } });
 
 enableHistory(this.store, ["name"]);
 
