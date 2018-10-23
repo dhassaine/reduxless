@@ -50,7 +50,7 @@ import { makeComponents } from "@reduxless/core";
 import { Component } from "inferno";
 import { createElement } from "inferno-create-element";
 
-const reduxless = makeComponents({ createElement Component });
+const reduxless = makeComponents({ createElement, Component });
 ```
 
 ### Server-side
