@@ -239,23 +239,17 @@ render(
   <span class="hljs-tag">&lt;/<span class="hljs-name">Container</span>&gt;</span></span>
 );</code></pre>
 				<h1 id="mapping-store-to-props-and-actions">Mapping store to props and actions</h1>
-				<blockquote>
-					<p><code>mapper(propsFromStore, [actionsToProps])</code></p>
-				</blockquote>
-				<p>Instead of directly receiving the <code>store</code> via context and manually subscribing to it, you should use the <code>mapper</code> HOC; it behaves in a similar manner to Redux&#39;s <code>connect</code> function. Two arguments can be passed in:</p>
+				<pre><code><span class="hljs-function"><span class="hljs-title">mapper</span><span class="hljs-params">(propMappings, [actionMappings])</span></span></code></pre><p>Instead of directly receiving the <code>store</code> via context and manually subscribing to it, you should use the <code>mapper</code> HOC; it behaves in a similar manner to Redux&#39;s <code>connect</code> function. Two arguments can be passed in:</p>
 				<ul>
-					<li><code>propsFromStore</code>: this is an object with prop names and functions to retrieve the corresponding values from the store.</li>
-					<li><code>actionsToProps</code>: this is an object with prop names and functions to make changes to the store.</li>
+					<li><a href="interfaces/propmappings.html"><code>propMappings</code></a>: this is an object with prop names and functions to retrieve the corresponding values from the store.</li>
+					<li><a href="interfaces/actionmappings.html"><code>actionMappings</code></a>: this is an object with prop names and functions to make changes to the store.</li>
 				</ul>
-				<p>Functions in <code>propsFromStore</code> are passed the store, the wrapped component&#39;s props and the remaining arguments during invocation.</p>
-				<p>The component returned by <code>mapper</code> will only render it&#39;s children after the store has changed if the relevant props have also changed. It&#39;s also a good idea to wrap any computationally expensive operations with the <a href="https://dhassaine.github.io/reduxless/selector-memoizer.md"><code>selectorMemoizer()</code></a> function.</p>
+				<p>Functions in <code>propMappings</code> are passed the store, the wrapped component&#39;s props and the remaining arguments during invocation.</p>
+				<p>The component returned by <code>mapper</code> will only render it&#39;s children after the store has changed if the relevant props have also changed. It&#39;s also a good idea to wrap any computationally expensive operations with the <a href="globals.html#selectormemoizer"><code>selectorMemoizer()</code></a> function.</p>
 				<h1 id="router">Router</h1>
 				<p>Reduxless exposes two components that can be used for navigating different views and enable deep-linking/bookmarkable state.</p>
 				<h1 id="react-bindings">React bindings</h1>
-				<blockquote>
-					<p><code>selectorMemoizer(projectionFunction, selectors)</code></p>
-				</blockquote>
-				<p>The first argument of <code>selectorMemoizer</code> is a <code>projectionFunction</code> which is given inputs from the selectors. The selectors retrieve the relevant data form the <code>store</code>. The result is memoized so that if the component is re-rendered but the inputs haven&#39;t changed the last known results are returned and the <code>projectionFunction</code> isn&#39;t invoked.</p>
+				<pre><code>selector<span class="hljs-constructor">Memoizer(<span class="hljs-params">projectionFunction</span>, <span class="hljs-params">selectors</span>)</span></code></pre><p>The first argument of <code>selectorMemoizer</code> is a <code>projectionFunction</code> which is given inputs from the selectors. The selectors retrieve the relevant data form the <code>store</code>. The result is memoized so that if the component is re-rendered but the inputs haven&#39;t changed the last known results are returned and the <code>projectionFunction</code> isn&#39;t invoked.</p>
 				<h2 id="example-usage">Example usage</h2>
 				<p>You may have a selector that maps the raw JSON response from an API call to something more usable like a map of ID&#39;s to resources. You really don&#39;t want to perform this operation every time the component is re-rendered as that would kill performance and create a lot of garbage on the memory. Memoizing this operation is the way to go.</p>
 				<pre><code class="language-js"><span class="hljs-keyword">import</span> { selectorMemoizer } <span class="hljs-keyword">from</span> <span class="hljs-string">'@reduxless/preact'</span>
