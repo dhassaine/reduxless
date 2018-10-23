@@ -8,7 +8,7 @@ describe("selectorMemoizer", () => {
     const data = {
       a: 1
     };
-    const fakeStore = createStore(data);
+    const fakeStore = createStore({ initialState: data });
     const memoisedA = selectorMemoizer(fn, store => store.get("a"));
     expect(memoisedA(fakeStore)).toBe(1);
     expect(fn.mock.calls.length).toBe(1);
@@ -28,7 +28,7 @@ describe("selectorMemoizer", () => {
       a: 1,
       b: 2
     };
-    const fakeStore = createStore(data);
+    const fakeStore = createStore({ initialState: data });
     const memoisedA = selectorMemoizer(
       fn,
       store => store.get("a"),

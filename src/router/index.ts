@@ -1,8 +1,10 @@
 import { getStateFromUrl, pushHistory, replaceHistory } from "./actions";
-import { RouterEnabledStore, Validators } from "../interfaces";
+import {
+  RouterEnabledStore,
+  Validators,
+  CreateRouterEnabledStore
+} from "../interfaces";
 import createStore from "../state/store";
-
-// todo: only push history if url contains changes
 
 type GenericFunction = (...args: any[]) => any;
 
@@ -43,24 +45,24 @@ const initialiseLastState = (
   return [lastPushState, lastReplaceState];
 };
 
-export function createRoutedStore(
-  incomingStore: any = {},
-  validators: Validators = {},
-  storeOptions = {},
-  pushStateMountPoints: string[] = [],
-  replaceStateMountPoints: string[] = [],
+export const createRoutedStore: CreateRouterEnabledStore = ({
+  initialState = {},
+  validators = {},
+  options = {},
+  pushStateMountPoints = [],
+  replaceStateMountPoints = [],
   routerOptions = {}
-): RouterEnabledStore {
+} = {}) => {
   const { debounceTime, useHash } = {
     ...defaultOptions,
     ...routerOptions
   };
 
-  const routedStore = createStore(
-    incomingStore,
+  const routedStore = createStore({
+    initialState,
     validators,
-    storeOptions
-  ) as RouterEnabledStore;
+    options
+  }) as RouterEnabledStore;
 
   const _subscribe = routedStore.subscribe;
   routedStore.subscribe = (listener: GenericFunction) => {
@@ -137,7 +139,7 @@ export function createRoutedStore(
   });
 
   return routedStore;
-}
+};
 
 export { default as Match } from "./Match";
 export { default as Link } from "./Link";

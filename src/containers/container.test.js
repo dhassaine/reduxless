@@ -156,8 +156,10 @@ describe("Container", () => {
 
     it("can connect to the store even if its a nested child", () => {
       const store = createStore({
-        mount1: { a: 1 },
-        mount2: { b: 2 }
+        initialState: {
+          mount1: { a: 1 },
+          mount2: { b: 2 }
+        }
       });
 
       const childComponent = jest.fn();
@@ -183,8 +185,10 @@ describe("Container", () => {
 
     it("Nested mapped components update independently", () => {
       const store = createStore({
-        mount1: { a: 1 },
-        mount2: { b: 2 }
+        initialState: {
+          mount1: { a: 1 },
+          mount2: { b: 2 }
+        }
       });
 
       const NestedComponent = jest.fn();
@@ -216,8 +220,10 @@ describe("Container", () => {
 
     it("skips rendering if the relevant section of the store does not change", () => {
       const store = createStore({
-        mount1: { a: 1 },
-        mount2: { b: 2 }
+        initialState: {
+          mount1: { a: 1 },
+          mount2: { b: 2 }
+        }
       });
 
       const childComponent = jest.fn();
@@ -237,8 +243,10 @@ describe("Container", () => {
 
     it("does not subscribe to store changes if there are no propMappings", () => {
       const store = createStore({
-        mount1: { a: 1 },
-        mount2: { b: 2 }
+        initialState: {
+          mount1: { a: 1 },
+          mount2: { b: 2 }
+        }
       });
       const subscribe = store.subscribe.bind(store);
       let unsubscribeMock;
@@ -264,8 +272,10 @@ describe("Container", () => {
 
     it("Stateful components under container can still re-render even if the store has not changed", () => {
       const store = createStore({
-        mount1: { a: 1 },
-        mount2: { b: 2 }
+        initialState: {
+          mount1: { a: 1 },
+          mount2: { b: 2 }
+        }
       });
 
       const childComponent = jest.fn();
@@ -316,8 +326,10 @@ describe("Container", () => {
 
     it("unsubscribes from the store after unmounting", () => {
       const store = createStore({
-        mount1: {
-          a: 1
+        initialState: {
+          mount1: {
+            a: 1
+          }
         }
       });
       const subscribe = store.subscribe.bind(store);

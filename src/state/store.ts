@@ -1,4 +1,4 @@
-import { Validators, Store } from "../interfaces";
+import { Validators, Store, CreateStore } from "../interfaces";
 
 const makeSubject = () => {
   const observers = new Map();
@@ -21,14 +21,14 @@ const makeSubject = () => {
 const defaultOptions = {
   throwOnValidation: false,
   throwOnMissingSchemas: false,
-  batchUpdateFn: fn => fn()
+  batchUpdateFn: (fn: () => void) => fn()
 };
 
-export default (
-  incomingStore = {},
-  validators: Validators = {},
+const createStore: CreateStore = ({
+  initialState = {},
+  validators = {},
   options = {}
-): Store => {
+} = {}): Store => {
   const { throwOnValidation, throwOnMissingSchemas, batchUpdateFn } = {
     ...defaultOptions,
     ...options
@@ -92,7 +92,7 @@ export default (
     );
   };
 
-  setAll(incomingStore);
+  setAll(initialState);
 
   const addUpdateIntercept = fn => updateIntercepts.push(fn);
 
@@ -136,3 +136,5 @@ export default (
 
   return storeApi;
 };
+
+export default createStore;

@@ -6,14 +6,14 @@ const ajv = new Ajv();
 describe("Store", () => {
   it("can be initialised with an initial state", () => {
     const initialState = { a: 1, b: 2 };
-    const store = createStore(initialState);
+    const store = createStore({ initialState });
     expect(store.get("a")).toBe(1);
     expect(store.get("b")).toBe(2);
   });
 
   it("getAll can be used to retrieve multiple mountpoints at the same time", () => {
     const initialState = { a: 1, b: 2, c: 3 };
-    const store = createStore(initialState);
+    const store = createStore({ initialState });
     expect(store.getAll(["a", "c"])).toEqual({ a: 1, c: 3 });
   });
 
@@ -42,9 +42,11 @@ describe("Store", () => {
   it("can batch updates and be given a schedule function to control when registered callbacks are executed on state changes", () => {
     jest.useFakeTimers();
     const scheduler = fn => setTimeout(fn, 100);
-    const store = createStore(undefined, undefined, {
-      batchUpdates: true,
-      batchUpdateFn: scheduler
+    const store = createStore({
+      options: {
+        batchUpdates: true,
+        batchUpdateFn: scheduler
+      }
     });
     const fn1 = jest.fn();
     store.subscribe(fn1);
@@ -125,12 +127,12 @@ describe("Store", () => {
       }
     };
 
-    const store = createStore(
-      {
+    const store = createStore({
+      initialState: {
         a: 10
       },
       validators
-    );
+    });
 
     expect(store.get("a")).toBe(10);
     store.set("a", 15);
@@ -148,13 +150,13 @@ describe("Store", () => {
       }
     };
 
-    const store = createStore(
-      {
+    const store = createStore({
+      initialState: {
         a: 10
       },
       validators,
-      { throwOnValidation: true }
-    );
+      options: { throwOnValidation: true }
+    });
 
     expect(() => store.set("a", "30")).toThrow();
   });
@@ -168,13 +170,13 @@ describe("Store", () => {
       }
     };
 
-    const store = createStore(
-      {
+    const store = createStore({
+      initialState: {
         a: 10
       },
       validators,
-      { throwOnMissingSchemas: true }
-    );
+      options: { throwOnMissingSchemas: true }
+    });
     store.set("a", 30);
 
     expect(() => store.set("b", "30")).toThrow();

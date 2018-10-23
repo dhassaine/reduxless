@@ -8,6 +8,33 @@ interface MountPointsToValues {
   [keys: string]: any;
 }
 
+export interface CreateStoreOptions {
+  throwOnValidation?: boolean;
+  throwOnMissingSchemas?: boolean;
+  batchUpdateFn?: (fn: () => void) => any;
+}
+
+export interface CreateStoreArgs {
+  initialState?: Object;
+  validators?: Validators;
+  options?: CreateStoreOptions;
+}
+
+export type CreateStore = (args?: CreateStoreArgs) => Store;
+
+interface CreateRouterEnabledStoreArgs extends CreateStoreArgs {
+  pushStateMountPoints?: string[];
+  replaceStateMountPoints?: string[];
+  routerOptions?: {
+    debounceTime?: number;
+    useHash?: boolean;
+  };
+}
+
+export type CreateRouterEnabledStore = (
+  args?: CreateRouterEnabledStoreArgs
+) => RouterEnabledStore;
+
 export interface Store {
   set: (mountPoint: MountPoint, value: any) => void;
   setAll: (mountPointsToValues: MountPointsToValues) => void;

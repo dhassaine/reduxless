@@ -23,10 +23,9 @@ describe("router/index", () => {
       });
 
       it("syncs storeData from the query parameters to the store", () => {
-        const store = createRoutedStore(undefined, undefined, undefined, [
-          "counter",
-          "counter2"
-        ]);
+        const store = createRoutedStore({
+          pushStateMountPoints: ["counter", "counter2"]
+        });
         unsubscribe = store.subscribe(jest.fn());
 
         expect(store.get("counter")).toEqual({ value: 1 });
@@ -43,10 +42,9 @@ describe("router/index", () => {
       });
 
       it("syncs registered storeData from window.location to the store", done => {
-        const store = createRoutedStore(undefined, undefined, undefined, [
-          "counter",
-          "counter2"
-        ]);
+        const store = createRoutedStore({
+          pushStateMountPoints: ["counter", "counter2"]
+        });
 
         const assertions = [
           () => {
@@ -85,16 +83,12 @@ describe("router/index", () => {
 
       it("changes made directly to the registered sync data in the store automatically update the browser location", done => {
         jest.useFakeTimers();
-        const store = createRoutedStore(
-          undefined,
-          undefined,
-          undefined,
-          ["counter", "counter2"],
-          [],
-          {
+        const store = createRoutedStore({
+          pushStateMountPoints: ["counter", "counter2"],
+          routerOptions: {
             debounceTime: 1000
           }
-        );
+        });
         unsubscribe = store.subscribe(jest.fn());
 
         expect(store.get("counter")).toEqual({ value: 1 });
@@ -126,16 +120,13 @@ describe("router/index", () => {
           oldReplace.bind(window.history)
         ));
 
-        const store = createRoutedStore(
-          undefined,
-          undefined,
-          undefined,
-          ["counter"],
-          ["counter2"],
-          {
+        const store = createRoutedStore({
+          pushStateMountPoints: ["counter"],
+          replaceStateMountPoints: ["counter2"],
+          routerOptions: {
             debounceTime: 1000
           }
-        );
+        });
 
         const assertions = [
           () => {
@@ -224,16 +215,13 @@ describe("router/index", () => {
           oldReplace.bind(window.history)
         ));
 
-        const store = createRoutedStore(
-          { counter: { value: 1 } },
-          undefined,
-          undefined,
-          undefined,
-          ["counter2"],
-          {
+        const store = createRoutedStore({
+          initialState: { counter: { value: 1 } },
+          replaceStateMountPoints: ["counter2"],
+          routerOptions: {
             debounceTime: 1000
           }
-        );
+        });
 
         expect(replaceState.mock.calls.length).toEqual(0);
 
@@ -407,12 +395,10 @@ describe("router/index", () => {
 
       it("maintains the store data", () => {
         window.history.pushState(null, null, "http://example.com/page1");
-        const store = createRoutedStore(
-          { counter: { value: 1 } },
-          undefined,
-          undefined,
-          ["counter"]
-        );
+        const store = createRoutedStore({
+          initialState: { counter: { value: 1 } },
+          pushStateMountPoints: ["counter"]
+        });
         unsubscribe = store.subscribe(jest.fn());
         navigate(store, "page2");
         expect(window.location.href).toEqual(
@@ -422,14 +408,9 @@ describe("router/index", () => {
 
       it("pushes the path to the browser state if hash is being used", () => {
         window.history.pushState(null, null, "http://example.com/page1");
-        const store = createRoutedStore(
-          undefined,
-          undefined,
-          undefined,
-          [],
-          [],
-          { useHash: true }
-        );
+        const store = createRoutedStore({
+          routerOptions: { useHash: true }
+        });
         unsubscribe = store.subscribe(jest.fn());
         navigate(store, "page2");
         expect(window.location.href).toEqual("http://example.com/page2");
@@ -523,15 +504,13 @@ describe("router/index", () => {
         oldPush.bind(window.history)
       ));
 
-      const store = createRoutedStore(
-        {
+      const store = createRoutedStore({
+        initialState: {
           counter: { value: 1 },
           counter2: { value: 1 }
         },
-        undefined,
-        undefined,
-        ["counter"]
-      );
+        pushStateMountPoints: ["counter"]
+      });
 
       expect(pushState.mock.calls.length).toEqual(0);
       navigate(store, "page2");
