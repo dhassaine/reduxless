@@ -3,9 +3,11 @@ const reduxTests = require("./redux");
 const reduxContainerTest = require("./redux_container");
 const reduxlessTests = require("./reduxless");
 const reduxlessContainerTest = require("./reduxless_container");
+const reduxlessInfernoContainerTest = require("./reduxless_inferno_container");
 
 // add tests
 const suites = [];
+
 suites.push(
   new Benchmark.Suite()
     .add("redux-action", function() {
@@ -33,6 +35,9 @@ suites.push(
     })
     .add("reduxless-container", function() {
       reduxlessContainerTest.containerTest();
+    })
+    .add("reduxless-inferno-container", function() {
+      reduxlessInfernoContainerTest.containerTest();
     })
 );
 

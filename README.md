@@ -47,8 +47,10 @@ Alternatively if you are using a library other than React or Preact, for example
 
 ```js
 import { makeComponents } from "@reduxless/core";
+import { Component } from "inferno";
+import { createElement } from "inferno-create-element";
 
-const reduxless = makeComponents(require("inferno"));
+const reduxless = makeComponents({ createElement Component });
 ```
 
 ### Server-side
