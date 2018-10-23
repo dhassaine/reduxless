@@ -30,9 +30,40 @@ export interface CreateStoreOptions {
   batchUpdateFn?: (fn: () => void) => any;
 }
 
+/**
+ * The initial state can be provided as either a plain JavaScript object,
+ * a Map of string keys and values, or an array of arrays of string keys
+ * and values to generate the initial state from.
+ *
+ * Here's an example of a plain object:
+ * ```
+ * { counter: 0, updatedAt: Date.now() }
+ * ```
+ *
+ * Here's a map of key, value pairs:
+ * ```
+ * new Map([
+ *   ['counter', 0],
+ *   ['updatedAt': Date.now()]
+ * ])
+ * ```
+ *
+ * Here's a doubly-nested array of key, value pairs:
+ * ```
+ * [
+ *   ['counter', 0],
+ *   ['updatedAt', Date.now()]
+ * ]
+ * ```
+ */
+type EnumerableStateObject =
+  | { [index: string]: any }
+  | Map<string, any>
+  | [string, any][];
+
 interface CreateStoreArgs {
   /** pairs of keys (mountpoints) and data */
-  initialState?: {};
+  initialState?: EnumerableStateObject;
   /** pairs of mountpoints and validator functions */
   validators?: Validators;
   /** validation behaviour options */
@@ -76,3 +107,17 @@ export interface RouterEnabledStore extends Store {
   useHash: boolean;
   syncedLocationToStore: boolean;
 }
+
+interface VDOMComponent {
+  Component: any;
+}
+
+export interface PreactVDOM extends VDOMComponent {
+  h: (vnode: any, props: any, children: any) => JSX.Element;
+}
+
+export interface ReactVDOM extends VDOMComponent {
+  createElement: (vnode: any, props: any, children: any) => JSX.Element;
+}
+
+export type VDOMProvider = ReactVDOM | PreactVDOM;

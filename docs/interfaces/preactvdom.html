@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>CreateStoreArgs | @reduxless/core</title>
+	<title>PreactVDOM | @reduxless/core</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="createstoreargs.html">CreateStoreArgs</a>
+					<a href="preactvdom.html">PreactVDOM</a>
 				</li>
 			</ul>
-			<h1>Interface CreateStoreArgs</h1>
+			<h1>Interface PreactVDOM</h1>
 		</div>
 	</div>
 </header>
@@ -68,10 +68,10 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">CreateStoreArgs</span>
+						<a href="vdomcomponent.html" class="tsd-signature-type">VDOMComponent</a>
 						<ul class="tsd-hierarchy">
 							<li>
-								<a href="createrouterenabledstoreargs.html" class="tsd-signature-type">CreateRouterEnabledStoreArgs</a>
+								<span class="target">PreactVDOM</span>
 							</li>
 						</ul>
 					</li>
@@ -81,62 +81,64 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-not-exported">
+						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="createstoreargs.html#initialstate" class="tsd-kind-icon">initial<wbr>State</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="createstoreargs.html#options" class="tsd-kind-icon">options</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="createstoreargs.html#validators" class="tsd-kind-icon">validators</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="preactvdom.html#component" class="tsd-kind-icon">Component</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="preactvdom.html#h" class="tsd-kind-icon">h</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="initialstate" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> initial<wbr>State</h3>
-					<div class="tsd-signature tsd-kind-icon">initial<wbr>State<span class="tsd-signature-symbol">:</span> <a href="../globals.html#enumerablestateobject" class="tsd-signature-type">EnumerableStateObject</a></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="component" class="tsd-anchor"></a>
+					<h3>Component</h3>
+					<div class="tsd-signature tsd-kind-icon">Component<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="vdomcomponent.html">VDOMComponent</a>.<a href="vdomcomponent.html#component">Component</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/98f9488/src/interfaces.ts#L66">interfaces.ts:66</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/98f9488/src/interfaces.ts#L112">interfaces.ts:112</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>pairs of keys (mountpoints) and data</p>
-						</div>
-					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="options" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> options</h3>
-					<div class="tsd-signature tsd-kind-icon">options<span class="tsd-signature-symbol">:</span> <a href="createstoreoptions.html" class="tsd-signature-type">CreateStoreOptions</a></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="h" class="tsd-anchor"></a>
+					<h3>h</h3>
+					<div class="tsd-signature tsd-kind-icon">h<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/98f9488/src/interfaces.ts#L70">interfaces.ts:70</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/98f9488/src/interfaces.ts#L116">interfaces.ts:116</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>validation behaviour options</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="validators" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> validators</h3>
-					<div class="tsd-signature tsd-kind-icon">validators<span class="tsd-signature-symbol">:</span> <a href="validators.html" class="tsd-signature-type">Validators</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/98f9488/src/interfaces.ts#L68">interfaces.ts:68</a></li>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>vnode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, props<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, children<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">JSX.Element</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>vnode: <span class="tsd-signature-type">any</span></h5>
+											</li>
+											<li>
+												<h5>props: <span class="tsd-signature-type">any</span></h5>
+											</li>
+											<li>
+												<h5>children: <span class="tsd-signature-type">any</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">JSX.Element</span></h4>
+									</li>
+								</ul>
+							</li>
 						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>pairs of mountpoints and validator functions</p>
-						</div>
 					</div>
 				</section>
 			</section>
@@ -153,17 +155,14 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-is-not-exported">
-						<a href="createstoreargs.html" class="tsd-kind-icon">Create<wbr>Store<wbr>Args</a>
+					<li class="current tsd-kind-interface">
+						<a href="preactvdom.html" class="tsd-kind-icon">PreactVDOM</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="createstoreargs.html#initialstate" class="tsd-kind-icon">initial<wbr>State</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="preactvdom.html#component" class="tsd-kind-icon">Component</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="createstoreargs.html#options" class="tsd-kind-icon">options</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="createstoreargs.html#validators" class="tsd-kind-icon">validators</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="preactvdom.html#h" class="tsd-kind-icon">h</a>
 							</li>
 						</ul>
 					</li>

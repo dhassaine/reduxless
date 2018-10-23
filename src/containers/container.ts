@@ -1,5 +1,7 @@
-export const _Container = vdom => {
-  const h = vdom.h || vdom.createElement;
+import { VDOMProvider, PreactVDOM, ReactVDOM } from "../interfaces";
+
+export const _Container = (vdom: VDOMProvider) => {
+  const h = (<PreactVDOM>vdom).h || (<ReactVDOM>vdom).createElement;
   return class Container extends vdom.Component {
     static childContextTypes = {
       store: () => {}
@@ -24,8 +26,8 @@ export const _Container = vdom => {
   };
 };
 
-export const _mapper = vdom => {
-  const h = vdom.h || vdom.createElement;
+export const _mapper = (vdom: VDOMProvider) => {
+  const h = (<PreactVDOM>vdom).h || (<ReactVDOM>vdom).createElement;
 
   return (propMappings = {}, actionMappings = {}) => Wrapped => {
     return class Mapper extends vdom.Component {

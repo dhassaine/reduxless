@@ -1,9 +1,5 @@
 import { getStateFromUrl, pushHistory, replaceHistory } from "./actions";
-import {
-  RouterEnabledStore,
-  Validators,
-  CreateRouterEnabledStore
-} from "../interfaces";
+import { RouterEnabledStore, CreateRouterEnabledStore } from "../interfaces";
 import createStore from "../state/store";
 
 type GenericFunction = (...args: any[]) => any;
@@ -45,7 +41,7 @@ const initialiseLastState = (
   return [lastPushState, lastReplaceState];
 };
 
-export const createRoutedStore: CreateRouterEnabledStore = ({
+export const createRouterEnabledStore: CreateRouterEnabledStore = ({
   initialState = {},
   validators = {},
   options = {},

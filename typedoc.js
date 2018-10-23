@@ -7,5 +7,6 @@ module.exports = {
   include: path.resolve(__dirname, "src"),
   excludeExternals: true,
   excludePrivate: true,
-  excludeProtected: true
+  excludeProtected: true,
+  ignoreCompilerErrors: true
 };
