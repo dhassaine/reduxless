@@ -28,7 +28,7 @@
     "bump-version": "bin/bump-version.sh",
     "prepublish": "npm run build",
     "bench": "npm run build && node benchmarks/redux_vs_reduxless.js && node benchmarks/bench.js",
-    "build-docs": "rm -rf ./docs && typedoc --out ./docs/ src/**/*.ts && touch ./docs/.nojekyll"
+    "build-docs": "rm -rf ./docs && typedoc && touch ./docs/.nojekyll"
   },
   "author": "Djamel Hassaine <dhassaine@gmail.com> (https://github.com/dhassaine)",
   "contributors": [

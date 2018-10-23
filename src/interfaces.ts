@@ -51,7 +51,9 @@ interface CreateRouterEnabledStoreArgs extends CreateStoreArgs {
   };
 }
 
-/** Creates a router-enabled store instances that syncs the browser URL */
+/**
+ * Creates a router-enabled store instances that syncs the browser URL
+ */
 export type CreateRouterEnabledStore = (
   args?: CreateRouterEnabledStoreArgs
 ) => RouterEnabledStore;
