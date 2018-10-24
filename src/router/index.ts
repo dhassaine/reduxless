@@ -1,10 +1,6 @@
-import { getStateFromUrl, pushHistory, replaceHistory } from "./actions";
-import {
-  RouterEnabledStore,
-  Validators,
-  CreateRouterEnabledStore
-} from "../interfaces";
-import createStore from "../state/store";
+import { getStateFromUrl, pushHistory, replaceHistory } from './actions';
+import { RouterEnabledStore, CreateRouterEnabledStore } from '../interfaces';
+import createStore from '../state/store';
 
 type GenericFunction = (...args: any[]) => any;
 
@@ -45,10 +41,10 @@ const initialiseLastState = (
   return [lastPushState, lastReplaceState];
 };
 
-export const createRoutedStore: CreateRouterEnabledStore = ({
-  initialState = {},
-  validators = {},
-  options = {},
+export const createRouterEnabledStore: CreateRouterEnabledStore = ({
+  initialState,
+  validators,
+  batchUpdateFn,
   pushStateMountPoints = [],
   replaceStateMountPoints = [],
   routerOptions = {}
@@ -61,17 +57,17 @@ export const createRoutedStore: CreateRouterEnabledStore = ({
   const routedStore = createStore({
     initialState,
     validators,
-    options
+    batchUpdateFn
   }) as RouterEnabledStore;
 
   const _subscribe = routedStore.subscribe;
   routedStore.subscribe = (listener: GenericFunction) => {
-    window.addEventListener("popstate", popstate);
+    window.addEventListener('popstate', popstate);
     update(routedStore.syncToLocations);
     if (routedStore.syncToLocations.length > 0) replaceHistory(routedStore);
     const unsubscribe = _subscribe(listener);
     return () => {
-      window.removeEventListener("popstate", popstate);
+      window.removeEventListener('popstate', popstate);
       unsubscribe();
     };
   };
@@ -141,5 +137,5 @@ export const createRoutedStore: CreateRouterEnabledStore = ({
   return routedStore;
 };
 
-export { default as Match } from "./Match";
-export { default as Link } from "./Link";
+export { default as Match } from './Match';
+export { default as Link } from './Link';

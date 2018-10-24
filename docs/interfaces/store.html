@@ -38,8 +38,6 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-externals" checked />
-							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
 							<input type="checkbox" id="tsd-filter-only-exported" />
 							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
@@ -56,10 +54,7 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_interfaces_.html">&quot;interfaces&quot;</a>
-				</li>
-				<li>
-					<a href="_interfaces_.store.html">Store</a>
+					<a href="store.html">Store</a>
 				</li>
 			</ul>
 			<h1>Interface Store</h1>
@@ -83,7 +78,7 @@
 						<span class="target">Store</span>
 						<ul class="tsd-hierarchy">
 							<li>
-								<a href="_interfaces_.routerenabledstore.html" class="tsd-signature-type">RouterEnabledStore</a>
+								<a href="routerenabledstore.html" class="tsd-signature-type">RouterEnabledStore</a>
 							</li>
 						</ul>
 					</li>
@@ -93,33 +88,39 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-external">
+						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="_interfaces_.store.html#addupdateintercept" class="tsd-kind-icon">add<wbr>Update<wbr>Intercept</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="_interfaces_.store.html#get" class="tsd-kind-icon">get</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="_interfaces_.store.html#getall" class="tsd-kind-icon">get<wbr>All</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="_interfaces_.store.html#ping" class="tsd-kind-icon">ping</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="_interfaces_.store.html#set" class="tsd-kind-icon">set</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="_interfaces_.store.html#setall" class="tsd-kind-icon">set<wbr>All</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="_interfaces_.store.html#subscribe" class="tsd-kind-icon">subscribe</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="_interfaces_.store.html#withmutations" class="tsd-kind-icon">with<wbr>Mutations</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="store.html#addupdateintercept" class="tsd-kind-icon">add<wbr>Update<wbr>Intercept</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="store.html#get" class="tsd-kind-icon">get</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="store.html#getall" class="tsd-kind-icon">get<wbr>All</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="store.html#ping" class="tsd-kind-icon">ping</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="store.html#set" class="tsd-kind-icon">set</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="store.html#setall" class="tsd-kind-icon">set<wbr>All</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="store.html#subscribe" class="tsd-kind-icon">subscribe</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="store.html#withmutations" class="tsd-kind-icon">with<wbr>Mutations</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="addupdateintercept" class="tsd-anchor"></a>
 					<h3>add<wbr>Update<wbr>Intercept</h3>
 					<div class="tsd-signature tsd-kind-icon">add<wbr>Update<wbr>Intercept<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/f44417c/src/interfaces.ts#L66">interfaces.ts:66</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/bb07b76/src/interfaces.ts#L168">interfaces.ts:168</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>This registers a function that will be called on every state update before
+							the observers are notified.</p>
+						</div>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -154,28 +155,35 @@
 						</ul>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="get" class="tsd-anchor"></a>
 					<h3>get</h3>
 					<div class="tsd-signature tsd-kind-icon">get<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/f44417c/src/interfaces.ts#L63">interfaces.ts:63</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/bb07b76/src/interfaces.ts#L134">interfaces.ts:134</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>To retrieve a single property from the store use <code>get</code> with the appropriate
+							mountpoint.</p>
+						</div>
+						<pre><code class="language-js">store.get(<span class="hljs-string">"name"</span>);</code></pre>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter-siganture">
 								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>mountPoint<span class="tsd-signature-symbol">: </span><a href="../modules/_interfaces_.html#mountpoint" class="tsd-signature-type">MountPoint</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>mountPoint<span class="tsd-signature-symbol">: </span><a href="../globals.html#mountpoint" class="tsd-signature-type">MountPoint</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
 								</ul>
 								<ul class="tsd-descriptions">
 									<li class="tsd-description">
 										<h4 class="tsd-parameters-title">Parameters</h4>
 										<ul class="tsd-parameters">
 											<li>
-												<h5>mountPoint: <a href="../modules/_interfaces_.html#mountpoint" class="tsd-signature-type">MountPoint</a></h5>
+												<h5>mountPoint: <a href="../globals.html#mountpoint" class="tsd-signature-type">MountPoint</a></h5>
 											</li>
 										</ul>
 										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
@@ -185,46 +193,59 @@
 						</ul>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="getall" class="tsd-anchor"></a>
 					<h3>get<wbr>All</h3>
 					<div class="tsd-signature tsd-kind-icon">get<wbr>All<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/f44417c/src/interfaces.ts#L64">interfaces.ts:64</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/bb07b76/src/interfaces.ts#L143">interfaces.ts:143</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>To retrieve multiple properties from the store use <code>getAll</code> with an array
+							containing all the desired mountpoints.</p>
+						</div>
+						<pre><code class="language-js">store.getAll([<span class="hljs-string">"name"</span>, <span class="hljs-string">"score"</span>]); <span class="hljs-comment">// returns {name: 'Homer', score: 1}</span></code></pre>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter-siganture">
 								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>mountPoints<span class="tsd-signature-symbol">: </span><a href="../modules/_interfaces_.html#mountpoint" class="tsd-signature-type">MountPoint</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_interfaces_.mountpointstovalues.html" class="tsd-signature-type">MountPointsToValues</a></li>
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>mountPoints<span class="tsd-signature-symbol">: </span><a href="../globals.html#mountpoint" class="tsd-signature-type">MountPoint</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="mountpointstovalues.html" class="tsd-signature-type">MountPointsToValues</a></li>
 								</ul>
 								<ul class="tsd-descriptions">
 									<li class="tsd-description">
 										<h4 class="tsd-parameters-title">Parameters</h4>
 										<ul class="tsd-parameters">
 											<li>
-												<h5>mountPoints: <a href="../modules/_interfaces_.html#mountpoint" class="tsd-signature-type">MountPoint</a><span class="tsd-signature-symbol">[]</span></h5>
+												<h5>mountPoints: <a href="../globals.html#mountpoint" class="tsd-signature-type">MountPoint</a><span class="tsd-signature-symbol">[]</span></h5>
 											</li>
 										</ul>
-										<h4 class="tsd-returns-title">Returns <a href="_interfaces_.mountpointstovalues.html" class="tsd-signature-type">MountPointsToValues</a></h4>
+										<h4 class="tsd-returns-title">Returns <a href="mountpointstovalues.html" class="tsd-signature-type">MountPointsToValues</a></h4>
 									</li>
 								</ul>
 							</li>
 						</ul>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="ping" class="tsd-anchor"></a>
 					<h3>ping</h3>
 					<div class="tsd-signature tsd-kind-icon">ping<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/f44417c/src/interfaces.ts#L67">interfaces.ts:67</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/bb07b76/src/interfaces.ts#L173">interfaces.ts:173</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Notifies the subscribers to the store, even when no changes occured to the
+							store.</p>
+						</div>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -241,28 +262,37 @@
 						</ul>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="set" class="tsd-anchor"></a>
 					<h3>set</h3>
 					<div class="tsd-signature tsd-kind-icon">set<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/f44417c/src/interfaces.ts#L61">interfaces.ts:61</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/bb07b76/src/interfaces.ts#L116">interfaces.ts:116</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>To modify the store, you can call <code>set()</code> with the key or mountpoint
+								in the store and the data to replace the mountpoint with. After the
+								<code>set</code> function is executed all the subscribers to the store will be
+							notified.</p>
+						</div>
+						<pre><code class="language-js">store.set(<span class="hljs-string">"name"</span>, <span class="hljs-string">"Homer"</span>);</code></pre>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter-siganture">
 								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>mountPoint<span class="tsd-signature-symbol">: </span><a href="../modules/_interfaces_.html#mountpoint" class="tsd-signature-type">MountPoint</a>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>mountPoint<span class="tsd-signature-symbol">: </span><a href="../globals.html#mountpoint" class="tsd-signature-type">MountPoint</a>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 								</ul>
 								<ul class="tsd-descriptions">
 									<li class="tsd-description">
 										<h4 class="tsd-parameters-title">Parameters</h4>
 										<ul class="tsd-parameters">
 											<li>
-												<h5>mountPoint: <a href="../modules/_interfaces_.html#mountpoint" class="tsd-signature-type">MountPoint</a></h5>
+												<h5>mountPoint: <a href="../globals.html#mountpoint" class="tsd-signature-type">MountPoint</a></h5>
 											</li>
 											<li>
 												<h5>value: <span class="tsd-signature-type">any</span></h5>
@@ -275,28 +305,35 @@
 						</ul>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="setall" class="tsd-anchor"></a>
 					<h3>set<wbr>All</h3>
 					<div class="tsd-signature tsd-kind-icon">set<wbr>All<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/f44417c/src/interfaces.ts#L62">interfaces.ts:62</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/bb07b76/src/interfaces.ts#L125">interfaces.ts:125</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Use this if you wish to modify multiple mountpoints simultaneously
+							and have a single notification emit to the subscribers.</p>
+						</div>
+						<pre><code class="language-js">store.setAll({ <span class="hljs-attr">name</span>: <span class="hljs-string">"Homer"</span>, <span class="hljs-attr">score</span>: <span class="hljs-number">1</span> });</code></pre>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter-siganture">
 								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>mountPointsToValues<span class="tsd-signature-symbol">: </span><a href="_interfaces_.mountpointstovalues.html" class="tsd-signature-type">MountPointsToValues</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>mountPointsToValues<span class="tsd-signature-symbol">: </span><a href="../globals.html#enumerableobject" class="tsd-signature-type">EnumerableObject</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 								</ul>
 								<ul class="tsd-descriptions">
 									<li class="tsd-description">
 										<h4 class="tsd-parameters-title">Parameters</h4>
 										<ul class="tsd-parameters">
 											<li>
-												<h5>mountPointsToValues: <a href="_interfaces_.mountpointstovalues.html" class="tsd-signature-type">MountPointsToValues</a></h5>
+												<h5>mountPointsToValues: <a href="../globals.html#enumerableobject" class="tsd-signature-type">EnumerableObject</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
 											</li>
 										</ul>
 										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -306,21 +343,28 @@
 						</ul>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="subscribe" class="tsd-anchor"></a>
 					<h3>subscribe</h3>
 					<div class="tsd-signature tsd-kind-icon">subscribe<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/f44417c/src/interfaces.ts#L68">interfaces.ts:68</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/bb07b76/src/interfaces.ts#L179">interfaces.ts:179</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Adds <code>fn</code> to a list of observers that will be executed every time the store
+								is updated. It returns an <code>unsubscribe</code> function so you can remove the
+							observer later.</p>
+						</div>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter-siganture">
 								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>fn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span></li>
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>fn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#unsubscribe" class="tsd-signature-type">Unsubscribe</a></li>
 								</ul>
 								<ul class="tsd-descriptions">
 									<li class="tsd-description">
@@ -331,10 +375,16 @@
 												<ul class="tsd-parameters">
 													<li class="tsd-parameter-siganture">
 														<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-															<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+															<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>storeApi<span class="tsd-signature-symbol">: </span><a href="store.html" class="tsd-signature-type">Store</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
 														</ul>
 														<ul class="tsd-descriptions">
 															<li class="tsd-description">
+																<h4 class="tsd-parameters-title">Parameters</h4>
+																<ul class="tsd-parameters">
+																	<li>
+																		<h5>storeApi: <a href="store.html" class="tsd-signature-type">Store</a></h5>
+																	</li>
+																</ul>
 																<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 															</li>
 														</ul>
@@ -342,34 +392,39 @@
 												</ul>
 											</li>
 										</ul>
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">function</span></h4>
-										<ul class="tsd-parameters">
-											<li class="tsd-parameter-siganture">
-												<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-													<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-												</ul>
-												<ul class="tsd-descriptions">
-													<li class="tsd-description">
-														<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-													</li>
-												</ul>
-											</li>
-										</ul>
+										<h4 class="tsd-returns-title">Returns <a href="../globals.html#unsubscribe" class="tsd-signature-type">Unsubscribe</a></h4>
 									</li>
 								</ul>
 							</li>
 						</ul>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="withmutations" class="tsd-anchor"></a>
 					<h3>with<wbr>Mutations</h3>
 					<div class="tsd-signature tsd-kind-icon">with<wbr>Mutations<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/f44417c/src/interfaces.ts#L65">interfaces.ts:65</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/bb07b76/src/interfaces.ts#L163">interfaces.ts:163</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>This function allows you to control the update phase of the store with more
+								precision. The function argument is called with a store containing the
+								setter and getter functions. The subscribers are only notified once after
+								the <code>fn</code> argument has executed. Any calls to <code>set</code> or <code>setAll</code> in <code>fn</code> will
+							not cause an unnecessary subscriber notification.</p>
+						</div>
+						<p>A good example use case is where you wish to set two properties at the same
+						time, but one property relies on a projection of the other:</p>
+						<pre><code class="language-js">store.withMutations(<span class="hljs-function"><span class="hljs-params">s</span> =&gt;</span> {
+  <span class="hljs-keyword">const</span> oldTop = selectors.top(store);
+  <span class="hljs-keyword">const</span> oldCellHeight = selectors.cellHeight(store);
+  s.set(<span class="hljs-string">"isZoomedIn"</span>, !!zoom);
+  s.set(<span class="hljs-string">"top"</span>, (oldTop / oldCellHeight) * selectors.cellHeight(store));
+});</code></pre>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -386,14 +441,14 @@
 												<ul class="tsd-parameters">
 													<li class="tsd-parameter-siganture">
 														<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-															<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>mutableStore<span class="tsd-signature-symbol">: </span><a href="_interfaces_.store.html" class="tsd-signature-type">Store</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+															<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>mutableStore<span class="tsd-signature-symbol">: </span><a href="store.html" class="tsd-signature-type">Store</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 														</ul>
 														<ul class="tsd-descriptions">
 															<li class="tsd-description">
 																<h4 class="tsd-parameters-title">Parameters</h4>
 																<ul class="tsd-parameters">
 																	<li>
-																		<h5>mutableStore: <a href="_interfaces_.store.html" class="tsd-signature-type">Store</a></h5>
+																		<h5>mutableStore: <a href="store.html" class="tsd-signature-type">Store</a></h5>
 																	</li>
 																</ul>
 																<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -418,106 +473,43 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class="label tsd-is-external">
-						<span>Internals</span>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_containers_container_.html">"containers/container"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_router_link_.html">"router/<wbr>Link"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_router_match_.html">"router/<wbr>Match"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_router_actions_.html">"router/actions"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_router_index_.html">"router/index"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_router_selectors_.html">"router/selectors"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_state_store_.html">"state/store"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_utilities_memoizer_.html">"utilities/memoizer"</a>
-					</li>
-					<li class="label tsd-is-external">
-						<span>Externals</span>
-					</li>
-					<li class="current tsd-kind-external-module tsd-is-external">
-						<a href="../modules/_interfaces_.html">"interfaces"</a>
-					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
-						<a href="_interfaces_.createrouterenabledstoreargs.html" class="tsd-kind-icon">Create<wbr>Router<wbr>Enabled<wbr>Store<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
-						<a href="_interfaces_.createstoreargs.html" class="tsd-kind-icon">Create<wbr>Store<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-external">
-						<a href="_interfaces_.createstoreoptions.html" class="tsd-kind-icon">Create<wbr>Store<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
-						<a href="_interfaces_.mountpointstovalues.html" class="tsd-kind-icon">Mount<wbr>Points<wbr>ToValues</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-external">
-						<a href="_interfaces_.routerenabledstore.html" class="tsd-kind-icon">Router<wbr>Enabled<wbr>Store</a>
-					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-external-module tsd-is-external">
-						<a href="_interfaces_.store.html" class="tsd-kind-icon">Store</a>
+					<li class="current tsd-kind-interface">
+						<a href="store.html" class="tsd-kind-icon">Store</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="_interfaces_.store.html#addupdateintercept" class="tsd-kind-icon">add<wbr>Update<wbr>Intercept</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="store.html#addupdateintercept" class="tsd-kind-icon">add<wbr>Update<wbr>Intercept</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="_interfaces_.store.html#get" class="tsd-kind-icon">get</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="store.html#get" class="tsd-kind-icon">get</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="_interfaces_.store.html#getall" class="tsd-kind-icon">get<wbr>All</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="store.html#getall" class="tsd-kind-icon">get<wbr>All</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="_interfaces_.store.html#ping" class="tsd-kind-icon">ping</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="store.html#ping" class="tsd-kind-icon">ping</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="_interfaces_.store.html#set" class="tsd-kind-icon">set</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="store.html#set" class="tsd-kind-icon">set</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="_interfaces_.store.html#setall" class="tsd-kind-icon">set<wbr>All</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="store.html#setall" class="tsd-kind-icon">set<wbr>All</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="_interfaces_.store.html#subscribe" class="tsd-kind-icon">subscribe</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="store.html#subscribe" class="tsd-kind-icon">subscribe</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="_interfaces_.store.html#withmutations" class="tsd-kind-icon">with<wbr>Mutations</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="store.html#withmutations" class="tsd-kind-icon">with<wbr>Mutations</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-external">
-						<a href="_interfaces_.validators.html" class="tsd-kind-icon">Validators</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-external">
-						<a href="../modules/_interfaces_.html#createrouterenabledstore" class="tsd-kind-icon">Create<wbr>Router<wbr>Enabled<wbr>Store</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-external">
-						<a href="../modules/_interfaces_.html#createstore" class="tsd-kind-icon">Create<wbr>Store</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
-						<a href="../modules/_interfaces_.html#mountpoint" class="tsd-kind-icon">Mount<wbr>Point</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
-						<a href="../modules/_interfaces_.html#validator" class="tsd-kind-icon">Validator</a>
-					</li>
 				</ul>
 			</nav>
 		</div>

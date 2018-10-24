@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;router/selectors&quot; | @reduxless/core</title>
+	<title>PreactVDOM | @reduxless/core</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -38,8 +38,6 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-externals" checked />
-							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
 							<input type="checkbox" id="tsd-filter-only-exported" />
 							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
@@ -56,114 +54,99 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_router_selectors_.html">&quot;router/selectors&quot;</a>
+					<a href="preactvdom.html">PreactVDOM</a>
 				</li>
 			</ul>
-			<h1>External module &quot;router/selectors&quot;</h1>
+			<h1>Interface PreactVDOM</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>A Preact-like VDOM provider</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<a href="vdomcomponent.html" class="tsd-signature-type">VDOMComponent</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">PreactVDOM</span>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Functions</h3>
+							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_router_selectors_.html#extractpartsfrompath" class="tsd-kind-icon">extract<wbr>Parts<wbr>From<wbr>Path</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_router_selectors_.html#getpath" class="tsd-kind-icon">get<wbr>Path</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_router_selectors_.html#parsestore" class="tsd-kind-icon">parse<wbr>Store</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="preactvdom.html#component" class="tsd-kind-icon">Component</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="preactvdom.html#h" class="tsd-kind-icon">h</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="extractpartsfrompath" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> extract<wbr>Parts<wbr>From<wbr>Path</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">extract<wbr>Parts<wbr>From<wbr>Path<span class="tsd-signature-symbol">(</span>store<span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.routerenabledstore.html" class="tsd-signature-type">RouterEnabledStore</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/f44417c/src/router/selectors.ts#L16">router/selectors.ts:16</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>store: <a href="../interfaces/_interfaces_.routerenabledstore.html" class="tsd-signature-type">RouterEnabledStore</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
-							<ul class="tsd-parameters">
-								<li class="tsd-parameter">
-									<h5>path<wbr>Name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>query<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li class="tsd-parameter">
-									<h5>store<wbr>Data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h5>
-									<ul class="tsd-parameters">
-									</ul>
-								</li>
-							</ul>
-						</li>
-					</ul>
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="component" class="tsd-anchor"></a>
+					<h3>Component</h3>
+					<div class="tsd-signature tsd-kind-icon">Component<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="vdomcomponent.html">VDOMComponent</a>.<a href="vdomcomponent.html#component">Component</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/bb07b76/src/interfaces.ts#L190">interfaces.ts:190</a></li>
+						</ul>
+					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="getpath" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> get<wbr>Path</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Path<span class="tsd-signature-symbol">(</span>store<span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.routerenabledstore.html" class="tsd-signature-type">RouterEnabledStore</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/f44417c/src/router/selectors.ts#L11">router/selectors.ts:11</a></li>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="h" class="tsd-anchor"></a>
+					<h3>h</h3>
+					<div class="tsd-signature tsd-kind-icon">h<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/bb07b76/src/interfaces.ts#L195">interfaces.ts:195</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>vnode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, props<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, children<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">JSX.Element</span></li>
 								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>store: <a href="../interfaces/_interfaces_.routerenabledstore.html" class="tsd-signature-type">RouterEnabledStore</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="parsestore" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> parse<wbr>Store</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">parse<wbr>Store<span class="tsd-signature-symbol">(</span>storeData<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/f44417c/src/router/selectors.ts#L3">router/selectors.ts:3</a></li>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>vnode: <span class="tsd-signature-type">any</span></h5>
+											</li>
+											<li>
+												<h5>props: <span class="tsd-signature-type">any</span></h5>
+											</li>
+											<li>
+												<h5>children: <span class="tsd-signature-type">any</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">JSX.Element</span></h4>
+									</li>
 								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>storeData: <span class="tsd-signature-type">any</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-						</li>
-					</ul>
+							</li>
+						</ul>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -173,52 +156,25 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class="label tsd-is-external">
-						<span>Internals</span>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_containers_container_.html">"containers/container"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_router_link_.html">"router/<wbr>Link"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_router_match_.html">"router/<wbr>Match"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_router_actions_.html">"router/actions"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_router_index_.html">"router/index"</a>
-					</li>
-					<li class="current tsd-kind-external-module">
-						<a href="_router_selectors_.html">"router/selectors"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_state_store_.html">"state/store"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_utilities_memoizer_.html">"utilities/memoizer"</a>
-					</li>
-					<li class="label tsd-is-external">
-						<span>Externals</span>
-					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="_interfaces_.html">"interfaces"</a>
-					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="_router_selectors_.html#extractpartsfrompath" class="tsd-kind-icon">extract<wbr>Parts<wbr>From<wbr>Path</a>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface">
+						<a href="preactvdom.html" class="tsd-kind-icon">PreactVDOM</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="preactvdom.html#component" class="tsd-kind-icon">Component</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="preactvdom.html#h" class="tsd-kind-icon">h</a>
+							</li>
+						</ul>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="_router_selectors_.html#getpath" class="tsd-kind-icon">get<wbr>Path</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_router_selectors_.html#parsestore" class="tsd-kind-icon">parse<wbr>Store</a>
-					</li>
+				</ul>
+				<ul class="after-current">
 				</ul>
 			</nav>
 		</div>

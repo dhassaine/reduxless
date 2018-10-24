@@ -38,8 +38,6 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-externals" checked />
-							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
 							<input type="checkbox" id="tsd-filter-only-exported" />
 							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
@@ -65,25 +63,34 @@
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
 				<h1 id="reduxless">Reduxless</h1>
-				<blockquote>
-					<p>A small and performant state management and routing library with unidirectional data flow.</p>
-				</blockquote>
+				<p><em>A small and performant state management and routing library with unidirectional data flow.</em></p>
 				<p><a href="https://badge.fury.io/js/reduxless"><img src="https://badge.fury.io/js/reduxless.svg" alt="npm version"></a> <a href="https://travis-ci.org/dhassaine/reduxless"><img src="https://travis-ci.org/dhassaine/reduxless.svg?branch=master" alt="Build Status"></a> <a href="https://coveralls.io/github/dhassaine/reduxless?branch=master"><img src="https://coveralls.io/repos/github/dhassaine/reduxless/badge.svg?branch=master" alt="Coverage Status"></a>
 				<a href="https://unpkg.com/reduxless/dist/reduxless.min.js"><img src="http://img.badgesize.io/https://unpkg.com/reduxless/dist/reduxless.min.js?compression=gzip" alt="gzip size"></a></p>
-				<p><a href="#documentation">Looking for the API? Click here</a></p>
+				<h1 id="package-api">Package API</h1>
+				<p>The package provides the following functions:</p>
+				<ul>
+					<li><a href="globals.html#createstore"><code>createStore</code></a></li>
+					<li><a href="globals.html#createrouterenabledstore"><code>createRouterEnabledStore</code></a></li>
+					<li><a href="globals.html#selectormemoizer"><code>selectorMemoizer</code></a></li>
+					<li><a href="globals.html#makecomponents"><code>makeComponents</code></a></li>
+				</ul>
 				<h2 id="introduction">Introduction</h2>
-				<p>Reduxless simplifies some of the complexity of <a href="https://github.com/reactjs/redux">Redux</a> and reduces the amount of necessary boilerplate code. It is also much more performant and scales linearly as the application&#39;s state grows (see <a href="https://dhassaine.github.io/reduxless/performance">perfomance analysis</a>).</p>
+				<p>Reduxless simplifies some of the complexity of <a href="https://github.com/reactjs/redux">Redux</a> and reduces the amount of necessary boilerplate code. It is also much more performant and scales linearly as the application&#39;s state grows (see <a href="#performance-analysis">perfomance analysis</a>).</p>
 				<p>Reduxless combines the roles of reducers and actions into one operation: the two key operations are actions and selectors. We lose the ability to perform time travelling on our state, but the advantages of simpler and faster code can outweigh that benefit.</p>
 				<h2 id="installation">Installation</h2>
 				<p>To install the stable version:</p>
 				<pre><code><span class="hljs-built_in">npm</span> install @reduxless/core</code></pre><h2 id="importing">Importing</h2>
 				<p>Reduxless can be used with any React-like library. There are two libraries with the relevant bindings:</p>
 				<h3 id="to-include-it-in-a-preact-project-">To include it in a Preact project:</h3>
-				<p><code>npm install @reduxless/preact</code></p>
-				<pre><code class="language-js"><span class="hljs-keyword">import</span> reduxless <span class="hljs-keyword">from</span> <span class="hljs-string">"@reduxless/preact"</span>;</code></pre>
+				<p>Install the package:</p>
+				<pre><code class="language-bash">npm install @reduxless/preact</code></pre>
+				<p>Use the Preact bound components:</p>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { Container, mapper, Link, Match } <span class="hljs-keyword">from</span> <span class="hljs-string">"@reduxless/preact"</span>;</code></pre>
 				<h3 id="to-include-it-in-a-react-project-">To include it in a React project:</h3>
-				<p><code>npm install @reduxless/react</code></p>
-				<pre><code class="language-js"><span class="hljs-keyword">import</span> reduxless <span class="hljs-keyword">from</span> <span class="hljs-string">"@reduxless/react"</span>;</code></pre>
+				<p>Install the package:</p>
+				<pre><code class="language-bash">npm install @reduxless/react</code></pre>
+				<p>Use the React bound components:</p>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { Container, mapper, Link, Match } <span class="hljs-keyword">from</span> <span class="hljs-string">"@reduxless/react"</span>;</code></pre>
 				<h3 id="other-libraries">Other libraries</h3>
 				<p>Alternatively if you are using a library other than React or Preact, for example, inferno, you can inject the module into Reduxless like so:</p>
 				<pre><code class="language-js"><span class="hljs-keyword">import</span> { makeComponents } <span class="hljs-keyword">from</span> <span class="hljs-string">"@reduxless/core"</span>;
@@ -94,13 +101,16 @@
 				<h3 id="server-side">Server-side</h3>
 				<p>If you don&#39;t need the bindings then you can do:</p>
 				<pre><code class="language-js"><span class="hljs-keyword">import</span> { createStore, selectorMemoizer } <span class="hljs-keyword">from</span> <span class="hljs-string">"@reduxless/core"</span>;</code></pre>
-				<h2 id="the-general-gist">The general gist</h2>
+				<h1 id="a-simple-example">A simple example</h1>
 				<p>The following snippet of code demonstrates how reduxless can be used with a React-like library -- in this case <a href="https://preactjs.com/">Preact</a>:</p>
-				<pre><code class="language-jsx"><span class="hljs-keyword">import</span> { h, render } <span class="hljs-keyword">from</span> <span class="hljs-string">"preact"</span>;
+				<pre><code class="language-jsx"><span class="hljs-comment">/** @jsx h */</span>
+<span class="hljs-keyword">import</span> { h, render } <span class="hljs-keyword">from</span> <span class="hljs-string">"preact"</span>;
 <span class="hljs-keyword">import</span> { createStore } <span class="hljs-keyword">from</span> <span class="hljs-string">"@reduxless/core"</span>;
 <span class="hljs-keyword">import</span> { Container, mapper } <span class="hljs-keyword">from</span> <span class="hljs-string">"@reduxless/preact"</span>;
 
-<span class="hljs-keyword">const</span> store = createStore({ <span class="hljs-attr">initialState</span>: { <span class="hljs-attr">name</span>: <span class="hljs-string">"Bart Simpson"</span> } });
+<span class="hljs-keyword">const</span> store = createStore({
+  <span class="hljs-attr">initialState</span>: { <span class="hljs-attr">name</span>: <span class="hljs-string">"Bart Simpson"</span> }
+});
 
 <span class="hljs-keyword">const</span> Component = <span class="hljs-function">(<span class="hljs-params">{ name, updateName }</span>) =&gt;</span> (
   <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">p</span>
@@ -129,23 +139,27 @@ render(
   <span class="hljs-tag">&lt;/<span class="hljs-name">Container</span>&gt;</span></span>
 );</code></pre>
 				<p>The <code>Container</code> component provides the <code>store</code> to all of it&#39;s nested children components via <code>context</code>. Its use is optional and you can pass the store down manually if you prefer, for example:</p>
-				<pre><code class="language-jsx">render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">MappedComponent</span> <span class="hljs-attr">store</span>=<span class="hljs-string">{store}</span> /&gt;</span>);</span></code></pre>
+				<pre><code class="language-jsx">render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">MappedComponent</span> <span class="hljs-attr">store</span>=<span class="hljs-string">{store}</span> /&gt;</span>, document.body);</span></code></pre>
 				<p>The <code>mapper</code> function is a performance convenience helper. It uses the given <code>selectors</code> to determine whether the mapped component should be rendered by doing shallow ref comparisons. This means it is important to create new objects when updating the store; otherwise, your components won&#39;t be updated. The actions are automatically injected with the <code>store</code> and the mapped component&#39;s props.</p>
 				<h2 id="routing-and-browser-history-syncing">Routing and browser history syncing</h2>
 				<p>Reduxless offers a straightforward mechanism for both routing (i.e. which components to render based on the URL) and keeping the browser URL and store state in sync. You can choose which properties in the store will trigger a <code>pushState</code> event and also whether the <code>popstate</code> event from the browser history navigation will update the store.</p>
 				<p>In the example above if we wanted the <code>name</code> property synced, it would be as simple as:</p>
-				<pre><code class="language-js"><span class="hljs-keyword">import</span> { createStore, enableHistory } <span class="hljs-keyword">from</span> <span class="hljs-string">"@reduxless/core"</span>;
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { createRouterEnabledStore } <span class="hljs-keyword">from</span> <span class="hljs-string">"@reduxless/core"</span>;
 
-<span class="hljs-keyword">const</span> store = createStore({ <span class="hljs-attr">initialState</span>: { <span class="hljs-attr">name</span>: <span class="hljs-string">"Bart Simpson"</span> } });
-enableHistory(<span class="hljs-keyword">this</span>.store, [<span class="hljs-string">"name"</span>]);</code></pre>
+<span class="hljs-keyword">const</span> store = createRouterEnabledStore({
+  <span class="hljs-attr">initialState</span>: { <span class="hljs-attr">name</span>: <span class="hljs-string">"Bart Simpson"</span> },
+  <span class="hljs-attr">pushStateMountPoints</span>: [<span class="hljs-string">"name"</span>]
+});</code></pre>
 				<p>Routing is as straightforward as:</p>
-				<pre><code class="language-jsx"><span class="hljs-keyword">import</span> { h } <span class="hljs-keyword">from</span> <span class="hljs-string">"preact"</span>;
-<span class="hljs-keyword">import</span> { createStore } <span class="hljs-keyword">from</span> <span class="hljs-string">"@reduxless/core"</span>;
+				<pre><code class="language-jsx"><span class="hljs-comment">/** @jsx h */</span>
+<span class="hljs-keyword">import</span> { h } <span class="hljs-keyword">from</span> <span class="hljs-string">"preact"</span>;
+<span class="hljs-keyword">import</span> { createRouterEnabledStore } <span class="hljs-keyword">from</span> <span class="hljs-string">"@reduxless/core"</span>;
 <span class="hljs-keyword">import</span> { Match, Link } <span class="hljs-keyword">from</span> <span class="hljs-string">"@reduxless/preact"</span>;
 
-<span class="hljs-keyword">const</span> store = createStore({ <span class="hljs-attr">initialState</span>: { <span class="hljs-attr">name</span>: <span class="hljs-string">"Bart Simpson"</span> } });
-
-enableHistory(<span class="hljs-keyword">this</span>.store, [<span class="hljs-string">"name"</span>]);
+<span class="hljs-keyword">const</span> store = createRouterEnabledStore({
+  <span class="hljs-attr">initialState</span>: { <span class="hljs-attr">name</span>: <span class="hljs-string">"Bart Simpson"</span> },
+  <span class="hljs-attr">pushStateMountPoints</span>: [<span class="hljs-string">"name"</span>]
+});
 
 <span class="hljs-keyword">const</span> app = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> (
   <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Container</span> <span class="hljs-attr">store</span>=<span class="hljs-string">{store}</span>&gt;</span>
@@ -168,19 +182,150 @@ enableHistory(<span class="hljs-keyword">this</span>.store, [<span class="hljs-s
   <span class="hljs-tag">&lt;/<span class="hljs-name">Container</span>&gt;</span></span>
 );</code></pre>
 				<p>The documentation section below describes the API in more detail, including configuration details for using hash; how to validate the data from the URL; and controlling one-way or two-way binding between the store state and browser URL.</p>
-				<h2 id="documentation">Documentation</h2>
+				<h1 id="differences-to-redux">Differences to Redux</h1>
+				<p>The state is not one nested object but multiple objects. This means libraries like reselect won&#39;t work as expected. Redux is expected to be given a new object for each reducer. Libraries like ImmutableJS can help with making modifications to the state as efficient as possible, but ultimately recreating an object with many properties just to get a new reference is expensive. Another bottleneck with Redux is that every reducer has to run when an action is dispatched. See <a href="#TODO">perfomance analysis</a> for further details.</p>
+				<h1 id="subscribing-directly-to-the-store">Subscribing directly to the store</h1>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { createStore } <span class="hljs-keyword">from</span> <span class="hljs-string">"@reduxless/core"</span>;
+
+<span class="hljs-keyword">const</span> store = createStore({
+  <span class="hljs-attr">initialState</span>: { <span class="hljs-attr">name</span>: <span class="hljs-string">"Bart"</span>, <span class="hljs-attr">surname</span>: <span class="hljs-string">"Simpson"</span> }
+});
+
+<span class="hljs-keyword">const</span> report = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span>
+  <span class="hljs-built_in">console</span>.log(
+    <span class="hljs-string">`Store has changed! – <span class="hljs-subst">${store.get(<span class="hljs-string">"name"</span>)}</span> <span class="hljs-subst">${store.get(<span class="hljs-string">"surname"</span>)}</span>`</span>
+  );
+
+<span class="hljs-keyword">const</span> unsubscribe = store.subscribe(report);
+store.set(<span class="hljs-string">"name"</span>, <span class="hljs-string">"Homer"</span>);
+
+unsubscribe();</code></pre>
+				<p>The store can also be created with <code>validators</code> which is an object containing pairs of mountpoints and validation functions to be called every time the mountpoint&#39;s data is updated. For example:</p>
+				<pre><code class="language-js"><span class="hljs-keyword">const</span> isString = <span class="hljs-function"><span class="hljs-params">data</span> =&gt;</span> <span class="hljs-keyword">typeof</span> data === <span class="hljs-string">"string"</span>;
+<span class="hljs-keyword">const</span> isNumber = <span class="hljs-function"><span class="hljs-params">data</span> =&gt;</span> <span class="hljs-keyword">typeof</span> data === <span class="hljs-string">"number"</span>;
+<span class="hljs-keyword">const</span> validators = {
+  <span class="hljs-attr">name</span>: isString,
+  <span class="hljs-attr">score</span>: isNumber
+};</code></pre>
+				<p>The validation behaviour can be tweaked with the <code>routerOptions</code> object. The properties are</p>
 				<ul>
-					<li>API<ul>
-							<li><a href="https://dhassaine.github.io/reduxless/store"><code>createStore([initialState])</code></a></li>
-							<li><a href="https://dhassaine.github.io/reduxless/container-mapper"><code>&lt;Container&gt;, mapper()</code></a> for the react bindings.</li>
-							<li><a href="https://dhassaine.github.io/reduxless/enable-history"><code>enableHistory()</code></a> for the browser history sync functionality.</li>
-							<li><a href="https://dhassaine.github.io/reduxless/router"><code>&lt;Match&gt;, &lt;Link&gt;</code></a> for the navigational components.</li>
-							<li><a href="https://dhassaine.github.io/reduxless/selector-memoizer"><code>selectorMemoizer(selectors, projectionFunction)</code></a> for improving rendering performance by wrapping your selectors with a memoizer.</li>
+					<li><code>throwOnValidation</code> (default: <code>false</code>)<ul>
+							<li><code>false</code>: if a validator returns a falsy value, reduxless won&#39;t update the store with that data.</li>
+							<li><code>true</code>: if a validator returns a truthy value, reduxless will throw an error.</li>
+						</ul>
+					</li>
+					<li><code>throwOnMissingSchemas</code> (default: <code>false</code>)<ul>
+							<li><code>false</code> mountpoints without a validator function are allowed</li>
+							<li><code>true</code> if a mountpoint does not have a corresponding validator function the <code>createRouterEnabledStore</code> function will throw an error.</li>
 						</ul>
 					</li>
 				</ul>
-				<h1 id="differences-to-redux">Differences to Redux</h1>
-				<p>The state is not one nested object but multiple objects. This means libraries like reselect won&#39;t work as expected. Redux is expected to be given a new object for each reducer. Libraries like ImmutableJS can help with making modifications to the state as efficient as possible, but ultimately recreating an object with many properties just to get a new reference is expensive. Another bottleneck with Redux is that every reducer has to run when an action is dispatched. See <a href="https://dhassaine.github.io/reduxless/performance">perfomance analysis</a> for further details.</p>
+				<p>By default if a validator returns a falsey value, redux won&#39;t update the store with that data. If you want the store to throw an error instead, set <code>throwOnValidation</code> to <code>true</code>.</p>
+				<h1 id="react-component-value-providers">React component value providers</h1>
+				<blockquote>
+					<p><code>&lt;Container store&gt;</code></p>
+				</blockquote>
+				<p>To use the store with a React-like library, you can use the <code>Container</code> component to provide the <code>store</code> via <code>context</code>.
+				Here&#39;s an example using <a href="https://preactjs.com/">Preact</a>:</p>
+				<h2 id="example-usage">Example usage</h2>
+				<pre><code class="language-jsx"><span class="hljs-keyword">import</span> { h, render } <span class="hljs-keyword">from</span> <span class="hljs-string">"preact"</span>;
+<span class="hljs-keyword">import</span> { createStore, Container } <span class="hljs-keyword">from</span> <span class="hljs-string">"reduxless"</span>;
+
+<span class="hljs-keyword">const</span> store = createStore({ <span class="hljs-attr">name</span>: <span class="hljs-string">"Bart Simpson"</span> });
+
+render(
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Container</span> <span class="hljs-attr">store</span>=<span class="hljs-string">{store}</span>&gt;</span>
+    {(props, { store }) =&gt; <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Hello there, {store.get("name")}!<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>}
+  <span class="hljs-tag">&lt;/<span class="hljs-name">Container</span>&gt;</span></span>
+);</code></pre>
+				<h1 id="mapping-store-to-props-and-actions">Mapping store to props and actions</h1>
+				<pre><code><span class="hljs-function"><span class="hljs-title">mapper</span><span class="hljs-params">(propMappings, [actionMappings])</span></span></code></pre><p>Instead of directly receiving the <code>store</code> via context and manually subscribing to it, you should use the <code>mapper</code> HOC; it behaves in a similar manner to Redux&#39;s <code>connect</code> function. Two arguments can be passed in:</p>
+				<ul>
+					<li><a href="interfaces/propmappings.html"><code>propMappings</code></a>: this is an object with prop names and functions to retrieve the corresponding values from the store.</li>
+					<li><a href="interfaces/actionmappings.html"><code>actionMappings</code></a>: this is an object with prop names and functions to make changes to the store.</li>
+				</ul>
+				<p>Functions in <code>propMappings</code> are passed the store, the wrapped component&#39;s props and the remaining arguments during invocation.</p>
+				<p>The component returned by <code>mapper</code> will only render it&#39;s children after the store has changed if the relevant props have also changed. It&#39;s also a good idea to wrap any computationally expensive operations with the <a href="globals.html#selectormemoizer"><code>selectorMemoizer()</code></a> function.</p>
+				<h1 id="router">Router</h1>
+				<p>Reduxless exposes two components that can be used for navigating different views and enable deep-linking/bookmarkable state.</p>
+				<h1 id="react-bindings">React bindings</h1>
+				<pre><code>selector<span class="hljs-constructor">Memoizer(<span class="hljs-params">projectionFunction</span>, <span class="hljs-params">selectors</span>)</span></code></pre><p>The first argument of <code>selectorMemoizer</code> is a <code>projectionFunction</code> which is given inputs from the selectors. The selectors retrieve the relevant data form the <code>store</code>. The result is memoized so that if the component is re-rendered but the inputs haven&#39;t changed the last known results are returned and the <code>projectionFunction</code> isn&#39;t invoked.</p>
+				<h2 id="example-usage">Example usage</h2>
+				<p>You may have a selector that maps the raw JSON response from an API call to something more usable like a map of ID&#39;s to resources. You really don&#39;t want to perform this operation every time the component is re-rendered as that would kill performance and create a lot of garbage on the memory. Memoizing this operation is the way to go.</p>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { selectorMemoizer } <span class="hljs-keyword">from</span> <span class="hljs-string">'@reduxless/preact'</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> resources = selectorMemoizer(
+  <span class="hljs-function">(<span class="hljs-params">{ resources = [] }</span>) =&gt;</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>(resources.map(<span class="hljs-function"><span class="hljs-params">r</span> =&gt;</span> [r.id, mapProject(r)])),
+  <span class="hljs-attr">projects</span>: <span class="hljs-function"><span class="hljs-params">store</span> =&gt;</span> store.get(<span class="hljs-string">'resources'</span>)
+);</code></pre>
+				<h2 id="a-more-complicated-example-using-multiple-selectors">A more complicated example using multiple selectors</h2>
+				<pre><code class="language-js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> resourceIds = selectorMemoizer(
+  <span class="hljs-function">(<span class="hljs-params">{ resources, selectedIds }</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> selected = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>(selectedIds);
+    <span class="hljs-keyword">const</span> list = <span class="hljs-built_in">Array</span>.from(resources.values()).filter(<span class="hljs-function">(<span class="hljs-params">{ id }</span>) =&gt;</span> selected.has(id);
+    <span class="hljs-keyword">return</span> list.sort().map(<span class="hljs-function"><span class="hljs-params">r</span> =&gt;</span> r.id);
+  },
+  <span class="hljs-attr">resources</span>: store.get(<span class="hljs-string">'resources'</span>),
+  <span class="hljs-attr">selectedIds</span>: store.get(<span class="hljs-string">'selectedIds'</span>)
+);</code></pre>
+				<h1 id="performance-analysis">Performance analysis</h1>
+				<h2 id="reduxless-vs-redux">Reduxless vs Redux</h2>
+				<h3 id="invoking-dispatching-an-action">Invoking/dispatching an action</h3>
+				<table>
+					<thead>
+						<tr>
+							<th>no of reducers/mount points</th>
+							<th>redux ops/sec</th>
+							<th>reduxless ops/sec</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td>10</td>
+							<td>405,947</td>
+							<td>9,531,412</td>
+						</tr>
+						<tr>
+							<td>100</td>
+							<td>43,863</td>
+							<td>9,610,732</td>
+						</tr>
+						<tr>
+							<td>1000</td>
+							<td>1,439</td>
+							<td>9,563,089</td>
+						</tr>
+				</tbody></table>
+				<h3 id="invoking-dispatching-an-action-followed-by-running-all-the-selectors">Invoking/dispatching an action followed by running all the selectors</h3>
+				<table>
+					<thead>
+						<tr>
+							<th>no of reducers/mount points</th>
+							<th>redux ops/sec</th>
+							<th>reduxless ops/sec</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td>10</td>
+							<td>210,653</td>
+							<td>434,939</td>
+						</tr>
+						<tr>
+							<td>100</td>
+							<td>19,174</td>
+							<td>37,198</td>
+						</tr>
+						<tr>
+							<td>1000</td>
+							<td>872</td>
+							<td>2,638</td>
+						</tr>
+				</tbody></table>
+				<h1 id="reduxless-selectormemoizer-memoization-vs-reselect-library">Reduxless selectorMemoizer memoization vs Reselect library</h1>
+				<p><code>Reselect</code> x 6,104,945 ops/sec ±1.65% (88 runs sampled)</p>
+				<p><code>selectorMemoizer</code> x 19,567,472 ops/sec ±1.44% (85 runs sampled)</p>
+				<p>Speed up 3.2x</p>
+				<h1 id="reproducing-these-results">Reproducing these results</h1>
+				<p>Clone the library and run <code>npm run bench</code></p>
 				<h2 id="change-log">Change Log</h2>
 				<p>This project follows <a href="http://semver.org/">semantic versioning</a>.</p>
 				<h2 id="license">LICENSE</h2>
@@ -193,43 +338,151 @@ enableHistory(<span class="hljs-keyword">this</span>.store, [<span class="hljs-s
 					<li class="globals  ">
 						<a href="globals.html"><em>Globals</em></a>
 					</li>
-					<li class="label tsd-is-external">
-						<span>Internals</span>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_containers_container_.html">"containers/container"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_router_link_.html">"router/<wbr>Link"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_router_match_.html">"router/<wbr>Match"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_router_actions_.html">"router/actions"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_router_index_.html">"router/index"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_router_selectors_.html">"router/selectors"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_state_store_.html">"state/store"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_utilities_memoizer_.html">"utilities/memoizer"</a>
-					</li>
-					<li class="label tsd-is-external">
-						<span>Externals</span>
-					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_interfaces_.html">"interfaces"</a>
-					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-interface tsd-is-not-exported">
+						<a href="interfaces/createrouterenabledstoreargs.html" class="tsd-kind-icon">Create<wbr>Router<wbr>Enabled<wbr>Store<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-not-exported">
+						<a href="interfaces/createstoreargs.html" class="tsd-kind-icon">Create<wbr>Store<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-not-exported">
+						<a href="interfaces/mountpointstovalues.html" class="tsd-kind-icon">Mount<wbr>Points<wbr>ToValues</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/preactvdom.html" class="tsd-kind-icon">PreactVDOM</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/reactvdom.html" class="tsd-kind-icon">ReactVDOM</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/routerenabledstore.html" class="tsd-kind-icon">Router<wbr>Enabled<wbr>Store</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/store.html" class="tsd-kind-icon">Store</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-not-exported">
+						<a href="interfaces/vdomcomponent.html" class="tsd-kind-icon">VDOMComponent</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#actionmapper" class="tsd-kind-icon">Action<wbr>Mapper</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#actionmappings" class="tsd-kind-icon">Action<wbr>Mappings</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-is-not-exported">
+						<a href="globals.html#callablepath" class="tsd-kind-icon">Callable<wbr>Path</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#createrouterenabledstore" class="tsd-kind-icon">Create<wbr>Router<wbr>Enabled<wbr>Store</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#createstore" class="tsd-kind-icon">Create<wbr>Store</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#enumerableobject" class="tsd-kind-icon">Enumerable<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-is-not-exported">
+						<a href="globals.html#genericfunction" class="tsd-kind-icon">Generic<wbr>Function</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-is-not-exported">
+						<a href="globals.html#mountpoint" class="tsd-kind-icon">Mount<wbr>Point</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#selectormapper" class="tsd-kind-icon">Selector<wbr>Mapper</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#selectormappings" class="tsd-kind-icon">Selector<wbr>Mappings</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-is-not-exported">
+						<a href="globals.html#unsubscribe" class="tsd-kind-icon">Unsubscribe</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#vdomprovider" class="tsd-kind-icon">VDOMProvider</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#validator" class="tsd-kind-icon">Validator</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#validators" class="tsd-kind-icon">Validators</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-is-not-exported">
+						<a href="globals.html#selector" class="tsd-kind-icon">selector</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#link" class="tsd-kind-icon">Link</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#match" class="tsd-kind-icon">Match</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#_container" class="tsd-kind-icon">_<wbr>Container</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#_mapper" class="tsd-kind-icon">_mapper</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#createrouterenabledstore" class="tsd-kind-icon">create<wbr>Router<wbr>Enabled<wbr>Store</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#createstore" class="tsd-kind-icon">create<wbr>Store</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#debounce" class="tsd-kind-icon">debounce</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#extractpartsfrompath" class="tsd-kind-icon">extract<wbr>Parts<wbr>From<wbr>Path</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#generatenewurl" class="tsd-kind-icon">generate<wbr>New<wbr>Url</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#getpath" class="tsd-kind-icon">get<wbr>Path</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#getstatefromurl" class="tsd-kind-icon">get<wbr>State<wbr>From<wbr>Url</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#handleclick" class="tsd-kind-icon">handle<wbr>Click</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#immediatescheduler" class="tsd-kind-icon">immediate<wbr>Scheduler</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#initialiselaststate" class="tsd-kind-icon">initialise<wbr>Last<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#makecomponents" class="tsd-kind-icon">make<wbr>Components</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#makesubject" class="tsd-kind-icon">make<wbr>Subject</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#navigate" class="tsd-kind-icon">navigate</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#parsestore" class="tsd-kind-icon">parse<wbr>Store</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#pushhistory" class="tsd-kind-icon">push<wbr>History</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#replacehistory" class="tsd-kind-icon">replace<wbr>History</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#selectormemoizer" class="tsd-kind-icon">selector<wbr>Memoizer</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-is-not-exported">
+						<a href="globals.html#actionsfromstore" class="tsd-kind-icon">actions<wbr>From<wbr>Store</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-is-not-exported">
+						<a href="globals.html#defaultoptions" class="tsd-kind-icon">default<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-is-not-exported">
+						<a href="globals.html#propsfromstore" class="tsd-kind-icon">props<wbr>From<wbr>Store</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

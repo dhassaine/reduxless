@@ -1,4 +1,4 @@
-import { Validators, Store, CreateStore } from "../interfaces";
+import { Store, CreateStore, Validator, EnumerableObject } from '../interfaces';
 
 const makeSubject = () => {
   const observers = new Map();
@@ -18,44 +18,25 @@ const makeSubject = () => {
   };
 };
 
-const defaultOptions = {
-  throwOnValidation: false,
-  throwOnMissingSchemas: false,
-  batchUpdateFn: (fn: () => void) => fn()
-};
+const immediateScheduler = (fn: () => void) => fn();
 
 const createStore: CreateStore = ({
   initialState = {},
   validators = {},
-  options = {}
-} = {}): Store => {
-  const { throwOnValidation, throwOnMissingSchemas, batchUpdateFn } = {
-    ...defaultOptions,
-    ...options
-  };
+  batchUpdateFn = immediateScheduler
+} = {}) => {
   const state$ = makeSubject();
   const updateIntercepts = [];
   const memory = new Map<string, any>();
   let batchUpdateInProgress = false;
 
-  const validatorsMap = new Map(Object.entries(validators));
+  const validatorsMap = new Map<string, Validator>(Object.entries(validators));
 
   const validate = (mountPoint: string, payload: any) => {
     let valid = true;
     if (validatorsMap.has(mountPoint)) {
       const validator = validatorsMap.get(mountPoint);
-      const validatorResponse = validator(payload);
-      valid = validatorResponse.valid;
-      if (throwOnValidation && !valid)
-        throw new Error(
-          JSON.stringify(
-            { payload, mountPoint, error: validatorResponse.errors },
-            null,
-            "\t"
-          )
-        );
-    } else if (throwOnMissingSchemas) {
-      throw new Error(`missing schema for ${mountPoint}`);
+      valid = validator(payload);
     }
     return valid;
   };
@@ -77,16 +58,16 @@ const createStore: CreateStore = ({
     ping();
   };
 
-  const _set = (mountPoint, payload) => {
+  const _set = (mountPoint: string, payload: any) => {
     if (validate(mountPoint, payload)) memory.set(mountPoint, payload);
   };
 
-  const setAll = mountPointsAndPayloads => {
+  const setAll = (mountPointsAndPayloads: EnumerableObject<any>) => {
     _setAll(mountPointsAndPayloads);
     update();
   };
 
-  const _setAll = mountPointsAndPayloads => {
+  const _setAll = (mountPointsAndPayloads: EnumerableObject<any>) => {
     Object.entries(mountPointsAndPayloads).forEach(([mountPoint, payload]) =>
       _set(mountPoint, payload)
     );
@@ -123,7 +104,7 @@ const createStore: CreateStore = ({
     update();
   };
 
-  const storeApi = {
+  const storeApi: Store = {
     set,
     setAll,
     get,
@@ -131,7 +112,8 @@ const createStore: CreateStore = ({
     withMutations,
     addUpdateIntercept,
     ping,
-    subscribe: func => state$.subscribe(() => func(storeApi))
+    subscribe: (listener: (store) => any) =>
+      state$.subscribe(() => listener(storeApi))
   };
 
   return storeApi;

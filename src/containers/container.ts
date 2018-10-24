@@ -1,5 +1,13 @@
-export const _Container = vdom => {
-  const h = vdom.h || vdom.createElement;
+import {
+  VDOMProvider,
+  PreactVDOM,
+  ReactVDOM,
+  SelectorMappings,
+  ActionMappings
+} from "../interfaces";
+
+export const _Container = (vdom: VDOMProvider) => {
+  const h = (<PreactVDOM>vdom).h || (<ReactVDOM>vdom).createElement;
   return class Container extends vdom.Component {
     static childContextTypes = {
       store: () => {}
@@ -17,17 +25,19 @@ export const _Container = vdom => {
     }
 
     render() {
-      const { children, store, ...rest } = this.props; // eslint-disable-line no-unused-vars
-
+      const { children, store, ...rest } = this.props;
       return h("div", rest, children);
     }
   };
 };
 
-export const _mapper = vdom => {
-  const h = vdom.h || vdom.createElement;
+export const _mapper = (vdom: VDOMProvider) => {
+  const h = (<PreactVDOM>vdom).h || (<ReactVDOM>vdom).createElement;
 
-  return (propMappings = {}, actionMappings = {}) => Wrapped => {
+  return (
+    propMappings: SelectorMappings = {},
+    actionMappings: ActionMappings = {}
+  ) => (Wrapped: any) => {
     return class Mapper extends vdom.Component {
       static contextTypes = {
         store: () => {}

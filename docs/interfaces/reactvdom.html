@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>MountPointsToValues | @reduxless/core</title>
+	<title>ReactVDOM | @reduxless/core</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -38,8 +38,6 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-externals" checked />
-							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
 							<input type="checkbox" id="tsd-filter-only-exported" />
 							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
@@ -56,30 +54,100 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_interfaces_.html">&quot;interfaces&quot;</a>
-				</li>
-				<li>
-					<a href="_interfaces_.mountpointstovalues.html">MountPointsToValues</a>
+					<a href="reactvdom.html">ReactVDOM</a>
 				</li>
 			</ul>
-			<h1>Interface MountPointsToValues</h1>
+			<h1>Interface ReactVDOM</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>A React-like VDOM provider</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">MountPointsToValues</span>
+						<a href="vdomcomponent.html" class="tsd-signature-type">VDOMComponent</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">ReactVDOM</span>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
-			<section class="tsd-panel tsd-kind-interface tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
-				<h3 class="tsd-before-signature">Indexable</h3>
-				<div class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">[</span>keys: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">any</span></div>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="reactvdom.html#component" class="tsd-kind-icon">Component</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="reactvdom.html#createelement" class="tsd-kind-icon">create<wbr>Element</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="component" class="tsd-anchor"></a>
+					<h3>Component</h3>
+					<div class="tsd-signature tsd-kind-icon">Component<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="vdomcomponent.html">VDOMComponent</a>.<a href="vdomcomponent.html#component">Component</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/bb07b76/src/interfaces.ts#L190">interfaces.ts:190</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="createelement" class="tsd-anchor"></a>
+					<h3>create<wbr>Element</h3>
+					<div class="tsd-signature tsd-kind-icon">create<wbr>Element<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/bb07b76/src/interfaces.ts#L200">interfaces.ts:200</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>vnode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, props<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, children<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">JSX.Element</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>vnode: <span class="tsd-signature-type">any</span></h5>
+											</li>
+											<li>
+												<h5>props: <span class="tsd-signature-type">any</span></h5>
+											</li>
+											<li>
+												<h5>children: <span class="tsd-signature-type">any</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">JSX.Element</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -88,80 +156,25 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class="label tsd-is-external">
-						<span>Internals</span>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_containers_container_.html">"containers/container"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_router_link_.html">"router/<wbr>Link"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_router_match_.html">"router/<wbr>Match"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_router_actions_.html">"router/actions"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_router_index_.html">"router/index"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_router_selectors_.html">"router/selectors"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_state_store_.html">"state/store"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_utilities_memoizer_.html">"utilities/memoizer"</a>
-					</li>
-					<li class="label tsd-is-external">
-						<span>Externals</span>
-					</li>
-					<li class="current tsd-kind-external-module tsd-is-external">
-						<a href="../modules/_interfaces_.html">"interfaces"</a>
-					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
-						<a href="_interfaces_.createrouterenabledstoreargs.html" class="tsd-kind-icon">Create<wbr>Router<wbr>Enabled<wbr>Store<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
-						<a href="_interfaces_.createstoreargs.html" class="tsd-kind-icon">Create<wbr>Store<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-external">
-						<a href="_interfaces_.createstoreoptions.html" class="tsd-kind-icon">Create<wbr>Store<wbr>Options</a>
-					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
-						<a href="_interfaces_.mountpointstovalues.html" class="tsd-kind-icon">Mount<wbr>Points<wbr>ToValues</a>
+					<li class="current tsd-kind-interface">
+						<a href="reactvdom.html" class="tsd-kind-icon">ReactVDOM</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="reactvdom.html#component" class="tsd-kind-icon">Component</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="reactvdom.html#createelement" class="tsd-kind-icon">create<wbr>Element</a>
+							</li>
+						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-external">
-						<a href="_interfaces_.routerenabledstore.html" class="tsd-kind-icon">Router<wbr>Enabled<wbr>Store</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-external">
-						<a href="_interfaces_.store.html" class="tsd-kind-icon">Store</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-external">
-						<a href="_interfaces_.validators.html" class="tsd-kind-icon">Validators</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-external">
-						<a href="../modules/_interfaces_.html#createrouterenabledstore" class="tsd-kind-icon">Create<wbr>Router<wbr>Enabled<wbr>Store</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-external">
-						<a href="../modules/_interfaces_.html#createstore" class="tsd-kind-icon">Create<wbr>Store</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
-						<a href="../modules/_interfaces_.html#mountpoint" class="tsd-kind-icon">Mount<wbr>Point</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
-						<a href="../modules/_interfaces_.html#validator" class="tsd-kind-icon">Validator</a>
-					</li>
 				</ul>
 			</nav>
 		</div>

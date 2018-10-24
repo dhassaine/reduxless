@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;utilities/memoizer&quot; | @reduxless/core</title>
+	<title>CreateStoreArgs | @reduxless/core</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -38,8 +38,6 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-externals" checked />
-							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
 							<input type="checkbox" id="tsd-filter-only-exported" />
 							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
@@ -56,59 +54,103 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_utilities_memoizer_.html">&quot;utilities/memoizer&quot;</a>
+					<a href="createstoreargs.html">CreateStoreArgs</a>
 				</li>
 			</ul>
-			<h1>External module &quot;utilities/memoizer&quot;</h1>
+			<h1>Interface CreateStoreArgs</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">CreateStoreArgs</span>
+						<ul class="tsd-hierarchy">
+							<li>
+								<a href="createrouterenabledstoreargs.html" class="tsd-signature-type">CreateRouterEnabledStoreArgs</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section tsd-is-not-exported">
-							<h3>Type aliases</h3>
+							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported"><a href="_utilities_memoizer_.html#selector" class="tsd-kind-icon">selector</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Functions</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter"><a href="_utilities_memoizer_.html#selectormemoizer" class="tsd-kind-icon">selector<wbr>Memoizer</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="createstoreargs.html#batchupdatefn" class="tsd-kind-icon">batch<wbr>Update<wbr>Fn</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="createstoreargs.html#initialstate" class="tsd-kind-icon">initial<wbr>State</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="createstoreargs.html#validators" class="tsd-kind-icon">validators</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
-				<h2>Type aliases</h2>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="selector" class="tsd-anchor"></a>
-					<h3>selector</h3>
-					<div class="tsd-signature tsd-kind-icon">selector<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+					<a name="batchupdatefn" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> batch<wbr>Update<wbr>Fn</h3>
+					<div class="tsd-signature tsd-kind-icon">batch<wbr>Update<wbr>Fn<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/f44417c/src/utilities/memoizer.ts#L2">utilities/memoizer.ts:2</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/bb07b76/src/interfaces.ts#L73">interfaces.ts:73</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>An optional scheduling function that is passed a pending store update that
+							needs to be invoked.</p>
+						</div>
+						<p>For example, to batch store updates on every <code>requestAnimationFrame</code>, you
+							can pass a function that will collect pending updates to be executed in
+						batches according to the frame scheduler:</p>
+						<pre><code class="language-js"><span class="hljs-keyword">let</span> _rafId = <span class="hljs-literal">null</span>;
+<span class="hljs-keyword">let</span> pendingUpdates = [];
+
+<span class="hljs-keyword">const</span> store = createStore({
+  <span class="hljs-attr">batchUpdateFn</span>: <span class="hljs-function">(<span class="hljs-params">pendingStoreUpdate</span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (_rafId) cancelAnimationFrame();
+    pendingUpdates.push(pendingStoreUpdate);
+    _rafId = requestAnimationFrame(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+      _rafId = <span class="hljs-literal">null</span>;
+      pendingUpdates.forEach(<span class="hljs-function"><span class="hljs-params">update</span> =&gt;</span> update());
+      pendingUpdates = [];
+    });
+  }
+})</code></pre>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter-siganture">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>store<span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.store.html" class="tsd-signature-type">Store</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>fn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
 								</ul>
 								<ul class="tsd-descriptions">
 									<li class="tsd-description">
 										<h4 class="tsd-parameters-title">Parameters</h4>
 										<ul class="tsd-parameters">
 											<li>
-												<h5>store: <a href="../interfaces/_interfaces_.store.html" class="tsd-signature-type">Store</a></h5>
+												<h5>fn: <span class="tsd-signature-type">function</span></h5>
+												<ul class="tsd-parameters">
+													<li class="tsd-parameter-siganture">
+														<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+															<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+														</ul>
+														<ul class="tsd-descriptions">
+															<li class="tsd-description">
+																<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+															</li>
+														</ul>
+													</li>
+												</ul>
 											</li>
 										</ul>
 										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
@@ -118,76 +160,35 @@
 						</ul>
 					</div>
 				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-					<a name="selectormemoizer" class="tsd-anchor"></a>
-					<h3>selector<wbr>Memoizer</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">selector<wbr>Memoizer&lt;T&gt;<span class="tsd-signature-symbol">(</span>mapper<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, <span class="tsd-signature-symbol">...</span>selectors<span class="tsd-signature-symbol">: </span><a href="_utilities_memoizer_.html#selector" class="tsd-signature-type">selector</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/f44417c/src/utilities/memoizer.ts#L4">utilities/memoizer.ts:4</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
-									<h4>T</h4>
-								</li>
-							</ul>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>mapper: <span class="tsd-signature-type">function</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>props<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>props: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>selectors: <a href="_utilities_memoizer_.html#selector" class="tsd-signature-type">selector</a><span class="tsd-signature-symbol">[]</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">function</span></h4>
-							<ul class="tsd-parameters">
-								<li class="tsd-parameter-siganture">
-									<ul class="tsd-signatures tsd-kind-type-literal">
-										<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>store<span class="tsd-signature-symbol">: </span><a href="../interfaces/_interfaces_.store.html" class="tsd-signature-type">Store</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
-									</ul>
-									<ul class="tsd-descriptions">
-										<li class="tsd-description">
-											<h4 class="tsd-parameters-title">Parameters</h4>
-											<ul class="tsd-parameters">
-												<li>
-													<h5>store: <a href="../interfaces/_interfaces_.store.html" class="tsd-signature-type">Store</a></h5>
-												</li>
-											</ul>
-											<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
-										</li>
-									</ul>
-								</li>
-							</ul>
-						</li>
-					</ul>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+					<a name="initialstate" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> initial<wbr>State</h3>
+					<div class="tsd-signature tsd-kind-icon">initial<wbr>State<span class="tsd-signature-symbol">:</span> <a href="../globals.html#enumerableobject" class="tsd-signature-type">EnumerableObject</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/bb07b76/src/interfaces.ts#L45">interfaces.ts:45</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>pairs of keys (mountpoints) and data</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+					<a name="validators" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> validators</h3>
+					<div class="tsd-signature tsd-kind-icon">validators<span class="tsd-signature-symbol">:</span> <a href="../globals.html#validators" class="tsd-signature-type">Validators</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/bb07b76/src/interfaces.ts#L47">interfaces.ts:47</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>pairs of mountpoints and validator functions</p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -197,49 +198,28 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class="label tsd-is-external">
-						<span>Internals</span>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_containers_container_.html">"containers/container"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_router_link_.html">"router/<wbr>Link"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_router_match_.html">"router/<wbr>Match"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_router_actions_.html">"router/actions"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_router_index_.html">"router/index"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_router_selectors_.html">"router/selectors"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_state_store_.html">"state/store"</a>
-					</li>
-					<li class="current tsd-kind-external-module">
-						<a href="_utilities_memoizer_.html">"utilities/memoizer"</a>
-					</li>
-					<li class="label tsd-is-external">
-						<span>Externals</span>
-					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="_interfaces_.html">"interfaces"</a>
-					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_utilities_memoizer_.html#selector" class="tsd-kind-icon">selector</a>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-is-not-exported">
+						<a href="createstoreargs.html" class="tsd-kind-icon">Create<wbr>Store<wbr>Args</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+								<a href="createstoreargs.html#batchupdatefn" class="tsd-kind-icon">batch<wbr>Update<wbr>Fn</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+								<a href="createstoreargs.html#initialstate" class="tsd-kind-icon">initial<wbr>State</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+								<a href="createstoreargs.html#validators" class="tsd-kind-icon">validators</a>
+							</li>
+						</ul>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="_utilities_memoizer_.html#selectormemoizer" class="tsd-kind-icon">selector<wbr>Memoizer</a>
-					</li>
+				</ul>
+				<ul class="after-current">
 				</ul>
 			</nav>
 		</div>
