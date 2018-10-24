@@ -1,4 +1,4 @@
-import { Validators, Store, CreateStore } from "../interfaces";
+import { Store, CreateStore, Validator } from "../interfaces";
 
 const makeSubject = () => {
   const observers = new Map();
@@ -28,7 +28,7 @@ const createStore: CreateStore = ({
   initialState = {},
   validators = {},
   options = {}
-} = {}): Store => {
+} = {}) => {
   const { throwOnValidation, throwOnMissingSchemas, batchUpdateFn } = {
     ...defaultOptions,
     ...options
@@ -38,24 +38,13 @@ const createStore: CreateStore = ({
   const memory = new Map<string, any>();
   let batchUpdateInProgress = false;
 
-  const validatorsMap = new Map(Object.entries(validators));
+  const validatorsMap = new Map<string, Validator>(Object.entries(validators));
 
   const validate = (mountPoint: string, payload: any) => {
     let valid = true;
     if (validatorsMap.has(mountPoint)) {
       const validator = validatorsMap.get(mountPoint);
-      const validatorResponse = validator(payload);
-      valid = validatorResponse.valid;
-      if (throwOnValidation && !valid)
-        throw new Error(
-          JSON.stringify(
-            { payload, mountPoint, error: validatorResponse.errors },
-            null,
-            "\t"
-          )
-        );
-    } else if (throwOnMissingSchemas) {
-      throw new Error(`missing schema for ${mountPoint}`);
+      valid = validator(payload);
     }
     return valid;
   };
@@ -123,7 +112,7 @@ const createStore: CreateStore = ({
     update();
   };
 
-  const storeApi = {
+  const storeApi: Store = {
     set,
     setAll,
     get,
@@ -131,7 +120,8 @@ const createStore: CreateStore = ({
     withMutations,
     addUpdateIntercept,
     ping,
-    subscribe: func => state$.subscribe(() => func(storeApi))
+    subscribe: (listener: (store) => any) =>
+      state$.subscribe(() => listener(storeApi))
   };
 
   return storeApi;

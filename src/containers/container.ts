@@ -2,7 +2,7 @@ import {
   VDOMProvider,
   PreactVDOM,
   ReactVDOM,
-  PropMappings,
+  SelectorMappings,
   ActionMappings
 } from "../interfaces";
 
@@ -35,7 +35,7 @@ export const _mapper = (vdom: VDOMProvider) => {
   const h = (<PreactVDOM>vdom).h || (<ReactVDOM>vdom).createElement;
 
   return (
-    propMappings: PropMappings = {},
+    propMappings: SelectorMappings = {},
     actionMappings: ActionMappings = {}
   ) => (Wrapped: any) => {
     return class Mapper extends vdom.Component {
