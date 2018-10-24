@@ -4,8 +4,12 @@ import { RouterEnabledStore } from '../interfaces';
 export const generateNewUrl = (store: RouterEnabledStore, newPath?: string) => {
   const { pathName, query } = extractPartsFromPath(store);
 
+  const data = store.getAll(store.syncToLocations);
+  for (const [key, serializer] of store.serializers.entries()) {
+    data[key] = serializer.toUrlValue(data[key]);
+  }
   const storeDataParam = `storeData=${encodeURIComponent(
-    JSON.stringify(store.getAll(store.syncToLocations))
+    JSON.stringify(data)
   )}`;
 
   let nextQuery = query;

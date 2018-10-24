@@ -16,7 +16,7 @@ describe('router/selectors', () => {
       });
     });
 
-    it('passes mountpoints through serializers', () => {
+    it('passes url through serializers', () => {
       const serializers = new Map([
         [
           'counter',

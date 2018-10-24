@@ -106,6 +106,32 @@ describe('router/index', () => {
         jest.runOnlyPendingTimers();
       });
 
+      it('mountpoints are passed through serializers', () => {
+        const serializers = {
+          counter: {
+            toUrlValue: counter => {
+              return { value: counter.value * 2 };
+            },
+            fromUrlValue: counter => {
+              return { value: counter.value / 2 };
+            }
+          }
+        };
+        const store = createRouterEnabledStore({
+          pushStateMountPoints: ['counter', 'counter2'],
+          serializers
+        });
+        unsubscribe = store.subscribe(jest.fn());
+
+        expect(store.get('counter')).toEqual({ value: 0.5 });
+        store.set('counter', { value: 2 });
+        expect(window.location).toHaveProperty(
+          'search',
+          '?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A4%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D'
+        );
+        expect(store.get('counter')).toEqual({ value: 2 });
+      });
+
       it('changes made directly to the replaceStateMountPoints and pushStateMountPoints in the store replace the browser location', done => {
         jest.useFakeTimers();
 
