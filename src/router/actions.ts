@@ -1,11 +1,17 @@
-import { extractPartsFromPath, getPath } from "./selectors";
-import { RouterEnabledStore } from "../interfaces";
+import { extractPartsFromPath, getPath } from './selectors';
+import { RouterEnabledStore } from '../interfaces';
 
-const generateNewUrl = (store: RouterEnabledStore, newPath?: string) => {
+export const generateNewUrl = (store: RouterEnabledStore, newPath?: string) => {
   const { pathName, query } = extractPartsFromPath(store);
 
+  const data = store.getAll(store.syncToLocations);
+  for (const [key, value] of Object.entries(data)) {
+    if (store.serializers.has(key))
+      data[key] = store.serializers.get(key).toUrlValue(value);
+    else data[key] = JSON.stringify(value);
+  }
   const storeDataParam = `storeData=${encodeURIComponent(
-    JSON.stringify(store.getAll(store.syncToLocations))
+    JSON.stringify(data)
   )}`;
 
   let nextQuery = query;
@@ -13,10 +19,10 @@ const generateNewUrl = (store: RouterEnabledStore, newPath?: string) => {
   const nextPath = newPath || pathName;
 
   if (store.syncToLocations && store.syncToLocations.length > 0)
-    nextQuery += (query ? "&" : "") + storeDataParam;
+    nextQuery += (query ? '&' : '') + storeDataParam;
 
   const url = nextQuery ? `${nextPath}?${nextQuery}` : nextPath;
-  return store.useHash ? url.replace(/^\//, "#") : url;
+  return store.useHash ? url.replace(/^\//, '#') : url;
 };
 
 export const getStateFromUrl = (
@@ -31,11 +37,6 @@ export const getStateFromUrl = (
   });
 
   return filteredStoreData;
-};
-
-export const navigate = (store: RouterEnabledStore, newPath: string) => {
-  history.pushState(null, null, generateNewUrl(store, newPath));
-  store.ping();
 };
 
 export const pushHistory = (store: RouterEnabledStore) => {

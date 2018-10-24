@@ -76,9 +76,17 @@ interface CreateStoreArgs {
 /** Creates a simple store instance. */
 export type CreateStore = (args?: CreateStoreArgs) => Store;
 
+export interface Serializer {
+  toUrlValue: (value: any) => string;
+  fromUrlValue: (value: string) => any;
+}
+
+export type Serializers = Map<string, Serializer>;
+
 interface CreateRouterEnabledStoreArgs extends CreateStoreArgs {
   pushStateMountPoints?: string[];
   replaceStateMountPoints?: string[];
+  serializers?: EnumerableObject<Serializer>;
   routerOptions?: {
     debounceTime?: number;
     useHash?: boolean;
@@ -184,6 +192,8 @@ export interface RouterEnabledStore extends Store {
   syncToLocations: string[];
   useHash: boolean;
   syncedLocationToStore: boolean;
+  serializers: Serializers;
+  navigate: (newPath?: string) => void;
 }
 
 interface VDOMComponent {

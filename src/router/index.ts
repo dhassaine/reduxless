@@ -1,5 +1,14 @@
-import { getStateFromUrl, pushHistory, replaceHistory } from './actions';
-import { RouterEnabledStore, CreateRouterEnabledStore } from '../interfaces';
+import {
+  getStateFromUrl,
+  pushHistory,
+  replaceHistory,
+  generateNewUrl
+} from './actions';
+import {
+  RouterEnabledStore,
+  CreateRouterEnabledStore,
+  Serializer
+} from '../interfaces';
 import createStore from '../state/store';
 
 type GenericFunction = (...args: any[]) => any;
@@ -47,6 +56,7 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
   batchUpdateFn,
   pushStateMountPoints = [],
   replaceStateMountPoints = [],
+  serializers = {},
   routerOptions = {}
 } = {}) => {
   const { debounceTime, useHash } = {
@@ -70,6 +80,15 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
       window.removeEventListener('popstate', popstate);
       unsubscribe();
     };
+  };
+
+  routedStore.serializers = new Map<string, Serializer>(
+    Object.entries(serializers)
+  );
+
+  routedStore.navigate = (newPath?: string) => {
+    history.pushState(null, null, generateNewUrl(routedStore, newPath));
+    routedStore.ping();
   };
 
   routedStore.syncToLocations = pushStateMountPoints.concat(
