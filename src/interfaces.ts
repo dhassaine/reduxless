@@ -34,7 +34,7 @@ export interface CreateStoreOptions {
    ]
    ```
  */
-type EnumerableObject<T> =
+export type EnumerableObject<T> =
   | { [index: string]: T }
   | Map<string, T>
   | [string, T][];

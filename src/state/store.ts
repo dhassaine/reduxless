@@ -1,4 +1,4 @@
-import { Store, CreateStore, Validator } from "../interfaces";
+import { Store, CreateStore, Validator, EnumerableObject } from '../interfaces';
 
 const makeSubject = () => {
   const observers = new Map();
@@ -66,16 +66,16 @@ const createStore: CreateStore = ({
     ping();
   };
 
-  const _set = (mountPoint, payload) => {
+  const _set = (mountPoint: string, payload: any) => {
     if (validate(mountPoint, payload)) memory.set(mountPoint, payload);
   };
 
-  const setAll = mountPointsAndPayloads => {
+  const setAll = (mountPointsAndPayloads: EnumerableObject<any>) => {
     _setAll(mountPointsAndPayloads);
     update();
   };
 
-  const _setAll = mountPointsAndPayloads => {
+  const _setAll = (mountPointsAndPayloads: EnumerableObject<any>) => {
     Object.entries(mountPointsAndPayloads).forEach(([mountPoint, payload]) =>
       _set(mountPoint, payload)
     );
