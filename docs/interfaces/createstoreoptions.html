@@ -87,8 +87,6 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="createstoreoptions.html#batchupdatefn" class="tsd-kind-icon">batch<wbr>Update<wbr>Fn</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="createstoreoptions.html#throwonmissingschemas" class="tsd-kind-icon">throw<wbr>OnMissing<wbr>Schemas</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="createstoreoptions.html#throwonvalidation" class="tsd-kind-icon">throw<wbr>OnValidation</a></li>
 							</ul>
 						</section>
 					</div>
@@ -102,7 +100,7 @@
 					<div class="tsd-signature tsd-kind-icon">batch<wbr>Update<wbr>Fn<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/a268d4e/src/interfaces.ts#L30">interfaces.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/9343e30/src/interfaces.ts#L8">interfaces.ts:8</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -144,42 +142,6 @@
 						</ul>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="throwonmissingschemas" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> throw<wbr>OnMissing<wbr>Schemas</h3>
-					<div class="tsd-signature tsd-kind-icon">throw<wbr>OnMissing<wbr>Schemas<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/a268d4e/src/interfaces.ts#L26">interfaces.ts:26</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<ul>
-								<li><code>false</code> mountpoints without a validator function are allowed</li>
-								<li><code>true</code> if a mountpoint does not have a corresponding validator function the <code>createStore</code> function will throw an error.</li>
-							</ul>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="throwonvalidation" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> throw<wbr>OnValidation</h3>
-					<div class="tsd-signature tsd-kind-icon">throw<wbr>OnValidation<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/a268d4e/src/interfaces.ts#L21">interfaces.ts:21</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<ul>
-								<li><code>false</code>: if a validator returns a falsy value, reduxless won&#39;t update the store with that data.</li>
-								<li><code>true</code>: if a validator returns a truthy value, reduxless will throw an error.</li>
-							</ul>
-						</div>
-					</div>
-				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -199,12 +161,6 @@
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="createstoreoptions.html#batchupdatefn" class="tsd-kind-icon">batch<wbr>Update<wbr>Fn</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="createstoreoptions.html#throwonmissingschemas" class="tsd-kind-icon">throw<wbr>OnMissing<wbr>Schemas</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="createstoreoptions.html#throwonvalidation" class="tsd-kind-icon">throw<wbr>OnValidation</a>
 							</li>
 						</ul>
 					</li>
