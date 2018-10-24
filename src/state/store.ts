@@ -18,21 +18,13 @@ const makeSubject = () => {
   };
 };
 
-const defaultOptions = {
-  throwOnValidation: false,
-  throwOnMissingSchemas: false,
-  batchUpdateFn: (fn: () => void) => fn()
-};
+const immediateScheduler = (fn: () => void) => fn();
 
 const createStore: CreateStore = ({
   initialState = {},
   validators = {},
-  options = {}
+  batchUpdateFn = immediateScheduler
 } = {}) => {
-  const { throwOnValidation, throwOnMissingSchemas, batchUpdateFn } = {
-    ...defaultOptions,
-    ...options
-  };
   const state$ = makeSubject();
   const updateIntercepts = [];
   const memory = new Map<string, any>();

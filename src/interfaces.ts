@@ -1,38 +1,28 @@
 /**
- * The validation behaviour can be tweaked with the `options` object.
- */
-export interface CreateStoreOptions {
-  /**
-   * TBD
-   */
-  batchUpdateFn?: (fn: () => void) => any;
-}
-
-/**
  * The initial state can be provided as either a plain JavaScript object,
  * a Map of string keys and values, or an array of arrays of string keys
  * and values to generate the initial state from.
  *
  * Here's an example of a plain object:
-   ```
-   { counter: 0, updatedAt: Date.now() }
-   ```
+ * ```js
+ * { counter: 0, updatedAt: Date.now() }
+ * ```
  *
  * Here's a map of key, value pairs:
-   ```
-   new Map([
-     ['counter', 0],
-     ['updatedAt': Date.now()]
-   ])
-   ```
+ * ```js
+ * new Map([
+ *   ['counter', 0],
+ *   ['updatedAt': Date.now()]
+ * ])
+ * ```
  *
  * Here's a doubly-nested array of key, value pairs:
-   ```
-   [
-     ['counter', 0],
-     ['updatedAt', Date.now()]
-   ]
-   ```
+ * ```js
+ * [
+ *   ['counter', 0],
+ *   ['updatedAt', Date.now()]
+ * ]
+ * ```
  */
 export type EnumerableObject<T> =
   | { [index: string]: T }
@@ -55,11 +45,35 @@ interface CreateStoreArgs {
   initialState?: EnumerableObject<any>;
   /** pairs of mountpoints and validator functions */
   validators?: Validators;
-  /** validation behaviour options */
-  options?: CreateStoreOptions;
+  /**
+   * An optional scheduling function that is passed a pending store update that
+   * needs to be invoked.
+   *
+   * For example, to batch store updates on every `requestAnimationFrame`, you
+   * can pass a function that will collect pending updates to be executed in
+   * batches according to the frame scheduler:
+   *
+   * ```js
+   * let _rafId = null;
+   * let pendingUpdates = [];
+   *
+   * const store = createStore({
+   *   batchUpdateFn: (pendingStoreUpdate) => {
+   *     if (_rafId) cancelAnimationFrame();
+   *     pendingUpdates.push(pendingStoreUpdate);
+   *     _rafId = requestAnimationFrame(() => {
+   *       _rafId = null;
+   *       pendingUpdates.forEach(update => update());
+   *       pendingUpdates = [];
+   *     });
+   *   }
+   * })
+   * ```
+   */
+  batchUpdateFn?: (fn: () => void) => any;
 }
 
-/** Creates a simple store instance */
+/** Creates a simple store instance. */
 export type CreateStore = (args?: CreateStoreArgs) => Store;
 
 interface CreateRouterEnabledStoreArgs extends CreateStoreArgs {
@@ -72,7 +86,8 @@ interface CreateRouterEnabledStoreArgs extends CreateStoreArgs {
 }
 
 /**
- * Creates a router-enabled store instance that syncs the browser URL
+ * Creates a router-enabled store instance that syncs the browser URL with
+ * select store data.
  */
 export type CreateRouterEnabledStore = (
   args?: CreateRouterEnabledStoreArgs

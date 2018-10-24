@@ -41,10 +41,7 @@ describe('Store', () => {
     jest.useFakeTimers();
     const scheduler = fn => setTimeout(fn, 100);
     const store = createStore({
-      options: {
-        batchUpdates: true,
-        batchUpdateFn: scheduler
-      }
+      batchUpdateFn: scheduler
     });
     const fn1 = jest.fn();
     store.subscribe(fn1);
