@@ -76,17 +76,17 @@ interface CreateStoreArgs {
 /** Creates a simple store instance. */
 export type CreateStore = (args?: CreateStoreArgs) => Store;
 
-export interface MountPointMapper {
+export interface Serializer {
   toUrlValue: (value: any) => string;
   fromUrlValue: (value: string) => any;
 }
 
-export type Serializers = Map<string, MountPointMapper>;
+export type Serializers = Map<string, Serializer>;
 
 interface CreateRouterEnabledStoreArgs extends CreateStoreArgs {
   pushStateMountPoints?: string[];
   replaceStateMountPoints?: string[];
-  serializers?: EnumerableObject<MountPointMapper>;
+  serializers?: EnumerableObject<Serializer>;
   routerOptions?: {
     debounceTime?: number;
     useHash?: boolean;

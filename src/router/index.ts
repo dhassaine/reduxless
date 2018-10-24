@@ -7,7 +7,7 @@ import {
 import {
   RouterEnabledStore,
   CreateRouterEnabledStore,
-  MountPointMapper
+  Serializer
 } from '../interfaces';
 import createStore from '../state/store';
 
@@ -82,7 +82,7 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
     };
   };
 
-  routedStore.serializers = new Map<string, MountPointMapper>(
+  routedStore.serializers = new Map<string, Serializer>(
     Object.entries(serializers)
   );
 
