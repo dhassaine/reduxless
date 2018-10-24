@@ -1,11 +1,15 @@
 import { RouterEnabledStore, Serializers } from '../interfaces';
 
-const parseStore = (storeData, serializers: Serializers) => {
+const parseStore = (
+  jsonStoreData: string,
+  serializers: Serializers = new Map()
+) => {
   try {
-    const data = JSON.parse(storeData);
-    for (const [key, value] of data) {
-      if (serializers.has(key))
+    const data = JSON.parse(jsonStoreData);
+    for (const [key, value] of Object.entries(data)) {
+      if (serializers.has(key)) {
         data[key] = serializers.get(key).fromUrlValue(value);
+      }
     }
     return data;
   } catch (e) {
@@ -18,10 +22,7 @@ export const getPath = (store: RouterEnabledStore) =>
     ? window.location.hash.replace(/^#/, '/')
     : window.location.pathname + window.location.search;
 
-export const extractPartsFromPath = (
-  store: RouterEnabledStore,
-  serializers: Serializers
-) => {
+export const extractPartsFromPath = (store: RouterEnabledStore) => {
   const path = getPath(store);
   const [pathName, query = ''] = path.split('?');
   const params = decodeURIComponent(query).split('&');
@@ -31,7 +32,7 @@ export const extractPartsFromPath = (
       if (pair.startsWith('storeData='))
         acc.storeData = parseStore(
           decodeURIComponent(pair.replace(/^storeData=/, '')),
-          serializers
+          store.serializers
         );
       else acc.query += (acc.query ? '&' : '') + pair;
       return acc;

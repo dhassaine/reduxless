@@ -1,12 +1,8 @@
 import { extractPartsFromPath, getPath } from './selectors';
-import { RouterEnabledStore, Serializers } from '../interfaces';
+import { RouterEnabledStore } from '../interfaces';
 
-const generateNewUrl = (
-  store: RouterEnabledStore,
-  serializers: Serializers,
-  newPath?: string
-) => {
-  const { pathName, query } = extractPartsFromPath(store, serializers);
+export const generateNewUrl = (store: RouterEnabledStore, newPath?: string) => {
+  const { pathName, query } = extractPartsFromPath(store);
 
   const storeDataParam = `storeData=${encodeURIComponent(
     JSON.stringify(store.getAll(store.syncToLocations))
@@ -25,10 +21,9 @@ const generateNewUrl = (
 
 export const getStateFromUrl = (
   store: RouterEnabledStore,
-  mountPoints: string[],
-  serializers: Serializers = new Map()
+  mountPoints: string[]
 ) => {
-  const { storeData } = extractPartsFromPath(store, serializers);
+  const { storeData } = extractPartsFromPath(store);
   const filteredStoreData = {};
   const mountPointsSet = new Set(mountPoints);
   Object.entries(storeData).forEach(([key, data]) => {
@@ -38,29 +33,13 @@ export const getStateFromUrl = (
   return filteredStoreData;
 };
 
-export const navigate = (
-  store: RouterEnabledStore,
-  serializers: Serializers = new Map(),
-  newPath?: string
-) => {
-  history.pushState(null, null, generateNewUrl(store, serializers, newPath));
-  store.ping();
-};
-
-export const pushHistory = (
-  store: RouterEnabledStore,
-  serializers: Serializers = new Map()
-) => {
-  const newUrl = generateNewUrl(store, serializers);
+export const pushHistory = (store: RouterEnabledStore) => {
+  const newUrl = generateNewUrl(store);
   const currentUrl = getPath(store);
   if (newUrl != currentUrl) {
     history.pushState(null, null, newUrl);
   }
 };
 
-export const replaceHistory = (
-  store: RouterEnabledStore,
-  serializers: Serializers = new Map(),
-  newPath?: string
-) =>
-  history.replaceState(null, null, generateNewUrl(store, serializers, newPath));
+export const replaceHistory = (store: RouterEnabledStore, newPath?: string) =>
+  history.replaceState(null, null, generateNewUrl(store, newPath));

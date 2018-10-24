@@ -1,4 +1,9 @@
-import { getStateFromUrl, pushHistory, replaceHistory } from './actions';
+import {
+  getStateFromUrl,
+  pushHistory,
+  replaceHistory,
+  generateNewUrl
+} from './actions';
 import {
   RouterEnabledStore,
   CreateRouterEnabledStore,
@@ -65,10 +70,6 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
     batchUpdateFn
   }) as RouterEnabledStore;
 
-  const _serializers = new Map<string, MountPointMapper>(
-    Object.entries(serializers)
-  );
-
   const _subscribe = routedStore.subscribe;
   routedStore.subscribe = (listener: GenericFunction) => {
     window.addEventListener('popstate', popstate);
@@ -81,6 +82,15 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
     };
   };
 
+  routedStore.serializers = new Map<string, MountPointMapper>(
+    Object.entries(serializers)
+  );
+
+  routedStore.navigate = (newPath?: string) => {
+    history.pushState(null, null, generateNewUrl(routedStore, newPath));
+    routedStore.ping();
+  };
+
   routedStore.syncToLocations = pushStateMountPoints.concat(
     replaceStateMountPoints
   );
@@ -91,11 +101,7 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
 
   const update = (mountPoints: string[]) => {
     routedStore.syncedLocationToStore = true;
-    const filteredStoreData = getStateFromUrl(
-      routedStore,
-      mountPoints,
-      _serializers
-    );
+    const filteredStoreData = getStateFromUrl(routedStore, mountPoints);
 
     routedStore.withMutations(s => {
       s.setAll(filteredStoreData);

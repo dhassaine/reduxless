@@ -78,7 +78,7 @@ export type CreateStore = (args?: CreateStoreArgs) => Store;
 
 export interface MountPointMapper {
   toUrlValue: (value: any) => string;
-  fromUrlValue: (value: string) => any;
+  fromUrlValue: (value: any) => any;
 }
 
 export type Serializers = Map<string, MountPointMapper>;
@@ -192,6 +192,8 @@ export interface RouterEnabledStore extends Store {
   syncToLocations: string[];
   useHash: boolean;
   syncedLocationToStore: boolean;
+  serializers: Serializers;
+  navigate: (newPath?: string) => void;
 }
 
 interface VDOMComponent {

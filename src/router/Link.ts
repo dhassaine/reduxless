@@ -1,5 +1,4 @@
-import { _mapper } from "../containers/container";
-import { navigate } from "./actions";
+import { _mapper } from '../containers/container';
 
 const handleClick = (ev, update) => {
   ev.preventDefault();
@@ -9,11 +8,11 @@ const handleClick = (ev, update) => {
 const Link = vdom => {
   const h = vdom.h || vdom.createElement;
   return ({ update, href, children, ...rest }) =>
-    h("a", { href, onClick: ev => handleClick(ev, update), ...rest }, children);
+    h('a', { href, onClick: ev => handleClick(ev, update), ...rest }, children);
 };
 
 const actionsFromStore = {
-  update: (store, { href }) => navigate(store, href)
+  update: (store, { href }) => store.navigate(href)
 };
 
 export default vdom => _mapper(vdom)({}, actionsFromStore)(Link(vdom));
