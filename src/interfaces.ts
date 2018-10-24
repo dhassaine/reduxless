@@ -78,7 +78,7 @@ export type CreateStore = (args?: CreateStoreArgs) => Store;
 
 export interface MountPointMapper {
   toUrlValue: (value: any) => string;
-  fromUrlValue: (value: any) => any;
+  fromUrlValue: (value: string) => any;
 }
 
 export type Serializers = Map<string, MountPointMapper>;

@@ -1,20 +1,28 @@
 import { RouterEnabledStore, Serializers } from '../interfaces';
 
+type JSONDTO = { [index: string]: string };
+
 const parseStore = (
   jsonStoreData: string,
   serializers: Serializers = new Map()
 ) => {
+  let data: JSONDTO = {};
+
   try {
-    const data = JSON.parse(jsonStoreData);
-    for (const [key, value] of Object.entries(data)) {
+    data = JSON.parse(jsonStoreData);
+  } catch (e) {}
+
+  for (const [key, value] of Object.entries(data)) {
+    try {
       if (serializers.has(key)) {
         data[key] = serializers.get(key).fromUrlValue(value);
+      } else {
+        data[key] = JSON.parse(value);
       }
-    }
-    return data;
-  } catch (e) {
-    return {};
+    } catch (e) {}
   }
+
+  return data;
 };
 
 export const getPath = (store: RouterEnabledStore) =>

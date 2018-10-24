@@ -8,8 +8,21 @@ import { makeComponents, createRouterEnabledStore } from '../index';
 const MatchSimple = _Match(require('react'));
 const { Container, Link, Match } = makeComponents(React);
 
+const serializeURLDTO = obj => {
+  const serialized = {};
+  for (const [key, value] of Object.entries(obj))
+    serialized[key] = JSON.stringify(value);
+  return JSON.stringify(serialized);
+};
+
 const url =
-  'http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D';
+  'http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=' +
+  encodeURIComponent(
+    serializeURLDTO({
+      counter: { value: 1 },
+      counter2: { value: 2 }
+    })
+  );
 
 describe('router/index', () => {
   describe('enableHistory', () => {
@@ -74,7 +87,13 @@ describe('router/index', () => {
         window.history.pushState(
           null,
           null,
-          'http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A2%7D%2C%22counter2%22%3A%7B%22value%22%3A3%7D%7D'
+          'http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=' +
+            encodeURIComponent(
+              serializeURLDTO({
+                counter: { value: 2 },
+                counter2: { value: 3 }
+              })
+            )
         );
         window.history.pushState(null, null, '/ignored');
         window.history.back();
@@ -97,7 +116,13 @@ describe('router/index', () => {
         setTimeout(() => {
           expect(window.location).toHaveProperty(
             'search',
-            '?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A2%7D%2C%22counter2%22%3A%7B%22value%22%3A3%7D%7D'
+            '?queryParam=queryValue&a[]=1&a[]=2&storeData=' +
+              encodeURIComponent(
+                serializeURLDTO({
+                  counter: { value: 2 },
+                  counter2: { value: 3 }
+                })
+              )
           );
           jest.useRealTimers();
           done();
@@ -109,12 +134,11 @@ describe('router/index', () => {
       it('mountpoints are passed through serializers', () => {
         const serializers = {
           counter: {
-            toUrlValue: counter => {
-              return { value: counter.value * 2 };
-            },
-            fromUrlValue: counter => {
-              return { value: counter.value / 2 };
-            }
+            toUrlValue: counter =>
+              JSON.stringify({
+                value: parseFloat(counter.value) * 2
+              }),
+            fromUrlValue: counter => ({ value: JSON.parse(counter).value / 2 })
           }
         };
         const store = createRouterEnabledStore({
@@ -125,9 +149,13 @@ describe('router/index', () => {
 
         expect(store.get('counter')).toEqual({ value: 0.5 });
         store.set('counter', { value: 2 });
+
         expect(window.location).toHaveProperty(
           'search',
-          '?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A4%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D'
+          '?queryParam=queryValue&a[]=1&a[]=2&storeData=' +
+            encodeURIComponent(
+              serializeURLDTO({ counter: { value: 4 }, counter2: { value: 2 } })
+            )
         );
         expect(store.get('counter')).toEqual({ value: 2 });
       });
@@ -427,7 +455,8 @@ describe('router/index', () => {
         unsubscribe = store.subscribe(jest.fn());
         store.navigate('page2');
         expect(window.location.href).toEqual(
-          'http://example.com/page2?storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%7D'
+          'http://example.com/page2?storeData=' +
+            encodeURIComponent(serializeURLDTO({ counter: { value: 1 } }))
         );
       });
 

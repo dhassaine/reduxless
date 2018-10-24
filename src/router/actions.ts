@@ -5,8 +5,10 @@ export const generateNewUrl = (store: RouterEnabledStore, newPath?: string) => {
   const { pathName, query } = extractPartsFromPath(store);
 
   const data = store.getAll(store.syncToLocations);
-  for (const [key, serializer] of store.serializers.entries()) {
-    data[key] = serializer.toUrlValue(data[key]);
+  for (const [key, value] of Object.entries(data)) {
+    if (store.serializers.has(key))
+      data[key] = store.serializers.get(key).toUrlValue(value);
+    else data[key] = JSON.stringify(value);
   }
   const storeDataParam = `storeData=${encodeURIComponent(
     JSON.stringify(data)
