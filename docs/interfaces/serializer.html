@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>PreactVDOM | @reduxless/core</title>
+	<title>Serializer | @reduxless/core</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,33 +54,21 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="preactvdom.html">PreactVDOM</a>
+					<a href="serializer.html">Serializer</a>
 				</li>
 			</ul>
-			<h1>Interface PreactVDOM</h1>
+			<h1>Interface Serializer</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>A Preact-like VDOM provider</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="vdomcomponent.html" class="tsd-signature-type">VDOMComponent</a>
-						<ul class="tsd-hierarchy">
-							<li>
-								<span class="target">PreactVDOM</span>
-							</li>
-						</ul>
+						<span class="target">Serializer</span>
 					</li>
 				</ul>
 			</section>
@@ -91,8 +79,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="preactvdom.html#component" class="tsd-kind-icon">Component</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="preactvdom.html#h" class="tsd-kind-icon">h</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="serializer.html#fromurlvalue" class="tsd-kind-icon">from<wbr>Url<wbr>Value</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="serializer.html#tourlvalue" class="tsd-kind-icon">to<wbr>Url<wbr>Value</a></li>
 							</ul>
 						</section>
 					</div>
@@ -100,24 +88,13 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-					<a name="component" class="tsd-anchor"></a>
-					<h3>Component</h3>
-					<div class="tsd-signature tsd-kind-icon">Component<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="vdomcomponent.html">VDOMComponent</a>.<a href="vdomcomponent.html#component">Component</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/25227fe/src/interfaces.ts#L200">interfaces.ts:200</a></li>
-						</ul>
-					</aside>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="h" class="tsd-anchor"></a>
-					<h3>h</h3>
-					<div class="tsd-signature tsd-kind-icon">h<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<a name="fromurlvalue" class="tsd-anchor"></a>
+					<h3>from<wbr>Url<wbr>Value</h3>
+					<div class="tsd-signature tsd-kind-icon">from<wbr>Url<wbr>Value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/25227fe/src/interfaces.ts#L205">interfaces.ts:205</a></li>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/25227fe/src/interfaces.ts#L81">interfaces.ts:81</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -125,23 +102,48 @@
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter-siganture">
 								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>vnode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, props<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, children<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">JSX.Element</span></li>
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
 								</ul>
 								<ul class="tsd-descriptions">
 									<li class="tsd-description">
 										<h4 class="tsd-parameters-title">Parameters</h4>
 										<ul class="tsd-parameters">
 											<li>
-												<h5>vnode: <span class="tsd-signature-type">any</span></h5>
-											</li>
-											<li>
-												<h5>props: <span class="tsd-signature-type">any</span></h5>
-											</li>
-											<li>
-												<h5>children: <span class="tsd-signature-type">any</span></h5>
+												<h5>value: <span class="tsd-signature-type">string</span></h5>
 											</li>
 										</ul>
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">JSX.Element</span></h4>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="tourlvalue" class="tsd-anchor"></a>
+					<h3>to<wbr>Url<wbr>Value</h3>
+					<div class="tsd-signature tsd-kind-icon">to<wbr>Url<wbr>Value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/dhassaine/reduxless/blob/25227fe/src/interfaces.ts#L80">interfaces.ts:80</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>value: <span class="tsd-signature-type">any</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 									</li>
 								</ul>
 							</li>
@@ -163,13 +165,13 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="preactvdom.html" class="tsd-kind-icon">PreactVDOM</a>
+						<a href="serializer.html" class="tsd-kind-icon">Serializer</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-								<a href="preactvdom.html#component" class="tsd-kind-icon">Component</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="serializer.html#fromurlvalue" class="tsd-kind-icon">from<wbr>Url<wbr>Value</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="preactvdom.html#h" class="tsd-kind-icon">h</a>
+								<a href="serializer.html#tourlvalue" class="tsd-kind-icon">to<wbr>Url<wbr>Value</a>
 							</li>
 						</ul>
 					</li>
