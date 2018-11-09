@@ -9,10 +9,10 @@ _A small and performant state management and routing library with unidirectional
 
 The package provides the following functions:
 
-- [`createStore`](globals.html#createstore)
-- [`createRouterEnabledStore`](globals.html#createrouterenabledstore)
-- [`selectorMemoizer`](globals.html#selectormemoizer)
-- [`makeComponents`](globals.html#makecomponents)
+- [`createStore`](https://dhassaine.github.io/reduxless/globals.html#createstore)
+- [`createRouterEnabledStore`](https://dhassaine.github.io/reduxless/globals.html#createrouterenabledstore)
+- [`selectorMemoizer`](https://dhassaine.github.io/reduxless/globals.html#selectormemoizer)
+- [`makeComponents`](https://dhassaine.github.io/reduxless/globals.html#makecomponents)
 
 ## Introduction
 
@@ -43,7 +43,7 @@ npm install @reduxless/preact
 Use the Preact bound components:
 
 ```js
-import { Container, mapper, Link, Match } from "@reduxless/preact";
+import { Container, mapper, Link, Match } from '@reduxless/preact';
 ```
 
 ### To include it in a React project:
@@ -57,7 +57,7 @@ npm install @reduxless/react
 Use the React bound components:
 
 ```js
-import { Container, mapper, Link, Match } from "@reduxless/react";
+import { Container, mapper, Link, Match } from '@reduxless/react';
 ```
 
 ### Other libraries
@@ -65,9 +65,9 @@ import { Container, mapper, Link, Match } from "@reduxless/react";
 Alternatively if you are using a library other than React or Preact, for example, inferno, you can inject the module into Reduxless like so:
 
 ```js
-import { makeComponents } from "@reduxless/core";
-import { Component } from "inferno";
-import { createElement } from "inferno-create-element";
+import { makeComponents } from '@reduxless/core';
+import { Component } from 'inferno';
+import { createElement } from 'inferno-create-element';
 
 const reduxless = makeComponents({ createElement, Component });
 ```
@@ -77,7 +77,7 @@ const reduxless = makeComponents({ createElement, Component });
 If you don't need the bindings then you can do:
 
 ```js
-import { createStore, selectorMemoizer } from "@reduxless/core";
+import { createStore, selectorMemoizer } from '@reduxless/core';
 ```
 
 # A simple example
@@ -86,18 +86,18 @@ The following snippet of code demonstrates how reduxless can be used with a Reac
 
 ```jsx
 /** @jsx h */
-import { h, render } from "preact";
-import { createStore } from "@reduxless/core";
-import { Container, mapper } from "@reduxless/preact";
+import { h, render } from 'preact';
+import { createStore } from '@reduxless/core';
+import { Container, mapper } from '@reduxless/preact';
 
 const store = createStore({
-  initialState: { name: "Bart Simpson" }
+  initialState: { name: 'Bart Simpson' }
 });
 
 const Component = ({ name, updateName }) => (
   <p
     onClick={() =>
-      updateName(name == "Bart Simpson" ? "Lisa Simpson" : "Bart Simpson")
+      updateName(name == 'Bart Simpson' ? 'Lisa Simpson' : 'Bart Simpson')
     }
   >
     Hello there, {name}! Click to change me.
@@ -107,11 +107,11 @@ const Component = ({ name, updateName }) => (
 const MappedComponent = mapper(
   {
     // selectors
-    name: store => store.get("name")
+    name: store => store.get('name')
   },
   {
     // actions
-    updateName: (store, ownProps, newName) => store.set("name", newName)
+    updateName: (store, ownProps, newName) => store.set('name', newName)
   }
 )(Component);
 
@@ -137,11 +137,11 @@ Reduxless offers a straightforward mechanism for both routing (i.e. which compon
 In the example above if we wanted the `name` property synced, it would be as simple as:
 
 ```js
-import { createRouterEnabledStore } from "@reduxless/core";
+import { createRouterEnabledStore } from '@reduxless/core';
 
 const store = createRouterEnabledStore({
-  initialState: { name: "Bart Simpson" },
-  pushStateMountPoints: ["name"]
+  initialState: { name: 'Bart Simpson' },
+  pushStateMountPoints: ['name']
 });
 ```
 
@@ -149,13 +149,13 @@ Routing is as straightforward as:
 
 ```jsx
 /** @jsx h */
-import { h } from "preact";
-import { createRouterEnabledStore } from "@reduxless/core";
-import { Match, Link } from "@reduxless/preact";
+import { h } from 'preact';
+import { createRouterEnabledStore } from '@reduxless/core';
+import { Match, Link } from '@reduxless/preact';
 
 const store = createRouterEnabledStore({
-  initialState: { name: "Bart Simpson" },
-  pushStateMountPoints: ["name"]
+  initialState: { name: 'Bart Simpson' },
+  pushStateMountPoints: ['name']
 });
 
 const app = () => (
@@ -189,19 +189,19 @@ The state is not one nested object but multiple objects. This means libraries li
 # Subscribing directly to the store
 
 ```js
-import { createStore } from "@reduxless/core";
+import { createStore } from '@reduxless/core';
 
 const store = createStore({
-  initialState: { name: "Bart", surname: "Simpson" }
+  initialState: { name: 'Bart', surname: 'Simpson' }
 });
 
 const report = () =>
   console.log(
-    `Store has changed! – ${store.get("name")} ${store.get("surname")}`
+    `Store has changed! – ${store.get('name')} ${store.get('surname')}`
   );
 
 const unsubscribe = store.subscribe(report);
-store.set("name", "Homer");
+store.set('name', 'Homer');
 
 unsubscribe();
 ```
@@ -209,8 +209,8 @@ unsubscribe();
 The store can also be created with `validators` which is an object containing pairs of mountpoints and validation functions to be called every time the mountpoint's data is updated. For example:
 
 ```js
-const isString = data => typeof data === "string";
-const isNumber = data => typeof data === "number";
+const isString = data => typeof data === 'string';
+const isNumber = data => typeof data === 'number';
 const validators = {
   name: isString,
   score: isNumber
@@ -238,14 +238,14 @@ Here's an example using [Preact](https://preactjs.com/):
 ## Example usage
 
 ```jsx
-import { h, render } from "preact";
-import { createStore, Container } from "reduxless";
+import { h, render } from 'preact';
+import { createStore, Container } from 'reduxless';
 
-const store = createStore({ name: "Bart Simpson" });
+const store = createStore({ name: 'Bart Simpson' });
 
 render(
   <Container store={store}>
-    {(props, { store }) => <p>Hello there, {store.get("name")}!</p>}
+    {(props, { store }) => <p>Hello there, {store.get('name')}!</p>}
   </Container>
 );
 ```
