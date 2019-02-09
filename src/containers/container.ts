@@ -4,7 +4,7 @@ import {
   ReactVDOM,
   SelectorMappings,
   ActionMappings
-} from "../interfaces";
+} from '../interfaces';
 
 export const _Container = (vdom: VDOMProvider) => {
   const h = (<PreactVDOM>vdom).h || (<ReactVDOM>vdom).createElement;
@@ -21,12 +21,12 @@ export const _Container = (vdom: VDOMProvider) => {
 
     constructor(props) {
       super(props);
-      if (!props.store) throw new Error("Store not found");
+      if (!props.store) throw new Error('Store not found');
     }
 
     render() {
       const { children, store, ...rest } = this.props;
-      return h("div", rest, children);
+      return h('div', rest, children);
     }
   };
 };
@@ -62,7 +62,7 @@ export const _mapper = (vdom: VDOMProvider) => {
 
       get store() {
         const store = this.props.store || this.context.store;
-        if (!store) throw new Error("Store not found");
+        if (!store) throw new Error('Store not found');
         return store;
       }
 
@@ -104,5 +104,44 @@ export const _mapper = (vdom: VDOMProvider) => {
         );
       }
     };
+  };
+};
+
+export const rawMapper = (
+  propMappings: SelectorMappings = {},
+  actionMappings: ActionMappings = {}
+) => callback => (store, ...ownProps) => {
+  let unsubscribe = null;
+  const mappedProps = {};
+  const mappedActions = {};
+
+  for (const key in actionMappings) {
+    mappedActions[key] = (...args) =>
+      actionMappings[key](store, ownProps, ...args);
+  }
+
+  const handleStoreUpdate = () => {
+    let hasPropsChanged = false;
+    for (const key in propMappings) {
+      const prop = propMappings[key](store, ownProps);
+      if (prop !== mappedProps[key]) hasPropsChanged = true;
+      mappedProps[key] = prop;
+    }
+
+    if (hasPropsChanged)
+      callback({
+        ...mappedProps,
+        ...mappedActions
+      });
+  };
+
+  unsubscribe = store.subscribe(handleStoreUpdate);
+  handleStoreUpdate();
+
+  return () => {
+    if (unsubscribe) {
+      unsubscribe();
+      unsubscribe = null;
+    }
   };
 };
