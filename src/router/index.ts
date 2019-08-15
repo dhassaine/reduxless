@@ -96,8 +96,8 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
   );
   routedStore.useHash = useHash;
 
-  let lastPushState;
-  let lastReplaceState;
+  let lastPushState = [];
+  let lastReplaceState = [];
 
   const update = (mountPoints: string[]) => {
     routedStore.syncedLocationToStore = true;
