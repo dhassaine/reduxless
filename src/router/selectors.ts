@@ -33,6 +33,14 @@ export const getPath = (store: RouterEnabledStore) =>
 export const extractPartsFromPath = (store: RouterEnabledStore) => {
   const path = getPath(store);
   const [pathName, query = ''] = path.split('?');
+  return parseQueryParams(pathName, query, store.serializers);
+};
+
+export const parseQueryParams = (
+  pathName: string,
+  query: string,
+  serializers: Serializers
+) => {
   try {
     const params = decodeURIComponent(query).split('&');
 
@@ -41,7 +49,7 @@ export const extractPartsFromPath = (store: RouterEnabledStore) => {
         if (pair.startsWith('storeData='))
           acc.storeData = parseStore(
             decodeURIComponent(pair.replace(/^storeData=/, '')),
-            store.serializers
+            serializers
           );
         else acc.query += (acc.query ? '&' : '') + pair;
         return acc;

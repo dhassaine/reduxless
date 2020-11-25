@@ -42,6 +42,6 @@ export default [
       file: "dist/index.min.js",
       format: "cjs"
     },
-    plugins: [...plugins, minify({ comments: false, sourceMap: false })]
+    plugins: [...plugins, minify({ comments: false, sourceMap: false, mangle: true })]
   }
 ];
