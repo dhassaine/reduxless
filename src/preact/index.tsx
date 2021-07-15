@@ -1,4 +1,5 @@
 /** @jsx h */
+/** @jsxFrag Fragment */
 import {
   h,
   createContext,
