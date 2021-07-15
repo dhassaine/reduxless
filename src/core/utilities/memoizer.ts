@@ -27,7 +27,7 @@ function selectorMemoizer<T>(
 
     if (!hasPropsChanged) return lastResult;
 
-    lastResult = mapper(lastProps);
+    lastResult = mapper.apply(null, lastProps);
     return lastResult;
   };
 }
