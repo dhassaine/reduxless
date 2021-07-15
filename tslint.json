@@ -16,7 +16,8 @@
     "jsx-no-multiline-js": false,
     "jsx-no-lambda": false,
     "semicolon": false,
-    "max-line-length": false
+    "max-line-length": false,
+    "ordered-imports": false
   },
   "rulesDirectory": []
 }

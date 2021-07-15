@@ -1,9 +1,9 @@
 import { Store } from "../interfaces";
-type selector = (store: Store) => any;
+type Selector = (store: Store) => any;
 
 function selectorMemoizer<T>(
   mapper: (...props) => T,
-  ...selectors: selector[]
+  ...selectors: Selector[]
 ): (store: Store) => T {
   let lastResult = null;
   let lastProps = null;
@@ -14,8 +14,8 @@ function selectorMemoizer<T>(
     if (lastProps === null) {
       hasPropsChanged = true;
       lastProps = [];
-      for (let i = 0; i < selectors.length; i++) {
-        lastProps.push(selectors[i](store));
+      for (const selector of selectors) {
+        lastProps.push(selector(store));
       }
     } else {
       for (let i = 0; i < selectors.length; i++) {
