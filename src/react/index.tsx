@@ -1,10 +1,10 @@
-import { getPath } from '../core/router/selectors';
+import { getPath } from '@reduxless/core/router/selectors';
 import type {
   SelectorMappings,
   ActionMappings,
   Store,
   RouterEnabledStore,
-} from '../core/interfaces';
+} from '@reduxless/core/interfaces';
 import React from 'react';
 import type { AllHTMLAttributes } from 'react';
 
