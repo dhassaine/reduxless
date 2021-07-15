@@ -7,10 +7,9 @@
   "type": "module",
   "scripts": {
     "test": "jest",
-    "build": "rm -rf dist && rollup -c",
+    "build": "rm -rf dist && rollup -c && node bin/prepare-npm-packages.js",
     "dev": "rollup -c -w",
-    "bump-version": "bin/bump-version.sh",
-    "bench": "npm run build && node benchmarks/redux_vs_reduxless.js && node benchmarks/bench.js"
+    "bump-version": "bin/bump-version.sh"
   },
   "author": "Djamel Hassaine <dhassaine@gmail.com> (https://github.com/dhassaine)",
   "contributors": [
