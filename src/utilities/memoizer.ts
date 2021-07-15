@@ -1,4 +1,4 @@
-import { Store } from "../interfaces";
+import { Store } from '../interfaces';
 type Selector = (store: Store) => any;
 
 function selectorMemoizer<T>(
@@ -8,7 +8,7 @@ function selectorMemoizer<T>(
   let lastResult = null;
   let lastProps = null;
 
-  return store => {
+  return (store) => {
     let hasPropsChanged = false;
 
     if (lastProps === null) {
@@ -27,7 +27,7 @@ function selectorMemoizer<T>(
 
     if (!hasPropsChanged) return lastResult;
 
-    lastResult = mapper.apply(null, lastProps);
+    lastResult = mapper(lastProps);
     return lastResult;
   };
 }

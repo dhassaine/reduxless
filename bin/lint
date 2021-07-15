@@ -1,0 +1,5 @@
+#!/bin/bash
+
+ROOT_DIR=$(dirname $(dirname $0))
+
+$(npm bin)/eslint "$ROOT_DIR" --ext .js,.jsx,.ts,.tsx

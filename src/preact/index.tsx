@@ -1,6 +1,7 @@
 /** @jsx h */
 /** @jsxFrag Fragment */
 import {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   h,
   createContext,
   FunctionalComponent,
@@ -79,6 +80,7 @@ export const mapper =
       };
 
       render() {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { children, store, ...rest } = this.props;
         return (
           <Wrapped {...rest} {...this._mappedProps} {...this._mappedActions}>

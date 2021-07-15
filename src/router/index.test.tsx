@@ -1,5 +1,3 @@
-/* global describe, it, expect, jest, afterEach, beforeEach */
-import React from 'react';
 import { debounce } from './index';
 import { createRouterEnabledStore } from '../index';
 

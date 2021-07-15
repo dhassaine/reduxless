@@ -10,7 +10,9 @@ const parseStore = (
 
   try {
     data = JSON.parse(jsonStoreData);
-  } catch (e) {}
+  } catch (e) {
+    /*ignore*/
+  }
 
   for (const [key, value] of Object.entries(data)) {
     try {
@@ -19,7 +21,9 @@ const parseStore = (
       } else {
         data[key] = JSON.parse(value);
       }
-    } catch (e) {}
+    } catch (e) {
+      /*ignore*/
+    }
   }
 
   return data;

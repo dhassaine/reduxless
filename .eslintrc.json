@@ -15,6 +15,12 @@
     "max-len": [
       "warn",
       { "code": 100, "ignoreStrings": true, "ignoreTemplateLiterals": true }
-    ]
+    ],
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      { "argsIgnorePattern": "h", "ignoreRestSiblings": true }
+    ],
+    "@typescript-eslint/no-explicit-any": "off"
   }
 }
