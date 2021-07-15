@@ -3,15 +3,6 @@ import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
 import { terser } from 'rollup-plugin-terser';
 
-const plugins = [commonjs(), resolve(), typescript()];
-
-const minifiedPlugins = [
-  commonjs(),
-  resolve(),
-  typescript({ sourceMap: false }),
-  terser(),
-];
-
 const configs = [
   ['core', 'index.ts'],
   ['react', 'index.tsx'],
@@ -31,7 +22,11 @@ const configs = [
         sourcemap: true,
       },
     ],
-    plugins,
+    plugins: [
+      commonjs(),
+      resolve(),
+      typescript({ declarationDir: `dist/${module}` }),
+    ],
   },
   {
     input: `src/${module}/${entry}`,
@@ -39,7 +34,12 @@ const configs = [
       file: `dist/${module}/index.min.js`,
       format: 'cjs',
     },
-    plugins: minifiedPlugins,
+    plugins: [
+      commonjs(),
+      resolve(),
+      typescript({ declarationDir: `dist/${module}`, sourceMap: false }),
+      terser(),
+    ],
   },
 ]);
 
