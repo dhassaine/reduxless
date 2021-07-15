@@ -6,6 +6,7 @@
   "minified:main": "index.min.js",
   "types": ".",
   "peerDependencies": {
+    "@reduxless/core": "*",
     "preact": ">=10"
   }
 }
