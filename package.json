@@ -9,26 +9,19 @@
   "files": [
     "dist"
   ],
-  "engines": {
-    "node": ">=8"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/dhassaine/reduxless.git"
   },
   "scripts": {
     "test": "jest",
-    "test-demo": "jest demo",
     "coverage": "jest --coverage",
     "coveralls": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "start": "webpack-dev-server --config demo/webpack.config.js",
-    "build-demo": "webpack -p --config demo/webpack.config.js",
     "build": "rm -rf dist && rollup -c",
     "dev": "rollup -c -w",
     "bump-version": "bin/bump-version.sh",
-    "prepublish": "npm run build",
-    "bench": "npm run build && node benchmarks/redux_vs_reduxless.js && node benchmarks/bench.js",
-    "build-docs": "rm -rf ./docs && typedoc && touch ./docs/.nojekyll"
+    "bench": "npm run build && node benchmarks/redux_vs_reduxless.js && node benchmarks/bench.js"
   },
   "author": "Djamel Hassaine <dhassaine@gmail.com> (https://github.com/dhassaine)",
   "contributors": [
@@ -41,8 +34,7 @@
       "src/**/*.js"
     ],
     "setupFiles": [
-      "<rootDir>/test-setup/polyfill.js",
-      "<rootDir>/test-setup/enzyme.js"
+      "<rootDir>/test-setup/polyfill.js"
     ],
     "moduleDirectories": [
       "node_modules"
@@ -59,44 +51,27 @@
     },
     "testURL": "http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D"
   },
-  "dependencies": {},
   "devDependencies": {
-    "babel-eslint": "10.0.1",
-    "babel-jest": "23.6.0",
-    "babel-plugin-external-helpers": "6.22.0",
-    "babel-preset-env": "1.7.0",
-    "babel-preset-react": "6.24.1",
-    "babel-preset-stage-0": "6.24.1",
+    "@rollup/plugin-commonjs": "19.0.0",
+    "@rollup/plugin-node-resolve": "13.0.0",
+    "@rollup/plugin-typescript": "8.2.1",
+    "@types/jest": "^26.0.24",
     "benchmark": "2.1.4",
-    "coveralls": "3.0.2",
-    "enzyme": "3.7.0",
-    "enzyme-adapter-react-16": "1.6.0",
-    "eslint": "5.7.0",
-    "eslint-plugin-react": "7.11.1",
-    "inferno": "6.0.3",
-    "inferno-create-element": "6.0.3",
-    "inferno-test-utils": "6.0.3",
-    "jest": "23.6.0",
-    "precss": "3.1.2",
-    "prettier": "1.14.3",
-    "react": "16.0.0",
-    "react-dom": "16.5.2",
-    "react-redux": "5.0.7",
-    "react-test-renderer": "16.5.2",
-    "redux": "4.0.1",
+    "coveralls": "3.1.1",
+    "eslint": "7.30.0",
+    "eslint-plugin-react": "7.24.0",
+    "jest": "27.0.6",
+    "prettier": "2.3.2",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-redux": "7.2.4",
+    "react-test-renderer": "17.0.2",
+    "redux": "4.1.0",
     "reselect": "4.0.0",
-    "rollup": "0.66.6",
-    "rollup-plugin-babel": "4.0.3",
-    "rollup-plugin-babel-minify": "6.1.1",
-    "rollup-plugin-commonjs": "9.2.0",
-    "rollup-plugin-json": "3.1.0",
-    "rollup-plugin-node-resolve": "3.4.0",
-    "rollup-plugin-typescript2": "0.17.2",
-    "ts-jest": "23.10.4",
-    "tslint": "5.20.1",
-    "tslint-react": "5.0.0",
-    "typedoc": "0.13.0",
-    "typescript": "3.1.3",
+    "rollup": "2.53.2",
+    "rollup-plugin-terser": "^7.0.2",
+    "ts-jest": "27.0.3",
+    "typescript": "4.3.5",
     "undom": "0.4.0"
   }
 }

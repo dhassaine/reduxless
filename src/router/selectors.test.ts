@@ -1,10 +1,9 @@
-/* global describe, it, expect */
 import { extractPartsFromPath } from './selectors';
 
 describe('router/selectors', () => {
   describe('extractPartsFromPath', () => {
     it('return pathName, query and parse store data from window.location', () => {
-      const store = { useHash: false };
+      const store = { useHash: false } as any;
       const results = extractPartsFromPath(store);
       expect(results).toEqual({
         pathName: '/page1',
@@ -29,7 +28,7 @@ describe('router/selectors', () => {
           }
         ]
       ]);
-      const store = { useHash: false, serializers };
+      const store = { useHash: false, serializers } as any;
       const results = extractPartsFromPath(store);
       expect(results).toEqual({
         pathName: '/page1',
@@ -42,7 +41,7 @@ describe('router/selectors', () => {
     });
 
     it('parses window.hash if store.useHash is true', () => {
-      const store = { useHash: true };
+      const store = { useHash: true } as any;
       window.location.hash = '#page1';
       const results = extractPartsFromPath(store);
       expect(results).toEqual({
@@ -53,7 +52,7 @@ describe('router/selectors', () => {
     });
 
     it('returns an empty object if the store is badly formed', () => {
-      const store = { useHash: true };
+      const store = { useHash: true } as any;
       window.location.hash = '#?storeData={';
       expect(extractPartsFromPath(store)).toEqual({
         pathName: '/',
@@ -63,7 +62,7 @@ describe('router/selectors', () => {
     });
 
     it('returns an empty object if the no store is found', () => {
-      const store = { useHash: true };
+      const store = { useHash: true } as any;
       window.location.hash = '#?a=1';
       expect(extractPartsFromPath(store)).toEqual({
         pathName: '/',
@@ -74,7 +73,7 @@ describe('router/selectors', () => {
 
     it('pathName defaults to / when useHash is true', () => {
       history.pushState(null, null, 'http://example.com');
-      const store = { useHash: true };
+      const store = { useHash: true } as any;
       const results = extractPartsFromPath(store);
       expect(results).toEqual({
         pathName: '/',

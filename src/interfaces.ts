@@ -27,7 +27,7 @@
 export type EnumerableObject<T> =
   | { [index: string]: T }
   | Map<string, T>
-  | Array<[string, T]>;
+  | [string, T][];
 
 /**
  * A validator for a given mount point in the store will receive a value and

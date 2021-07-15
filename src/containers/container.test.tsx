@@ -1,8 +1,7 @@
-/* global describe, it, jest, expect, beforeEach, afterEach */
-import React from "react";
-import PropTypes from "prop-types";
-import renderer from "react-test-renderer";
-import { makeComponents, createStore } from "../index";
+import React from 'react';
+import PropTypes from 'prop-types';
+import renderer from 'react-test-renderer';
+import { makeComponents, createStore } from '../index';
 const { Container, mapper } = makeComponents(React);
 
 class ErrorBoundary extends React.Component {
@@ -15,7 +14,7 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-describe("Container", () => {
+describe('Container', () => {
   const _error = console.error;
   const hideErrors = () => (console.error = () => {});
   const resetErrors = () => (console.error = _error);
@@ -23,7 +22,7 @@ describe("Container", () => {
   beforeEach(hideErrors);
   afterEach(resetErrors);
 
-  it("throws an exception up if no store is passed in as a prop", () => {
+  it('throws an exception up if no store is passed in as a prop', () => {
     const onError = jest.fn();
 
     renderer.create(
@@ -35,7 +34,7 @@ describe("Container", () => {
     expect(onError.mock.calls.length).toEqual(1);
   });
 
-  it("does not directly re-render when the store changes", () => {
+  it('does not directly re-render when the store changes', () => {
     const store = createStore();
     const ChildComponent = jest.fn(() => null);
 
@@ -45,11 +44,11 @@ describe("Container", () => {
       </Container>
     );
     expect(ChildComponent.mock.calls.length).toEqual(1);
-    store.set("mount", { a: 1 });
+    store.set('mount', { a: 1 });
     expect(ChildComponent.mock.calls.length).toEqual(1);
   });
 
-  it("allows undefined children", () => {
+  it('allows undefined children', () => {
     const onError = jest.fn();
 
     renderer.create(
@@ -61,12 +60,12 @@ describe("Container", () => {
     expect(onError.mock.calls.length).toEqual(0);
   });
 
-  describe("mapper", () => {
-    it("passes through props", () => {
+  describe('mapper', () => {
+    it('passes through props', () => {
       const store = createStore();
 
       const childComponent = ({ originalProp }) => {
-        expect(originalProp).toEqual("yes");
+        expect(originalProp).toEqual('yes');
         return null;
       };
 
@@ -79,7 +78,7 @@ describe("Container", () => {
       );
     });
 
-    it("re-renders if a prop changes", () => {
+    it('re-renders if a prop changes', () => {
       const store = createStore();
       const Component = jest.fn(() => null);
       const prop = { a: 1 };
@@ -105,9 +104,9 @@ describe("Container", () => {
       expect(Component.mock.calls.length).toEqual(2);
     });
 
-    it("maps state to props and actions on given children", () => {
+    it('maps state to props and actions on given children', () => {
       const store = createStore();
-      store.set("mount", { a: 1, b: 2 });
+      store.set('mount', { a: 1, b: 2 });
 
       const action = jest.fn();
 
@@ -116,29 +115,29 @@ describe("Container", () => {
         expect(prop2).toEqual(2);
         onAction(5);
         expect(action.mock.calls[0][0]).toEqual(store);
-        expect(action.mock.calls[0][1]).toEqual({ originalProp: "yes" });
+        expect(action.mock.calls[0][1]).toEqual({ originalProp: 'yes' });
         expect(action.mock.calls[0][2]).toEqual(5);
         return null;
       };
 
       const Component = mapper(
         {
-          prop1: store => store.get("mount").a,
-          prop2: store => store.get("mount").b
+          prop1: store => store.get('mount').a,
+          prop2: store => store.get('mount').b
         },
         { onAction: action }
       )(ChildComponent);
 
       const BasicComponent = props => {
-        expect(props).toHaveProperty("nameProp");
-        expect(props.nameProp).toEqual("Jim");
+        expect(props).toHaveProperty('nameProp');
+        expect(props.nameProp).toEqual('Jim');
         return null;
       };
 
       class ClassComponent extends React.Component {
         render() {
-          expect(this.props).toHaveProperty("nameProp");
-          expect(this.props.nameProp).toEqual("Jim");
+          expect(this.props).toHaveProperty('nameProp');
+          expect(this.props.nameProp).toEqual('Jim');
           return null;
         }
       }
@@ -154,7 +153,7 @@ describe("Container", () => {
       );
     });
 
-    it("can connect to the store even if its a nested child", () => {
+    it('can connect to the store even if its a nested child', () => {
       const store = createStore({
         initialState: {
           mount1: { a: 1 },
@@ -166,7 +165,7 @@ describe("Container", () => {
       childComponent.mockReturnValue(null);
 
       const Component = mapper({
-        prop1: store => store.get("mount1").a
+        prop1: store => store.get('mount1').a
       })(childComponent);
 
       renderer.create(
@@ -177,13 +176,13 @@ describe("Container", () => {
         </Container>
       );
       expect(childComponent.mock.calls.length).toEqual(1);
-      store.set("mount2", { b: 3 });
+      store.set('mount2', { b: 3 });
       expect(childComponent.mock.calls.length).toEqual(1);
-      store.set("mount1", { a: 2 });
+      store.set('mount1', { a: 2 });
       expect(childComponent.mock.calls.length).toEqual(2);
     });
 
-    it("Nested mapped components update independently", () => {
+    it('Nested mapped components update independently', () => {
       const store = createStore({
         initialState: {
           mount1: { a: 1 },
@@ -195,14 +194,14 @@ describe("Container", () => {
       NestedComponent.mockReturnValue(null);
 
       const NestedMappedComponent = mapper({
-        prop1: store => store.get("mount2").b
+        prop1: store => store.get('mount2').b
       })(NestedComponent);
 
       const Component = jest.fn();
       Component.mockReturnValue(<NestedMappedComponent />);
 
       const MappedComponent = mapper({
-        prop1: store => store.get("mount1").a
+        prop1: store => store.get('mount1').a
       })(Component);
 
       renderer.create(
@@ -213,12 +212,12 @@ describe("Container", () => {
         </Container>
       );
       expect(Component.mock.calls.length).toEqual(1);
-      store.set("mount2", { b: 3 });
+      store.set('mount2', { b: 3 });
       expect(Component.mock.calls.length).toEqual(1);
       expect(NestedComponent.mock.calls.length).toEqual(2);
     });
 
-    it("skips rendering if the relevant section of the store does not change", () => {
+    it('skips rendering if the relevant section of the store does not change', () => {
       const store = createStore({
         initialState: {
           mount1: { a: 1 },
@@ -230,18 +229,18 @@ describe("Container", () => {
       childComponent.mockReturnValue(null);
 
       const Component = mapper({
-        prop1: store => store.get("mount1").a
+        prop1: store => store.get('mount1').a
       })(childComponent);
 
       renderer.create(<Container store={store}>{<Component />}</Container>);
       expect(childComponent.mock.calls.length).toEqual(1);
-      store.set("mount2", { b: 3 });
+      store.set('mount2', { b: 3 });
       expect(childComponent.mock.calls.length).toEqual(1);
-      store.set("mount1", { a: 2 });
+      store.set('mount1', { a: 2 });
       expect(childComponent.mock.calls.length).toEqual(2);
     });
 
-    it("does not subscribe to store changes if there are no propMappings", () => {
+    it('does not subscribe to store changes if there are no propMappings', () => {
       const store = createStore({
         initialState: {
           mount1: { a: 1 },
@@ -264,13 +263,13 @@ describe("Container", () => {
         <Container store={store}>{<Component />}</Container>
       );
       expect(childComponent.mock.calls.length).toEqual(1);
-      store.set("mount2", { b: 3 });
+      store.set('mount2', { b: 3 });
       expect(childComponent.mock.calls.length).toEqual(1);
       rendered.unmount();
       expect(store.subscribe.mock.calls.length).toEqual(0);
     });
 
-    it("Stateful components under container can still re-render even if the store has not changed", () => {
+    it('Stateful components under container can still re-render even if the store has not changed', () => {
       const store = createStore({
         initialState: {
           mount1: { a: 1 },
@@ -309,7 +308,7 @@ describe("Container", () => {
       );
 
       const Component = mapper({
-        prop1: store => store.get("mount1").a
+        prop1: store => store.get('mount1').a
       })(PureComponentWithStatefullComponent);
 
       renderer.create(<Container store={store}>{<Component />}</Container>);
@@ -319,12 +318,12 @@ describe("Container", () => {
       expect(childComponent.mock.calls.length).toEqual(2);
       expect(childComponent.mock.calls[1][0]).toEqual(4);
 
-      store.set("mount1", { a: 2 });
+      store.set('mount1', { a: 2 });
       expect(childComponent.mock.calls.length).toEqual(3);
       expect(childComponent.mock.calls[2][0]).toEqual(4);
     });
 
-    it("unsubscribes from the store after unmounting", () => {
+    it('unsubscribes from the store after unmounting', () => {
       const store = createStore({
         initialState: {
           mount1: {
@@ -344,7 +343,7 @@ describe("Container", () => {
       childComponent.mockReturnValue(null);
 
       const Component = mapper({
-        prop1: store => store.get("mount1").a
+        prop1: store => store.get('mount1').a
       })(childComponent);
 
       class Wrapper extends React.Component {
@@ -373,10 +372,10 @@ describe("Container", () => {
       expect(unsubscribeMock.mock.calls.length).toEqual(1);
     });
 
-    it("throws an exception if store is unavailable", () => {
+    it('throws an exception if store is unavailable', () => {
       const onError = jest.fn();
 
-      const Component = mapper({ a: store => store.get("a") })(() => null);
+      const Component = mapper({ a: store => store.get('a') })(() => null);
 
       renderer.create(
         <ErrorBoundary onError={onError}>
