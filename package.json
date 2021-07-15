@@ -8,9 +8,9 @@
   "scripts": {
     "test": "jest",
     "build-types": "tsc --project tsconfig.types.json && rm -rf dummy",
-    "build": "npm run build-types && rm -rf dummy && rollup -c && node bin/prepare-npm-packages.js",
-    "dev": "rollup -c -w",
-    "bump-version": "bin/bump-version.sh"
+    "copy-readme": "cp README.md dist/core/README.md && cp README.md dist/react/README.md && cp README.md dist/preact/README.md",
+    "build": "npm run build-types && npm run copy-readme && rollup -c && node bin/prepare-npm-packages.js",
+    "dev": "rollup -c -w"
   },
   "author": "Djamel Hassaine <dhassaine@gmail.com> (https://github.com/dhassaine)",
   "contributors": [
