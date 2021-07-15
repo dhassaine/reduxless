@@ -1,5 +1,5 @@
 {
-  "version": "5.0.0-alpha.1",
+  "version": "5.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/dhassaine/reduxless.git"
@@ -8,7 +8,7 @@
   "scripts": {
     "test": "jest",
     "build-types": "tsc --project tsconfig.types.json && rm -rf dummy",
-    "build": "build-types && rm -rf dummy && rollup -c && node bin/prepare-npm-packages.js",
+    "build": "npm run build-types && rm -rf dummy && rollup -c && node bin/prepare-npm-packages.js",
     "dev": "rollup -c -w",
     "bump-version": "bin/bump-version.sh"
   },
