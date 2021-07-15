@@ -1,5 +1,5 @@
 {
-  "name": "@reduxless/react",
+  "name": "@reduxless/preact",
   "description": "Preact bindings for @reduxless/core",
   "main": "index.js",
   "module": "index.esm.js",

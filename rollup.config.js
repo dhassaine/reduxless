@@ -22,11 +22,7 @@ const configs = [
         sourcemap: true,
       },
     ],
-    plugins: [
-      commonjs(),
-      resolve(),
-      typescript({ declarationDir: `dist/${module}` }),
-    ],
+    plugins: [commonjs(), resolve(), typescript()],
   },
   {
     input: `src/${module}/${entry}`,
@@ -37,7 +33,7 @@ const configs = [
     plugins: [
       commonjs(),
       resolve(),
-      typescript({ declarationDir: `dist/${module}`, sourceMap: false }),
+      typescript({ sourceMap: false }),
       terser(),
     ],
   },
