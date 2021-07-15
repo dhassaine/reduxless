@@ -10,8 +10,8 @@ describe('router/selectors', () => {
         query: 'queryParam=queryValue&a[]=1&a[]=2',
         storeData: {
           counter: { value: 1 },
-          counter2: { value: 2 }
-        }
+          counter2: { value: 2 },
+        },
       });
     });
 
@@ -20,13 +20,13 @@ describe('router/selectors', () => {
         [
           'counter',
           {
-            toUrlValue: value => value,
-            fromUrlValue: counter => {
+            toUrlValue: (value) => value,
+            fromUrlValue: (counter) => {
               counter.value *= 2;
               return counter;
-            }
-          }
-        ]
+            },
+          },
+        ],
       ]);
       const store = { useHash: false, serializers } as any;
       const results = extractPartsFromPath(store);
@@ -35,8 +35,8 @@ describe('router/selectors', () => {
         query: 'queryParam=queryValue&a[]=1&a[]=2',
         storeData: {
           counter: { value: 2 },
-          counter2: { value: 2 }
-        }
+          counter2: { value: 2 },
+        },
       });
     });
 
@@ -47,7 +47,7 @@ describe('router/selectors', () => {
       expect(results).toEqual({
         pathName: '/page1',
         query: '',
-        storeData: {}
+        storeData: {},
       });
     });
 
@@ -57,7 +57,7 @@ describe('router/selectors', () => {
       expect(extractPartsFromPath(store)).toEqual({
         pathName: '/',
         query: '',
-        storeData: {}
+        storeData: {},
       });
     });
 
@@ -67,7 +67,7 @@ describe('router/selectors', () => {
       expect(extractPartsFromPath(store)).toEqual({
         pathName: '/',
         query: 'a=1',
-        storeData: {}
+        storeData: {},
       });
     });
 
@@ -78,7 +78,7 @@ describe('router/selectors', () => {
       expect(results).toEqual({
         pathName: '/',
         query: '',
-        storeData: {}
+        storeData: {},
       });
     });
   });

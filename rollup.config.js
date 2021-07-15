@@ -12,18 +12,21 @@ const minifiedPlugins = [
   terser(),
 ];
 
-export default [
-  /* Core */
+const configs = [
+  ['core', 'index.ts'],
+  ['react', 'index.tsx'],
+  ['preact', 'index.tsx'],
+].flatMap(([module, entry]) => [
   {
-    input: 'src/index.ts',
+    input: `src/${module}/${entry}`,
     output: [
       {
-        file: 'dist/core/index.esm.js',
+        file: `dist/${module}/index.esm.js`,
         format: 'es',
         sourcemap: true,
       },
       {
-        file: 'dist/core/index.js',
+        file: `dist/${module}/index.js`,
         format: 'cjs',
         sourcemap: true,
       },
@@ -31,39 +34,13 @@ export default [
     plugins,
   },
   {
-    input: 'src/index.ts',
+    input: `src/${module}/${entry}`,
     output: {
-      file: 'dist/core/index.min.js',
+      file: `dist/${module}/index.min.js`,
       format: 'cjs',
     },
     plugins: minifiedPlugins,
   },
-  /* Preact */
-  {
-    input: 'src/preact/index.tsx',
-    output: [
-      { file: 'dist/preact/index.esm.js', format: 'es', sourcemap: true },
-      { file: 'dist/preact/index.js', format: 'cjs', sourcemap: true },
-    ],
-    plugins,
-  },
-  {
-    input: 'src/preact/index.tsx',
-    output: [{ file: 'dist/preact/index.min.js', format: 'cjs' }],
-    plugins: minifiedPlugins,
-  },
-  /* React */
-  {
-    input: 'src/react/index.tsx',
-    output: [
-      { file: 'dist/react/index.esm.js', format: 'es', sourcemap: true },
-      { file: 'dist/react/index.js', format: 'cjs', sourcemap: true },
-    ],
-    plugins,
-  },
-  {
-    input: 'src/react/index.tsx',
-    output: [{ file: 'dist/react/index.min.js', format: 'cjs' }],
-    plugins: minifiedPlugins,
-  },
-];
+]);
+
+export default configs;

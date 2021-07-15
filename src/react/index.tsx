@@ -5,7 +5,8 @@ import type {
   Store,
   RouterEnabledStore,
 } from '../core/interfaces';
-import React, { AllHTMLAttributes } from 'react';
+import React from 'react';
+import type { AllHTMLAttributes } from 'react';
 
 const StoreContext =
   React.createContext<{ store: Store | RouterEnabledStore }>(null);
@@ -19,7 +20,7 @@ export const Container: React.FunctionComponent<{
 export const mapper =
   (propMappings: SelectorMappings = {}, actionMappings: ActionMappings = {}) =>
   (Wrapped: React.FunctionComponent) => {
-    const component = class Mapped extends React.Component<{
+    return class Mapped extends React.Component<{
       store?: Store | RouterEnabledStore;
     }> {
       _unsubscribe: () => void;
@@ -80,8 +81,6 @@ export const mapper =
         );
       }
     };
-
-    return component;
   };
 
 export const Link: React.FunctionComponent<
