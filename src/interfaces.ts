@@ -208,10 +208,10 @@ export type SelectorMappings = EnumerableObject<SelectorMapper>;
  * A function that performs modifications to the store or side effects outside
  * of the store.
  */
-export type ActionMapper = <U, V>(
+export type ActionMapper = <U, V, W>(
   store: Store,
   ownProps: U,
-  ...args: any[]
+  ...args: W[]
 ) => V;
 
 export type ActionMappings = EnumerableObject<ActionMapper>;
