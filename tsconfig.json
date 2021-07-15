@@ -1,16 +1,13 @@
 {
   "compilerOptions": {
+    "allowJs": true,
     "target": "es2015",
-    "lib": ["dom", "es2018"],
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "module": "es6",
+    "lib": ["dom", "esnext"],
+    "module": "esnext",
     "moduleResolution": "node",
     "sourceMap": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "declaration": true,
-    "declarationDir": "./dist",
     "resolveJsonModule": true,
     "jsx": "react"
   },

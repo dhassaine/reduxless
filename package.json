@@ -1,34 +1,16 @@
 {
-  "name": "@reduxless/core",
-  "version": "4.0.2",
-  "description": "A small and performant state management and routing library with unidirectional data flow",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
-  "minified:main": "dist/index.min.js",
-  "types": "dist",
-  "files": [
-    "dist"
-  ],
-  "engines": {
-    "node": ">=8"
-  },
+  "version": "5.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/dhassaine/reduxless.git"
   },
+  "type": "module",
   "scripts": {
     "test": "jest",
-    "test-demo": "jest demo",
-    "coverage": "jest --coverage",
-    "coveralls": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "start": "webpack-dev-server --config demo/webpack.config.js",
-    "build-demo": "webpack -p --config demo/webpack.config.js",
-    "build": "rm -rf dist && rollup -c",
+    "build-types": "tsc --project tsconfig.types.json && rm -rf dummy",
+    "build": "npm run build-types && rm -rf dummy && rollup -c && node bin/prepare-npm-packages.js",
     "dev": "rollup -c -w",
-    "bump-version": "bin/bump-version.sh",
-    "prepublish": "npm run build",
-    "bench": "npm run build && node benchmarks/redux_vs_reduxless.js && node benchmarks/bench.js",
-    "build-docs": "rm -rf ./docs && typedoc && touch ./docs/.nojekyll"
+    "bump-version": "bin/bump-version.sh"
   },
   "author": "Djamel Hassaine <dhassaine@gmail.com> (https://github.com/dhassaine)",
   "contributors": [
@@ -36,13 +18,9 @@
   ],
   "license": "MIT",
   "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.jsx",
-      "src/**/*.js"
-    ],
+    "testEnvironment": "jsdom",
     "setupFiles": [
-      "<rootDir>/test-setup/polyfill.js",
-      "<rootDir>/test-setup/enzyme.js"
+      "<rootDir>/test-setup/polyfill.ts"
     ],
     "moduleDirectories": [
       "node_modules"
@@ -54,48 +32,30 @@
       "tsx"
     ],
     "transform": {
-      "\\.tsx?$": "ts-jest",
-      "^.+\\.js$": "<rootDir>/preprocessor.js"
+      "\\.(j|t)sx?$": "ts-jest"
     },
     "testURL": "http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D"
   },
-  "dependencies": {},
   "devDependencies": {
-    "babel-eslint": "10.0.1",
-    "babel-jest": "23.6.0",
-    "babel-plugin-external-helpers": "6.22.0",
-    "babel-preset-env": "1.7.0",
-    "babel-preset-react": "6.24.1",
-    "babel-preset-stage-0": "6.24.1",
-    "benchmark": "2.1.4",
-    "coveralls": "3.0.2",
-    "enzyme": "3.7.0",
-    "enzyme-adapter-react-16": "1.6.0",
-    "eslint": "5.7.0",
-    "eslint-plugin-react": "7.11.1",
-    "inferno": "6.0.3",
-    "inferno-create-element": "6.0.3",
-    "inferno-test-utils": "6.0.3",
-    "jest": "23.6.0",
-    "precss": "3.1.2",
-    "prettier": "1.14.3",
-    "react": "16.0.0",
-    "react-dom": "16.5.2",
-    "react-redux": "5.0.7",
-    "react-test-renderer": "16.5.2",
-    "redux": "4.0.1",
-    "reselect": "4.0.0",
-    "rollup": "0.66.6",
-    "rollup-plugin-babel": "4.0.3",
-    "rollup-plugin-babel-minify": "6.1.1",
-    "rollup-plugin-commonjs": "9.2.0",
-    "rollup-plugin-json": "3.1.0",
-    "rollup-plugin-node-resolve": "3.4.0",
-    "rollup-plugin-typescript2": "0.17.2",
-    "ts-jest": "23.10.4",
-    "tslint": "5.11.0",
-    "typedoc": "0.13.0",
-    "typescript": "3.1.3",
+    "@rollup/plugin-commonjs": "19.0.0",
+    "@rollup/plugin-node-resolve": "13.0.0",
+    "@rollup/plugin-typescript": "8.2.1",
+    "@types/jest": "26.0.24",
+    "@types/react": "17.0.14",
+    "@typescript-eslint/eslint-plugin": "4.28.3",
+    "@typescript-eslint/parser": "4.28.3",
+    "eslint": "7.30.0",
+    "eslint-plugin-react": "7.24.0",
+    "jest": "27.0.6",
+    "preact": "10.5.14",
+    "prettier": "2.3.2",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "rollup": "2.53.2",
+    "rollup-plugin-terser": "7.0.2",
+    "ts-jest": "27.0.3",
+    "tslib": "2.3.0",
+    "typescript": "4.3.5",
     "undom": "0.4.0"
   }
 }

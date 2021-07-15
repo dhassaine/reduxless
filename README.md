@@ -1,18 +1,6 @@
 # Reduxless
 
-_A small and performant state management and routing library with unidirectional data flow._
-
-[![npm version](https://badge.fury.io/js/reduxless.svg)](https://badge.fury.io/js/reduxless) [![Build Status](https://travis-ci.org/dhassaine/reduxless.svg?branch=master)](https://travis-ci.org/dhassaine/reduxless) [![Coverage Status](https://coveralls.io/repos/github/dhassaine/reduxless/badge.svg?branch=master)](https://coveralls.io/github/dhassaine/reduxless?branch=master)
-[![gzip size](http://img.badgesize.io/https://unpkg.com/reduxless/dist/reduxless.min.js?compression=gzip)](https://unpkg.com/reduxless/dist/reduxless.min.js)
-
-# Package API
-
-The package provides the following functions:
-
-- [`createStore`](https://dhassaine.github.io/reduxless/globals.html#createstore)
-- [`createRouterEnabledStore`](https://dhassaine.github.io/reduxless/globals.html#createrouterenabledstore)
-- [`selectorMemoizer`](https://dhassaine.github.io/reduxless/globals.html#selectormemoizer)
-- [`makeComponents`](https://dhassaine.github.io/reduxless/globals.html#makecomponents)
+_A small and performant state management and routing library._
 
 ## Introduction
 
@@ -60,18 +48,6 @@ Use the React bound components:
 import { Container, mapper, Link, Match } from '@reduxless/react';
 ```
 
-### Other libraries
-
-Alternatively if you are using a library other than React or Preact, for example, inferno, you can inject the module into Reduxless like so:
-
-```js
-import { makeComponents } from '@reduxless/core';
-import { Component } from 'inferno';
-import { createElement } from 'inferno-create-element';
-
-const reduxless = makeComponents({ createElement, Component });
-```
-
 ### Server-side
 
 If you don't need the bindings then you can do:
@@ -91,7 +67,7 @@ import { createStore } from '@reduxless/core';
 import { Container, mapper } from '@reduxless/preact';
 
 const store = createStore({
-  initialState: { name: 'Bart Simpson' }
+  initialState: { name: 'Bart Simpson' },
 });
 
 const Component = ({ name, updateName }) => (
@@ -107,18 +83,19 @@ const Component = ({ name, updateName }) => (
 const MappedComponent = mapper(
   {
     // selectors
-    name: store => store.get('name')
+    name: (store) => store.get('name'),
   },
   {
     // actions
-    updateName: (store, ownProps, newName) => store.set('name', newName)
+    updateName: (store, ownProps, newName) => store.set('name', newName),
   }
 )(Component);
 
 render(
   <Container store={store}>
     <MappedComponent />
-  </Container>
+  </Container>,
+  document.body
 );
 ```
 
@@ -141,7 +118,7 @@ import { createRouterEnabledStore } from '@reduxless/core';
 
 const store = createRouterEnabledStore({
   initialState: { name: 'Bart Simpson' },
-  pushStateMountPoints: ['name']
+  pushStateMountPoints: ['name'],
 });
 ```
 
@@ -155,10 +132,10 @@ import { Match, Link } from '@reduxless/preact';
 
 const store = createRouterEnabledStore({
   initialState: { name: 'Bart Simpson' },
-  pushStateMountPoints: ['name']
+  pushStateMountPoints: ['name'],
 });
 
-const app = () => (
+export const App = () => (
   <Container store={store}>
     <ul>
       <li>
@@ -192,7 +169,7 @@ The state is not one nested object but multiple objects. This means libraries li
 import { createStore } from '@reduxless/core';
 
 const store = createStore({
-  initialState: { name: 'Bart', surname: 'Simpson' }
+  initialState: { name: 'Bart', surname: 'Simpson' },
 });
 
 const report = () =>
@@ -209,11 +186,11 @@ unsubscribe();
 The store can also be created with `validators` which is an object containing pairs of mountpoints and validation functions to be called every time the mountpoint's data is updated. For example:
 
 ```js
-const isString = data => typeof data === 'string';
-const isNumber = data => typeof data === 'number';
+const isString = (data) => typeof data === 'string';
+const isNumber = (data) => typeof data === 'number';
 const validators = {
   name: isString,
-  score: isNumber
+  score: isNumber,
 };
 ```
 
@@ -238,6 +215,7 @@ Here's an example using [Preact](https://preactjs.com/):
 ## Example usage
 
 ```jsx
+/** @jsx h */
 import { h, render } from 'preact';
 import { createStore, Container } from 'reduxless';
 
@@ -246,7 +224,8 @@ const store = createStore({ name: 'Bart Simpson' });
 render(
   <Container store={store}>
     {(props, { store }) => <p>Hello there, {store.get('name')}!</p>}
-  </Container>
+  </Container>,
+  document.body
 );
 ```
 
@@ -258,12 +237,12 @@ mapper(propMappings, [actionMappings])
 
 Instead of directly receiving the `store` via context and manually subscribing to it, you should use the `mapper` HOC; it behaves in a similar manner to Redux's `connect` function. Two arguments can be passed in:
 
-- [`propMappings`](interfaces/propmappings.html): this is an object with prop names and functions to retrieve the corresponding values from the store.
-- [`actionMappings`](interfaces/actionmappings.html): this is an object with prop names and functions to make changes to the store.
+- `propMappings`: this is an object with prop names and functions to retrieve the corresponding values from the store.
+- `actionMappings`: this is an object with prop names and functions to make changes to the store.
 
 Functions in `propMappings` are passed the store, the wrapped component's props and the remaining arguments during invocation.
 
-The component returned by `mapper` will only render it's children after the store has changed if the relevant props have also changed. It's also a good idea to wrap any computationally expensive operations with the [`selectorMemoizer()`](globals.html#selectormemoizer) function.
+The component returned by `mapper` will only render it's children after the store has changed if the relevant props have also changed. It's also a good idea to wrap any computationally expensive operations with the `selectorMemoizer()` function.
 
 # Router
 
@@ -331,10 +310,6 @@ export const resourceIds = selectorMemoizer(
 `selectorMemoizer` x 19,567,472 ops/sec ±1.44% (85 runs sampled)
 
 Speed up 3.2x
-
-# Reproducing these results
-
-Clone the library and run `npm run bench`
 
 ## Change Log
 
