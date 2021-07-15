@@ -9,7 +9,6 @@ import {
   JSX,
   Fragment,
 } from 'preact';
-import { useContext } from 'preact/hooks';
 import { getPath } from '../core/router/selectors';
 import type {
   SelectorMappings,
