@@ -1,18 +1,7 @@
 # Reduxless
 
-_A small and performant state management and routing library with unidirectional data flow._
-
-[![npm version](https://badge.fury.io/js/reduxless.svg)](https://badge.fury.io/js/reduxless) [![Build Status](https://travis-ci.org/dhassaine/reduxless.svg?branch=master)](https://travis-ci.org/dhassaine/reduxless) [![Coverage Status](https://coveralls.io/repos/github/dhassaine/reduxless/badge.svg?branch=master)](https://coveralls.io/github/dhassaine/reduxless?branch=master)
+_A small and performant state management and routing library._
 [![gzip size](http://img.badgesize.io/https://unpkg.com/reduxless/dist/reduxless.min.js?compression=gzip)](https://unpkg.com/reduxless/dist/reduxless.min.js)
-
-# Package API
-
-The package provides the following functions:
-
-- [`createStore`](https://dhassaine.github.io/reduxless/globals.html#createstore)
-- [`createRouterEnabledStore`](https://dhassaine.github.io/reduxless/globals.html#createrouterenabledstore)
-- [`selectorMemoizer`](https://dhassaine.github.io/reduxless/globals.html#selectormemoizer)
-- [`makeComponents`](https://dhassaine.github.io/reduxless/globals.html#makecomponents)
 
 ## Introduction
 
@@ -91,7 +80,7 @@ import { createStore } from '@reduxless/core';
 import { Container, mapper } from '@reduxless/preact';
 
 const store = createStore({
-  initialState: { name: 'Bart Simpson' }
+  initialState: { name: 'Bart Simpson' },
 });
 
 const Component = ({ name, updateName }) => (
@@ -107,11 +96,11 @@ const Component = ({ name, updateName }) => (
 const MappedComponent = mapper(
   {
     // selectors
-    name: store => store.get('name')
+    name: (store) => store.get('name'),
   },
   {
     // actions
-    updateName: (store, ownProps, newName) => store.set('name', newName)
+    updateName: (store, ownProps, newName) => store.set('name', newName),
   }
 )(Component);
 
@@ -141,7 +130,7 @@ import { createRouterEnabledStore } from '@reduxless/core';
 
 const store = createRouterEnabledStore({
   initialState: { name: 'Bart Simpson' },
-  pushStateMountPoints: ['name']
+  pushStateMountPoints: ['name'],
 });
 ```
 
@@ -155,7 +144,7 @@ import { Match, Link } from '@reduxless/preact';
 
 const store = createRouterEnabledStore({
   initialState: { name: 'Bart Simpson' },
-  pushStateMountPoints: ['name']
+  pushStateMountPoints: ['name'],
 });
 
 const app = () => (
@@ -192,7 +181,7 @@ The state is not one nested object but multiple objects. This means libraries li
 import { createStore } from '@reduxless/core';
 
 const store = createStore({
-  initialState: { name: 'Bart', surname: 'Simpson' }
+  initialState: { name: 'Bart', surname: 'Simpson' },
 });
 
 const report = () =>
@@ -209,11 +198,11 @@ unsubscribe();
 The store can also be created with `validators` which is an object containing pairs of mountpoints and validation functions to be called every time the mountpoint's data is updated. For example:
 
 ```js
-const isString = data => typeof data === 'string';
-const isNumber = data => typeof data === 'number';
+const isString = (data) => typeof data === 'string';
+const isNumber = (data) => typeof data === 'number';
 const validators = {
   name: isString,
-  score: isNumber
+  score: isNumber,
 };
 ```
 
@@ -331,10 +320,6 @@ export const resourceIds = selectorMemoizer(
 `selectorMemoizer` x 19,567,472 ops/sec ±1.44% (85 runs sampled)
 
 Speed up 3.2x
-
-# Reproducing these results
-
-Clone the library and run `npm run bench`
 
 ## Change Log
 
