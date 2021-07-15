@@ -29,13 +29,9 @@ const configs = [
     output: {
       file: `dist/${module}/index.min.js`,
       format: 'cjs',
+      sourcemap: true,
     },
-    plugins: [
-      commonjs(),
-      resolve(),
-      typescript({ sourceMap: false }),
-      terser(),
-    ],
+    plugins: [commonjs(), resolve(), typescript({ sourceMap: true }), terser()],
   },
 ]);
 
