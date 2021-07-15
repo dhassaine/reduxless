@@ -29,6 +29,8 @@ const overrides = new Map(
 
 for (const [name, override] of overrides) {
   const packageJson = { ...override, ...rootPackageJson };
+  if (packageJson.peerDependencies?.['@reduxless/core'])
+    packageJson.peerDependencies['@reduxless/core'] = packageJson.version;
   fs.writeFileSync(
     path.join(rootDir, `dist/${name}/package.json`),
     JSON.stringify(packageJson, null, 2),
