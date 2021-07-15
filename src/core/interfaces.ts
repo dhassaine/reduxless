@@ -200,7 +200,7 @@ export interface RouterEnabledStore extends Store {
  * A selector function that uses the values in the store and the props on the
  * container component to generate a computed value.
  */
-export type SelectorMapper = <U, V>(store: Store, ownProps: U) => V;
+export type SelectorMapper = (store: Store, ownProps: any) => any;
 
 export type SelectorMappings = EnumerableObject<SelectorMapper>;
 
@@ -208,10 +208,6 @@ export type SelectorMappings = EnumerableObject<SelectorMapper>;
  * A function that performs modifications to the store or side effects outside
  * of the store.
  */
-export type ActionMapper = <U, V, W>(
-  store: Store,
-  ownProps: U,
-  ...args: W[]
-) => V;
+export type ActionMapper = (store: Store, ownProps: any, ...args: any[]) => any;
 
 export type ActionMappings = EnumerableObject<ActionMapper>;
