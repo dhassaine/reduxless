@@ -10,13 +10,13 @@ import {
   Fragment,
 } from 'preact';
 import { useContext } from 'preact/hooks';
-import { getPath } from '../router/selectors';
-import {
+import { getPath } from '../core/router/selectors';
+import type {
   SelectorMappings,
   ActionMappings,
   Store,
   RouterEnabledStore,
-} from '../interfaces';
+} from '../core/interfaces';
 
 const StoreContext = createContext<{ store: Store | RouterEnabledStore }>(null);
 

@@ -4,7 +4,6 @@
     "target": "es2015",
     "lib": ["dom", "esnext"],
     "outDir": "./dist",
-    "rootDir": "./src",
     "module": "esnext",
     "moduleResolution": "node",
     "sourceMap": true,

@@ -13,16 +13,17 @@ const minifiedPlugins = [
 ];
 
 export default [
+  /* Core */
   {
     input: 'src/index.ts',
     output: [
       {
-        file: 'dist/index.esm.js',
+        file: 'dist/core/index.esm.js',
         format: 'es',
         sourcemap: true,
       },
       {
-        file: 'dist/index.js',
+        file: 'dist/core/index.js',
         format: 'cjs',
         sourcemap: true,
       },
@@ -32,7 +33,7 @@ export default [
   {
     input: 'src/index.ts',
     output: {
-      file: 'dist/index.min.js',
+      file: 'dist/core/index.min.js',
       format: 'cjs',
     },
     plugins: minifiedPlugins,

@@ -1,0 +1,11 @@
+{
+  "name": "@reduxless/react",
+  "description": "React bindings for @reduxless/core",
+  "main": "index.js",
+  "module": "index.esm.js",
+  "minified:main": "index.min.js",
+  "types": ".",
+  "peerDependencies": {
+    "react": ">=16"
+  }
+}

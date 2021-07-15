@@ -1,18 +1,10 @@
 {
-  "name": "@reduxless/core",
   "version": "4.0.2",
-  "description": "A small and performant state management and routing library with unidirectional data flow",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
-  "minified:main": "dist/index.min.js",
-  "types": "dist",
-  "files": [
-    "dist"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/dhassaine/reduxless.git"
   },
+  "type": "module",
   "scripts": {
     "test": "jest",
     "build": "rm -rf dist && rollup -c",
@@ -63,9 +55,5 @@
     "ts-jest": "27.0.3",
     "typescript": "4.3.5",
     "undom": "0.4.0"
-  },
-  "peerDependencies": {
-    "preact": ">=10",
-    "react": ">=16"
   }
 }

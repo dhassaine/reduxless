@@ -1,10 +1,10 @@
-import { getPath } from '../router/selectors';
-import {
+import { getPath } from '../core/router/selectors';
+import type {
   SelectorMappings,
   ActionMappings,
   Store,
   RouterEnabledStore,
-} from '../interfaces';
+} from '../core/interfaces';
 import React, { AllHTMLAttributes } from 'react';
 
 const StoreContext =
@@ -19,7 +19,7 @@ export const Container: React.FunctionComponent<{
 export const mapper =
   (propMappings: SelectorMappings = {}, actionMappings: ActionMappings = {}) =>
   (Wrapped: React.FunctionComponent) => {
-    return class extends React.Component<{
+    const component = class Mapped extends React.Component<{
       store?: Store | RouterEnabledStore;
     }> {
       _unsubscribe: () => void;
@@ -80,6 +80,8 @@ export const mapper =
         );
       }
     };
+
+    return component;
   };
 
 export const Link: React.FunctionComponent<
