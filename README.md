@@ -1,7 +1,6 @@
 # Reduxless
 
 _A small and performant state management and routing library._
-[![gzip size](http://img.badgesize.io/https://unpkg.com/reduxless/dist/reduxless.min.js?compression=gzip)](https://unpkg.com/reduxless/dist/reduxless.min.js)
 
 ## Introduction
 
@@ -47,18 +46,6 @@ Use the React bound components:
 
 ```js
 import { Container, mapper, Link, Match } from '@reduxless/react';
-```
-
-### Other libraries
-
-Alternatively if you are using a library other than React or Preact, for example, inferno, you can inject the module into Reduxless like so:
-
-```js
-import { makeComponents } from '@reduxless/core';
-import { Component } from 'inferno';
-import { createElement } from 'inferno-create-element';
-
-const reduxless = makeComponents({ createElement, Component });
 ```
 
 ### Server-side
@@ -107,7 +94,8 @@ const MappedComponent = mapper(
 render(
   <Container store={store}>
     <MappedComponent />
-  </Container>
+  </Container>,
+  document.body
 );
 ```
 
@@ -147,7 +135,7 @@ const store = createRouterEnabledStore({
   pushStateMountPoints: ['name'],
 });
 
-const app = () => (
+export const App = () => (
   <Container store={store}>
     <ul>
       <li>
@@ -227,6 +215,7 @@ Here's an example using [Preact](https://preactjs.com/):
 ## Example usage
 
 ```jsx
+/** @jsx h */
 import { h, render } from 'preact';
 import { createStore, Container } from 'reduxless';
 
@@ -235,7 +224,8 @@ const store = createStore({ name: 'Bart Simpson' });
 render(
   <Container store={store}>
     {(props, { store }) => <p>Hello there, {store.get('name')}!</p>}
-  </Container>
+  </Container>,
+  document.body
 );
 ```
 
@@ -247,12 +237,12 @@ mapper(propMappings, [actionMappings])
 
 Instead of directly receiving the `store` via context and manually subscribing to it, you should use the `mapper` HOC; it behaves in a similar manner to Redux's `connect` function. Two arguments can be passed in:
 
-- [`propMappings`](interfaces/propmappings.html): this is an object with prop names and functions to retrieve the corresponding values from the store.
-- [`actionMappings`](interfaces/actionmappings.html): this is an object with prop names and functions to make changes to the store.
+- `propMappings`: this is an object with prop names and functions to retrieve the corresponding values from the store.
+- `actionMappings`: this is an object with prop names and functions to make changes to the store.
 
 Functions in `propMappings` are passed the store, the wrapped component's props and the remaining arguments during invocation.
 
-The component returned by `mapper` will only render it's children after the store has changed if the relevant props have also changed. It's also a good idea to wrap any computationally expensive operations with the [`selectorMemoizer()`](globals.html#selectormemoizer) function.
+The component returned by `mapper` will only render it's children after the store has changed if the relevant props have also changed. It's also a good idea to wrap any computationally expensive operations with the `selectorMemoizer()` function.
 
 # Router
 
