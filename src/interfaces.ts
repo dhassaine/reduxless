@@ -168,7 +168,7 @@ export interface Store {
    * });
    * ```
    */
-  withMutations: (fn: ((mutableStore: Store) => void)) => void;
+  withMutations: (fn: (mutableStore: Store) => void) => void;
   /**
    * This registers a function that will be called on every state update before
    * the observers are notified.
@@ -196,27 +196,11 @@ export interface RouterEnabledStore extends Store {
   navigate: (newPath?: string) => void;
 }
 
-interface VDOMComponent {
-  Component: any;
-}
-
-/** A Preact-like VDOM provider */
-export interface PreactVDOM extends VDOMComponent {
-  h: (vnode: any, props: any, children: any) => JSX.Element;
-}
-
-/** A React-like VDOM provider */
-export interface ReactVDOM extends VDOMComponent {
-  createElement: (vnode: any, props: any, children: any) => JSX.Element;
-}
-
-export type VDOMProvider = ReactVDOM | PreactVDOM;
-
 /**
  * A selector function that uses the values in the store and the props on the
  * container component to generate a computed value.
  */
-export type SelectorMapper = (store, ownProps) => any;
+export type SelectorMapper = <U, V>(store: Store, ownProps: U) => V;
 
 export type SelectorMappings = EnumerableObject<SelectorMapper>;
 
@@ -224,6 +208,10 @@ export type SelectorMappings = EnumerableObject<SelectorMapper>;
  * A function that performs modifications to the store or side effects outside
  * of the store.
  */
-export type ActionMapper = (store, ownProps, ...args: any[]) => any;
+export type ActionMapper = <U, V>(
+  store: Store,
+  ownProps: U,
+  ...args: any[]
+) => V;
 
 export type ActionMappings = EnumerableObject<ActionMapper>;

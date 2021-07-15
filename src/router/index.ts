@@ -2,12 +2,12 @@ import {
   getStateFromUrl,
   pushHistory,
   replaceHistory,
-  generateNewUrl
+  generateNewUrl,
 } from './actions';
 import {
   RouterEnabledStore,
   CreateRouterEnabledStore,
-  Serializer
+  Serializer,
 } from '../interfaces';
 import createStore from '../state/store';
 
@@ -31,7 +31,7 @@ export const debounce = (time: number, fn: GenericFunction) => {
 
 const defaultOptions = {
   debounceTime: 500,
-  useHash: false
+  useHash: false,
 };
 
 const initialiseLastState = (
@@ -41,10 +41,10 @@ const initialiseLastState = (
 ) => {
   const lastPushState: string[] = [];
   const lastReplaceState: string[] = [];
-  pushStateMountPoints.forEach(mountPoint =>
+  pushStateMountPoints.forEach((mountPoint) =>
     lastPushState.push(store.get(mountPoint))
   );
-  replaceStateMountPoints.forEach(mountPoint =>
+  replaceStateMountPoints.forEach((mountPoint) =>
     lastPushState.push(store.get(mountPoint))
   );
   return [lastPushState, lastReplaceState];
@@ -57,17 +57,17 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
   pushStateMountPoints = [],
   replaceStateMountPoints = [],
   serializers = {},
-  routerOptions = {}
+  routerOptions = {},
 } = {}) => {
   const { debounceTime, useHash } = {
     ...defaultOptions,
-    ...routerOptions
+    ...routerOptions,
   };
 
   const routedStore = createStore({
     initialState,
     validators,
-    batchUpdateFn
+    batchUpdateFn,
   }) as RouterEnabledStore;
 
   const _subscribe = routedStore.subscribe;
@@ -103,7 +103,7 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
     routedStore.syncedLocationToStore = true;
     const filteredStoreData = getStateFromUrl(routedStore, mountPoints);
 
-    routedStore.withMutations(s => {
+    routedStore.withMutations((s) => {
       s.setAll(filteredStoreData);
       [lastPushState, lastReplaceState] = initialiseLastState(
         routedStore,
@@ -155,6 +155,3 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
 
   return routedStore;
 };
-
-export { default as Match } from './Match';
-export { default as Link } from './Link';

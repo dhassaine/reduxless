@@ -1,14 +1,9 @@
 /* global describe, it, expect, jest, afterEach, beforeEach */
 import React from 'react';
 import { debounce } from './index';
-import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
-import { Match as _Match } from './Match';
-import { makeComponents, createRouterEnabledStore } from '../index';
-const MatchSimple = _Match(require('react'));
-const { Container, Link, Match } = makeComponents(React);
+import { createRouterEnabledStore } from '../index';
 
-const serializeURLDTO = obj => {
+const serializeURLDTO = (obj) => {
   const serialized = {};
   for (const [key, value] of Object.entries(obj))
     serialized[key] = JSON.stringify(value);
@@ -20,7 +15,7 @@ const url =
   encodeURIComponent(
     serializeURLDTO({
       counter: { value: 1 },
-      counter2: { value: 2 }
+      counter2: { value: 2 },
     })
   );
 
@@ -36,7 +31,7 @@ describe('router/index', () => {
 
       it('syncs storeData from the query parameters to the store', () => {
         const store = createRouterEnabledStore({
-          pushStateMountPoints: ['counter', 'counter2']
+          pushStateMountPoints: ['counter', 'counter2'],
         });
         unsubscribe = store.subscribe(jest.fn());
 
@@ -53,9 +48,9 @@ describe('router/index', () => {
         window.history.pushState(null, null, url);
       });
 
-      it('syncs registered storeData from window.location to the store', done => {
+      it('syncs registered storeData from window.location to the store', (done) => {
         const store = createRouterEnabledStore({
-          pushStateMountPoints: ['counter', 'counter2']
+          pushStateMountPoints: ['counter', 'counter2'],
         });
 
         const assertions = [
@@ -66,7 +61,7 @@ describe('router/index', () => {
           () => {
             expect(store.get('counter')).toEqual({ value: 2 });
             expect(store.get('counter2')).toEqual({ value: 3 });
-          }
+          },
         ];
 
         unsubscribe = store.subscribe(() => {
@@ -91,7 +86,7 @@ describe('router/index', () => {
             encodeURIComponent(
               serializeURLDTO({
                 counter: { value: 2 },
-                counter2: { value: 3 }
+                counter2: { value: 3 },
               })
             )
         );
@@ -99,13 +94,13 @@ describe('router/index', () => {
         window.history.back();
       });
 
-      it('changes made directly to the registered sync data in the store automatically update the browser location', done => {
+      it('changes made directly to the registered sync data in the store automatically update the browser location', (done) => {
         jest.useFakeTimers();
         const store = createRouterEnabledStore({
           pushStateMountPoints: ['counter', 'counter2'],
           routerOptions: {
-            debounceTime: 1000
-          }
+            debounceTime: 1000,
+          },
         });
         unsubscribe = store.subscribe(jest.fn());
 
@@ -120,7 +115,7 @@ describe('router/index', () => {
               encodeURIComponent(
                 serializeURLDTO({
                   counter: { value: 2 },
-                  counter2: { value: 3 }
+                  counter2: { value: 3 },
                 })
               )
           );
@@ -134,16 +129,18 @@ describe('router/index', () => {
       it('mountpoints are passed through serializers', () => {
         const serializers = {
           counter: {
-            toUrlValue: counter =>
+            toUrlValue: (counter) =>
               JSON.stringify({
-                value: parseFloat(counter.value) * 2
+                value: parseFloat(counter.value) * 2,
               }),
-            fromUrlValue: counter => ({ value: JSON.parse(counter).value / 2 })
-          }
+            fromUrlValue: (counter) => ({
+              value: JSON.parse(counter).value / 2,
+            }),
+          },
         };
         const store = createRouterEnabledStore({
           pushStateMountPoints: ['counter', 'counter2'],
-          serializers
+          serializers,
         });
         unsubscribe = store.subscribe(jest.fn());
 
@@ -160,7 +157,7 @@ describe('router/index', () => {
         expect(store.get('counter')).toEqual({ value: 2 });
       });
 
-      it('changes made directly to the replaceStateMountPoints and pushStateMountPoints in the store replace the browser location', done => {
+      it('changes made directly to the replaceStateMountPoints and pushStateMountPoints in the store replace the browser location', (done) => {
         jest.useFakeTimers();
 
         const oldPush = window.history.pushState;
@@ -177,8 +174,8 @@ describe('router/index', () => {
           pushStateMountPoints: ['counter'],
           replaceStateMountPoints: ['counter2'],
           routerOptions: {
-            debounceTime: 1000
-          }
+            debounceTime: 1000,
+          },
         });
 
         const assertions = [
@@ -190,10 +187,7 @@ describe('router/index', () => {
           },
           () => {
             expect(store.get('counter')).toEqual({ value: 2 });
-            expect(pushState.mock.calls.length).toEqual(
-              1,
-              'it shouldnt increment as the url hasnt changed'
-            );
+            expect(pushState.mock.calls.length).toEqual(1);
           },
           () => {
             expect(store.get('counter')).toEqual({ value: 2 });
@@ -211,11 +205,8 @@ describe('router/index', () => {
             expect(store.get('counter')).toEqual({ value: 3 });
             expect(store.get('counter2')).toEqual({ value: 4 });
             expect(pushState.mock.calls.length).toEqual(2);
-            expect(replaceState.mock.calls.length).toEqual(
-              1,
-              'shouldnt increment due to debounce'
-            );
-          }
+            expect(replaceState.mock.calls.length).toEqual(1);
+          },
         ];
 
         expect(replaceState.mock.calls.length).toEqual(0);
@@ -255,7 +246,7 @@ describe('router/index', () => {
         store.set('counter2', { value: 4 }); // replaceState
       });
 
-      it('changes made directly to the replaceStateMountPoints in the store replace the browser location', done => {
+      it('changes made directly to the replaceStateMountPoints in the store replace the browser location', (done) => {
         jest.useFakeTimers();
 
         const oldPush = window.history.pushState;
@@ -272,8 +263,8 @@ describe('router/index', () => {
           initialState: { counter: { value: 1 } },
           replaceStateMountPoints: ['counter2'],
           routerOptions: {
-            debounceTime: 1000
-          }
+            debounceTime: 1000,
+          },
         });
 
         expect(replaceState.mock.calls.length).toEqual(0);
@@ -302,7 +293,7 @@ describe('router/index', () => {
             expect(store.get('counter2')).toEqual({ value: 4 });
             expect(pushState.mock.calls.length).toEqual(0);
             expect(replaceState.mock.calls.length).toEqual(1);
-          }
+          },
         ];
 
         unsubscribe = store.subscribe(() => {
@@ -337,99 +328,6 @@ describe('router/index', () => {
       });
     });
 
-    describe('Match', () => {
-      let unsubscribe = null;
-
-      afterEach(() => {
-        if (unsubscribe) unsubscribe();
-        history.pushState(
-          null,
-          null,
-          'http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2'
-        );
-      });
-
-      it('renders children if the window.location path matches', () => {
-        const store = createRouterEnabledStore();
-        unsubscribe = store.subscribe(jest.fn());
-
-        const childComponent = jest.fn(() => null);
-        const Component = () => childComponent();
-
-        renderer.create(
-          <Container store={store}>
-            <Match path="/page1">
-              <Component />
-            </Match>
-          </Container>
-        );
-        expect(childComponent.mock.calls.length).toEqual(1);
-      });
-
-      it('it can accept a function to match the path', () => {
-        const children = <span>hi</span>;
-        const pathMatch = path => path == 'page1' || path == 'page2';
-
-        expect(
-          mount(
-            <MatchSimple path={pathMatch} currentPath="page1">
-              {children}
-            </MatchSimple>
-          ).html()
-        ).toEqual('<div><span>hi</span></div>');
-
-        expect(
-          mount(
-            <MatchSimple path={pathMatch} currentPath="page2">
-              {children}
-            </MatchSimple>
-          ).html()
-        ).toEqual('<div><span>hi</span></div>');
-
-        expect(
-          mount(
-            <MatchSimple path={pathMatch} currentPath="page3">
-              {children}
-            </MatchSimple>
-          ).html()
-        ).toEqual(null);
-      });
-
-      it('does not render children if the window.location path does not match', () => {
-        const store = createRouterEnabledStore();
-        unsubscribe = store.subscribe(jest.fn());
-        const childComponent = jest.fn(() => null);
-        const Component = () => childComponent();
-
-        renderer.create(
-          <Container store={store}>
-            <Match path="/page2">
-              <Component />
-            </Match>
-          </Container>
-        );
-        expect(childComponent.mock.calls.length).toEqual(0);
-      });
-
-      it('renders children when the store updates and the paths match', () => {
-        const store = createRouterEnabledStore();
-        unsubscribe = store.subscribe(jest.fn());
-        const childComponent = jest.fn(() => null);
-        const Component = () => childComponent();
-
-        renderer.create(
-          <Container store={store}>
-            <Match path="/page2">
-              <Component />
-            </Match>
-          </Container>
-        );
-        expect(childComponent.mock.calls.length).toEqual(0);
-        store.navigate('/page2');
-        expect(childComponent.mock.calls.length).toEqual(1);
-      });
-    });
-
     describe('navigate', () => {
       let unsubscribe = null;
 
@@ -450,7 +348,7 @@ describe('router/index', () => {
         window.history.pushState(null, null, 'http://example.com/page1');
         const store = createRouterEnabledStore({
           initialState: { counter: { value: 1 } },
-          pushStateMountPoints: ['counter']
+          pushStateMountPoints: ['counter'],
         });
         unsubscribe = store.subscribe(jest.fn());
         store.navigate('page2');
@@ -463,7 +361,7 @@ describe('router/index', () => {
       it('pushes the path to the browser state if hash is being used', () => {
         window.history.pushState(null, null, 'http://example.com/page1');
         const store = createRouterEnabledStore({
-          routerOptions: { useHash: true }
+          routerOptions: { useHash: true },
         });
         unsubscribe = store.subscribe(jest.fn());
         store.navigate('page2');
@@ -471,36 +369,8 @@ describe('router/index', () => {
       });
     });
 
-    describe('Link', () => {
-      let unsubscribe = null;
-
-      afterEach(() => {
-        if (unsubscribe) unsubscribe();
-        history.pushState(
-          null,
-          null,
-          'http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2'
-        );
-      });
-
-      it('updates location and store when clicked on', () => {
-        const store = createRouterEnabledStore();
-        unsubscribe = store.subscribe(jest.fn());
-
-        const component = mount(
-          <Container store={store}>
-            <Link href="/page2" />
-          </Container>
-        );
-
-        expect(window.location.pathname.startsWith('/page1')).toBe(true);
-        component.find('a').simulate('click');
-        expect(window.location.pathname.startsWith('/page2')).toBe(true);
-      });
-    });
-
     describe('debounce', () => {
-      beforeEach(jest.useFakeTimers);
+      beforeEach(() => jest.useFakeTimers());
 
       afterEach(jest.useRealTimers);
 
@@ -552,7 +422,7 @@ describe('router/index', () => {
       );
     });
 
-    it('pushState should not be called when updating a non sync mountpoint after using browser back', done => {
+    it('pushState should not be called when updating a non sync mountpoint after using browser back', (done) => {
       const oldPush = window.history.pushState;
       const pushState = (window.history.pushState = jest.fn(
         oldPush.bind(window.history)
@@ -561,9 +431,9 @@ describe('router/index', () => {
       const store = createRouterEnabledStore({
         initialState: {
           counter: { value: 1 },
-          counter2: { value: 1 }
+          counter2: { value: 1 },
         },
-        pushStateMountPoints: ['counter']
+        pushStateMountPoints: ['counter'],
       });
 
       expect(pushState.mock.calls.length).toEqual(0);
