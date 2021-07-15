@@ -15,9 +15,6 @@
   },
   "scripts": {
     "test": "jest",
-    "coverage": "jest --coverage",
-    "coveralls": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "start": "webpack-dev-server --config demo/webpack.config.js",
     "build": "rm -rf dist && rollup -c",
     "dev": "rollup -c -w",
     "bump-version": "bin/bump-version.sh",
@@ -29,12 +26,8 @@
   ],
   "license": "MIT",
   "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.jsx",
-      "src/**/*.js"
-    ],
     "setupFiles": [
-      "<rootDir>/test-setup/polyfill.js"
+      "<rootDir>/test-setup/polyfill.ts"
     ],
     "moduleDirectories": [
       "node_modules"
@@ -46,8 +39,7 @@
       "tsx"
     ],
     "transform": {
-      "\\.tsx?$": "ts-jest",
-      "^.+\\.js$": "<rootDir>/preprocessor.js"
+      "\\.(j|t)sx?$": "ts-jest"
     },
     "testURL": "http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D"
   },
@@ -59,7 +51,6 @@
     "@typescript-eslint/eslint-plugin": "4.28.3",
     "@typescript-eslint/parser": "4.28.3",
     "benchmark": "2.1.4",
-    "coveralls": "3.1.1",
     "eslint": "7.30.0",
     "eslint-plugin-react": "7.24.0",
     "jest": "27.0.6",

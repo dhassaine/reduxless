@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "allowJs": true,
     "target": "es2015",
     "lib": ["dom", "esnext"],
     "outDir": "./dist",
