@@ -1,36 +1,20 @@
 {
-  "parser": "babel-eslint",
+  "root": true,
+  "parser": "@typescript-eslint/parser",
   "env": {
     "browser": true,
     "node": true,
     "es6": true
   },
-  "globals": {
-    "Promise": true,
-    "Map": true,
-    "WeakMap": true,
-    "preact": true,
-    "ReactDOM": true,
-    "React": true
-  },
-  "plugins": [
-    "react"
-  ],
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended"
-  ],
+  "plugins": ["@typescript-eslint"],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   "rules": {
     "semi": ["error", "always"],
-    "no-unused-vars": ["error", { "varsIgnorePattern": "h" }],
     "no-global-assign": ["error"],
     "no-console": ["warn"],
-    "react/react-in-jsx-scope": "off",
-    "react/prop-types": "off",
-    "react/display-name": "off",
-    "react/jsx-key": "off",
-    "react/no-unescaped-entities": "off",
-    "react/jsx-no-target-blank": ["warn"],
-    "max-len": ["warn", { "code": 100, "ignoreStrings": true, "ignoreTemplateLiterals": true }]
+    "max-len": [
+      "warn",
+      { "code": 100, "ignoreStrings": true, "ignoreTemplateLiterals": true }
+    ]
   }
 }
