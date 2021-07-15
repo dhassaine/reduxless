@@ -7,7 +7,8 @@
   "type": "module",
   "scripts": {
     "test": "jest",
-    "build": "tsc --project tsconfig.types.json && rm -rf dummy && rollup -c && node bin/prepare-npm-packages.js",
+    "build-types": "tsc --project tsconfig.types.json && rm -rf dummy",
+    "build": "build-types && rm -rf dummy && rollup -c && node bin/prepare-npm-packages.js",
     "dev": "rollup -c -w",
     "bump-version": "bin/bump-version.sh"
   },
