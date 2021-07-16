@@ -1,6 +1,6 @@
 {
   "name": "@reduxless/react",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "React bindings for @reduxless/core",
   "author": "Djamel Hassaine <dhassaine@gmail.com> (https://github.com/dhassaine)",
   "contributors": [
