@@ -1,10 +1,10 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "declarationDir": "./dist",
+    "declarationDir": "./types",
     "declaration": true,
     "removeComments": false,
     "outDir": "./dummy"
   },
-  "include": ["src"]
+  "exclude": ["dummy", "types"]
 }
