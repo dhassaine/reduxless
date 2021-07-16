@@ -1,6 +1,6 @@
 {
   "name": "@reduxless/preact",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "Preact bindings for @reduxless/core",
   "author": "Djamel Hassaine <dhassaine@gmail.com> (https://github.com/dhassaine)",
   "contributors": [
