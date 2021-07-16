@@ -22,6 +22,7 @@ const configs = [
         sourcemap: true,
       },
     ],
+    external: module != 'core' ? [/^@reduxless\/core/] : [],
     plugins: [commonjs(), resolve(), typescript()],
   },
   {
@@ -31,6 +32,7 @@ const configs = [
       format: 'cjs',
       sourcemap: true,
     },
+    external: module != 'core' ? [/^@reduxless\/core/] : [],
     plugins: [commonjs(), resolve(), typescript({ sourceMap: true }), terser()],
   },
 ]);

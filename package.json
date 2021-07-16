@@ -1,15 +1,14 @@
 {
-  "version": "5.0.1",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/dhassaine/reduxless.git"
-  },
+  "version": "5.0.2",
   "type": "module",
+  "private": true,
+  "workspaces": [
+    "src/core",
+    "src/react",
+    "src/preact"
+  ],
   "scripts": {
-    "test": "jest",
-    "build-types": "tsc --project tsconfig.types.json && rm -rf dummy",
-    "copy-readme": "cp README.md dist/core/README.md && cp README.md dist/react/README.md && cp README.md dist/preact/README.md",
-    "build": "npm run build-types && npm run copy-readme && rollup -c && node bin/prepare-npm-packages.js",
+    "build": "bin/build",
     "dev": "rollup -c -w"
   },
   "author": "Djamel Hassaine <dhassaine@gmail.com> (https://github.com/dhassaine)",
@@ -36,7 +35,7 @@
     },
     "testURL": "http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D"
   },
-  "devDependencies": {
+  "dependencies": {
     "@rollup/plugin-commonjs": "19.0.0",
     "@rollup/plugin-node-resolve": "13.0.0",
     "@rollup/plugin-typescript": "8.2.1",

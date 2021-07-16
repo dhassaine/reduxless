@@ -1,0 +1,21 @@
+{
+  "name": "@reduxless/preact",
+  "version": "5.0.2",
+  "description": "Preact bindings for @reduxless/core",
+  "author": "Djamel Hassaine <dhassaine@gmail.com> (https://github.com/dhassaine)",
+  "contributors": [
+    "Klemen Slavič <krof.drakula@gmail.com> (https://github.com/KrofDrakula)"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "module": "index.esm.js",
+  "minified:main": "index.min.js",
+  "types": "./types",
+  "devDependencies": {
+    "@reduxless/core": "5.0.2"
+  },
+  "peerDependencies": {
+    "@reduxless/core": "*",
+    "preact": ">=10"
+  }
+}

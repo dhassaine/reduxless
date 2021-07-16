@@ -1,8 +1,0 @@
-{
-  "name": "@reduxless/core",
-  "description": "A small and performant state management and routing library with unidirectional data flow",
-  "main": "index.js",
-  "module": "index.esm.js",
-  "minified:main": "index.min.js",
-  "types": "."
-}

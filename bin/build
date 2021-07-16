@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+
+ROOT_DIR=$(realpath $(dirname $(dirname $0)))
+
+cd $ROOT_DIR
+
+rm -rf "$ROOT_DIR/dist"
+
+# compile sources
+$(npm bin)/rollup -c
+
+# compile types and copy README
+for module in core react preact
+do
+  echo "Compiling types for $module"
+  cd "$ROOT_DIR/src/$module"
+  rm -rf dummy types
+  yarn run tsc
+  rm -rf dummy
+  mv types "$ROOT_DIR/dist/$module/"
+  cp "$ROOT_DIR/README.md" "$ROOT_DIR/dist/$module/README.md"
+  cp "$ROOT_DIR/src/$module/package.json" "$ROOT_DIR/dist/$module/package.json"
+done

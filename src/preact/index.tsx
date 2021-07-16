@@ -9,14 +9,13 @@ import {
   JSX,
   Fragment,
 } from 'preact';
-import { useContext } from 'preact/hooks';
-import { getPath } from '../core/router/selectors';
+import { getPath } from '@reduxless/core/router/selectors';
 import type {
   SelectorMappings,
   ActionMappings,
   Store,
   RouterEnabledStore,
-} from '../core/interfaces';
+} from '@reduxless/core/interfaces';
 
 const StoreContext = createContext<{ store: Store | RouterEnabledStore }>(null);
 
