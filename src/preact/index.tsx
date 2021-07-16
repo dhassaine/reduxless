@@ -9,7 +9,7 @@ import {
   JSX,
   Fragment,
 } from 'preact';
-import { getPath } from '@reduxless/core/router/selectors';
+import { getPath } from '@reduxless/core';
 import type {
   SelectorMappings,
   ActionMappings,

@@ -19,7 +19,7 @@ do
   rm -rf dummy types
   yarn run tsc
   rm -rf dummy
-  mv types "$ROOT_DIR/dist/$module/"
+  mv types/* "$ROOT_DIR/dist/$module/"
   cp "$ROOT_DIR/README.md" "$ROOT_DIR/dist/$module/README.md"
   cp "$ROOT_DIR/src/$module/package.json" "$ROOT_DIR/dist/$module/package.json"
 done
