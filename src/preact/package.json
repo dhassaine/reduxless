@@ -12,7 +12,7 @@
   "minified:main": "index.min.js",
   "types": "./types",
   "devDependencies": {
-    "@reduxless/core": "5.0.2"
+    "@reduxless/core": "5.0.3"
   },
   "peerDependencies": {
     "@reduxless/core": "*",
