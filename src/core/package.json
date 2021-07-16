@@ -11,6 +11,9 @@
   "module": "index.esm.js",
   "minified:main": "index.min.js",
   "types": "./types",
+  "scripts": {
+    "test": "jest"
+  },
   "jest": {
     "testEnvironment": "jsdom",
     "setupFiles": [

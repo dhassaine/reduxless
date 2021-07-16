@@ -6,5 +6,5 @@
     "removeComments": false,
     "outDir": "./dummy"
   },
-  "exclude": ["dummy", "types"]
+  "exclude": ["dummy", "types", "test-setup"]
 }
