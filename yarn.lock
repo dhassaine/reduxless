@@ -555,6 +555,11 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@reduxless/core@5.0.1":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@reduxless/core/-/core-5.0.1.tgz#8c7c4beafe7c17c9bbd3b5c05787006e57837379"
+  integrity sha512-o9B3WYopFKlgts5AqUQUdEeGVu8gWnQMtqPWi7LB9Z+nZ5HxfHsmCRojMVDgOknghWY1mLmNcze5OGinx2Fwbw==
+
 "@rollup/plugin-commonjs@19.0.0":
   version "19.0.0"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-commonjs/-/plugin-commonjs-19.0.0.tgz#8c3e71f9a66908e60d70cc1be205834ef3e45f71"
