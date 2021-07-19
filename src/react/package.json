@@ -1,6 +1,6 @@
 {
   "name": "@reduxless/react",
-  "version": "5.0.4",
+  "version": "5.0.5",
   "description": "React bindings for @reduxless/core",
   "author": "Djamel Hassaine <dhassaine@gmail.com> (https://github.com/dhassaine)",
   "contributors": [
@@ -12,7 +12,7 @@
   "minified:main": "index.min.js",
   "types": "./types",
   "devDependencies": {
-    "@reduxless/core": "5.0.4"
+    "@reduxless/core": "5.0.5"
   },
   "peerDependencies": {
     "@reduxless/core": "*",

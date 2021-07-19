@@ -98,7 +98,7 @@ export const mapper =
 
 export const Link: React.FunctionComponent<
   AllHTMLAttributes<HTMLAnchorElement>
-> = ({ href, children, ...rest }) => (
+> = ({ href, children, onClick, ...rest }) => (
   <StoreContext.Consumer>
     {({ store }) => (
       <a
@@ -107,6 +107,7 @@ export const Link: React.FunctionComponent<
         onClick={(ev) => {
           ev.preventDefault();
           (store as RouterEnabledStore).navigate(href);
+          onClick?.call(ev.target, ev);
         }}
       >
         {children}

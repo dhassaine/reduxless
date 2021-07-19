@@ -1,6 +1,6 @@
 {
   "name": "@reduxless/core",
-  "version": "5.0.4",
+  "version": "5.0.5",
   "description": "A small and performant state management and routing library with unidirectional data flow",
   "author": "Djamel Hassaine <dhassaine@gmail.com> (https://github.com/dhassaine)",
   "contributors": [

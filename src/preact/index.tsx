@@ -103,7 +103,7 @@ export const mapper =
   };
 
 export const Link: FunctionalComponent<JSX.HTMLAttributes<HTMLAnchorElement>> =
-  ({ href, children, ...rest }) => (
+  ({ href, children, onClick, ...rest }) => (
     <StoreContext.Consumer>
       {({ store }) => (
         <a
@@ -112,6 +112,7 @@ export const Link: FunctionalComponent<JSX.HTMLAttributes<HTMLAnchorElement>> =
           onClick={(ev) => {
             ev.preventDefault();
             (store as RouterEnabledStore).navigate(href);
+            onClick?.call(ev.target, ev);
           }}
         >
           {children}
