@@ -75,7 +75,7 @@ export const mapper =
                 for (const key of Object.keys(propMappings)) {
                   this._mappedProps[key] = propMappings[key](
                     this._store,
-                    this.props
+                    this.props,
                   );
                 }
               }
@@ -102,24 +102,25 @@ export const mapper =
     };
   };
 
-export const Link: FunctionalComponent<JSX.HTMLAttributes<HTMLAnchorElement>> =
-  ({ href, children, onClick, ...rest }) => (
-    <StoreContext.Consumer>
-      {({ store }) => (
-        <a
-          {...rest}
-          href={href}
-          onClick={(ev) => {
-            ev.preventDefault();
-            (store as RouterEnabledStore).navigate(href);
-            onClick?.call(ev.target, ev);
-          }}
-        >
-          {children}
-        </a>
-      )}
-    </StoreContext.Consumer>
-  );
+export const Link: FunctionalComponent<
+  JSX.HTMLAttributes<HTMLAnchorElement>
+> = ({ href, children, onClick, ...rest }) => (
+  <StoreContext.Consumer>
+    {({ store }) => (
+      <a
+        {...rest}
+        href={href}
+        onClick={(ev) => {
+          ev.preventDefault();
+          (store as RouterEnabledStore).navigate(href as string);
+          onClick?.call(ev.target, ev);
+        }}
+      >
+        {children}
+      </a>
+    )}
+  </StoreContext.Consumer>
+);
 
 interface MatchProps {
   path: string | ((path: string) => boolean);
