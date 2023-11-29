@@ -8,21 +8,25 @@ import type {
 import React from 'react';
 import type { AllHTMLAttributes } from 'react';
 
-const StoreContext =
-  React.createContext<{ store: Store | RouterEnabledStore }>(null);
+const StoreContext = React.createContext<{ store: Store | RouterEnabledStore }>(
+  null,
+);
 
-export const Container: React.FunctionComponent<{
-  store: Store | RouterEnabledStore;
-}> = ({ store, children }) => (
+export const Container = ({
+  store,
+  children,
+}: React.PropsWithChildren<{ store: Store | RouterEnabledStore }>) => (
   <StoreContext.Provider value={{ store }}>{children}</StoreContext.Provider>
 );
 
 export const mapper =
   (propMappings: SelectorMappings = {}, actionMappings: ActionMappings = {}) =>
-  (Wrapped: React.FunctionComponent) => {
-    return class Mapped extends React.Component<{
-      store?: Store | RouterEnabledStore;
-    }> {
+  (Wrapped: React.FunctionComponent<React.PropsWithChildren>) => {
+    return class Mapped extends React.Component<
+      React.PropsWithChildren<{
+        store?: Store | RouterEnabledStore;
+      }>
+    > {
       _unsubscribe: () => void;
       _mappedProps: SelectorMappings = null;
       _mappedActions: ActionMappings = null;
@@ -69,7 +73,7 @@ export const mapper =
                 for (const key of Object.keys(propMappings)) {
                   this._mappedProps[key] = propMappings[key](
                     this._store,
-                    this.props
+                    this.props,
                   );
                 }
               }
@@ -121,11 +125,11 @@ interface MatchProps {
   currentPath?: string;
 }
 
-export const Match: React.FunctionComponent<MatchProps> = ({
+export const Match = ({
   path,
   currentPath,
   children,
-}) => {
+}: React.PropsWithChildren<MatchProps>) => {
   return (
     <StoreContext.Consumer>
       {({ store }) => {
