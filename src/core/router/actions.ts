@@ -56,9 +56,12 @@ export const getStateFromUrl = (
 ) => {
   const { storeData } = extractPartsFromPath(getPath(store), store.serializers);
   const filteredStoreData = {};
-  const mountPointsSet = new Set(mountPoints);
-  Object.entries(storeData).forEach(([key, data]) => {
-    if (mountPointsSet.has(key)) filteredStoreData[key] = data;
+  mountPoints.forEach((key) => {
+    if (key in storeData) {
+      filteredStoreData[key] = storeData[key];
+    } else if (store.serializers.has(key)) {
+      filteredStoreData[key] = store.serializers.get(key).fromUrlValue('');
+    }
   });
 
   return filteredStoreData;
