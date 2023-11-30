@@ -37,15 +37,15 @@ const defaultOptions = {
 const initialiseLastState = (
   store: RouterEnabledStore,
   pushStateMountPoints: string[],
-  replaceStateMountPoints: string[]
+  replaceStateMountPoints: string[],
 ) => {
   const lastPushState: string[] = [];
   const lastReplaceState: string[] = [];
   pushStateMountPoints.forEach((mountPoint) =>
-    lastPushState.push(store.get(mountPoint))
+    lastPushState.push(store.get(mountPoint)),
   );
   replaceStateMountPoints.forEach((mountPoint) =>
-    lastPushState.push(store.get(mountPoint))
+    lastPushState.push(store.get(mountPoint)),
   );
   return [lastPushState, lastReplaceState];
 };
@@ -59,6 +59,7 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
   serializers = {},
   routerOptions = {},
 } = {}) => {
+  console.log('TEST createRouterEnabledStore');
   const { debounceTime, useHash } = {
     ...defaultOptions,
     ...routerOptions,
@@ -83,7 +84,7 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
   };
 
   routedStore.serializers = new Map<string, Serializer>(
-    Object.entries(serializers)
+    Object.entries(serializers),
   );
 
   routedStore.navigate = (newPath?: string) => {
@@ -92,7 +93,7 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
   };
 
   routedStore.syncToLocations = pushStateMountPoints.concat(
-    replaceStateMountPoints
+    replaceStateMountPoints,
   );
   routedStore.useHash = useHash;
 
@@ -108,7 +109,7 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
       [lastPushState, lastReplaceState] = initialiseLastState(
         routedStore,
         pushStateMountPoints,
-        replaceStateMountPoints
+        replaceStateMountPoints,
       );
     });
     routedStore.syncedLocationToStore = false;
