@@ -2,7 +2,7 @@ import {
   getStateFromUrl,
   pushHistory,
   replaceHistory,
-  generateNewUrl,
+  generateNewUrlFromWindowLocation,
 } from './actions';
 import {
   RouterEnabledStore,
@@ -59,7 +59,6 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
   serializers = {},
   routerOptions = {},
 } = {}) => {
-  console.log('TEST createRouterEnabledStore');
   const { debounceTime, useHash } = {
     ...defaultOptions,
     ...routerOptions,
@@ -88,7 +87,11 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
   );
 
   routedStore.navigate = (newPath?: string) => {
-    history.pushState(null, null, generateNewUrl(routedStore, newPath));
+    history.pushState(
+      null,
+      null,
+      generateNewUrlFromWindowLocation(routedStore, newPath),
+    );
     routedStore.ping();
   };
 

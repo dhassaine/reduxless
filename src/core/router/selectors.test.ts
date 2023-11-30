@@ -1,10 +1,11 @@
-import { extractPartsFromPath } from './selectors';
+import { extractPartsFromPath, getPath } from './selectors';
 
 describe('router/selectors', () => {
-  describe('extractPartsFromPath', () => {
-    it('return pathName, query and parse store data from window.location', () => {
-      const store = { useHash: false } as any;
-      const results = extractPartsFromPath(store);
+  const testPath =
+    '/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D';
+  describe(extractPartsFromPath, () => {
+    it('returns pathName, query and parses store data', () => {
+      const results = extractPartsFromPath(testPath);
       expect(results).toEqual({
         pathName: '/page1',
         query: 'queryParam=queryValue&a[]=1&a[]=2',
@@ -28,8 +29,7 @@ describe('router/selectors', () => {
           },
         ],
       ]);
-      const store = { useHash: false, serializers } as any;
-      const results = extractPartsFromPath(store);
+      const results = extractPartsFromPath(testPath, serializers);
       expect(results).toEqual({
         pathName: '/page1',
         query: 'queryParam=queryValue&a[]=1&a[]=2',
@@ -40,21 +40,8 @@ describe('router/selectors', () => {
       });
     });
 
-    it('parses window.hash if store.useHash is true', () => {
-      const store = { useHash: true } as any;
-      window.location.hash = '#page1';
-      const results = extractPartsFromPath(store);
-      expect(results).toEqual({
-        pathName: '/page1',
-        query: '',
-        storeData: {},
-      });
-    });
-
-    it('returns an empty object if the store is badly formed', () => {
-      const store = { useHash: true } as any;
-      window.location.hash = '#?storeData={';
-      expect(extractPartsFromPath(store)).toEqual({
+    it('returns an empty object if the store data is badly serialized', () => {
+      expect(extractPartsFromPath('/?storeData={')).toEqual({
         pathName: '/',
         query: '',
         storeData: {},
@@ -62,24 +49,20 @@ describe('router/selectors', () => {
     });
 
     it('returns an empty object if the no store is found', () => {
-      const store = { useHash: true } as any;
-      window.location.hash = '#?a=1';
-      expect(extractPartsFromPath(store)).toEqual({
+      expect(extractPartsFromPath('/?a=1')).toEqual({
         pathName: '/',
         query: 'a=1',
         storeData: {},
       });
     });
+  });
 
-    it('pathName defaults to / when useHash is true', () => {
-      history.pushState(null, null, 'http://example.com');
+  describe(getPath, () => {
+    it('parses window.hash if store.useHash is true', () => {
       const store = { useHash: true } as any;
-      const results = extractPartsFromPath(store);
-      expect(results).toEqual({
-        pathName: '/',
-        query: '',
-        storeData: {},
-      });
+      window.location.hash = '#page1';
+      const results = getPath(store);
+      expect(results).toBe('/page1');
     });
   });
 });

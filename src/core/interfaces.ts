@@ -98,12 +98,12 @@ interface CreateRouterEnabledStoreArgs extends CreateStoreArgs {
  * select store data.
  */
 export type CreateRouterEnabledStore = (
-  args?: CreateRouterEnabledStoreArgs
+  args?: CreateRouterEnabledStoreArgs,
 ) => RouterEnabledStore;
 
 type MountPoint = string;
 
-interface MountPointsToValues {
+export interface MountPointsToValues {
   [keys: string]: any;
 }
 
