@@ -88,14 +88,14 @@ const MappedComponent = mapper(
   {
     // actions
     updateName: (store, ownProps, newName) => store.set('name', newName),
-  }
+  },
 )(Component);
 
 render(
   <Container store={store}>
     <MappedComponent />
   </Container>,
-  document.body
+  document.body,
 );
 ```
 
@@ -159,10 +159,6 @@ export const App = () => (
 
 The documentation section below describes the API in more detail, including configuration details for using hash; how to validate the data from the URL; and controlling one-way or two-way binding between the store state and browser URL.
 
-# Differences to Redux
-
-The state is not one nested object but multiple objects. This means libraries like reselect won't work as expected. Redux is expected to be given a new object for each reducer. Libraries like ImmutableJS can help with making modifications to the state as efficient as possible, but ultimately recreating an object with many properties just to get a new reference is expensive. Another bottleneck with Redux is that every reducer has to run when an action is dispatched. See [perfomance analysis](#TODO) for further details.
-
 # Subscribing directly to the store
 
 ```js
@@ -174,7 +170,7 @@ const store = createStore({
 
 const report = () =>
   console.log(
-    `Store has changed! – ${store.get('name')} ${store.get('surname')}`
+    `Store has changed! – ${store.get('name')} ${store.get('surname')}`,
   );
 
 const unsubscribe = store.subscribe(report);
@@ -193,17 +189,6 @@ const validators = {
   score: isNumber,
 };
 ```
-
-The validation behaviour can be tweaked with the `routerOptions` object. The properties are
-
-- `throwOnValidation` (default: `false`)
-  - `false`: if a validator returns a falsy value, reduxless won't update the store with that data.
-  - `true`: if a validator returns a truthy value, reduxless will throw an error.
-- `throwOnMissingSchemas` (default: `false`)
-  - `false` mountpoints without a validator function are allowed
-  - `true` if a mountpoint does not have a corresponding validator function the `createRouterEnabledStore` function will throw an error.
-
-By default if a validator returns a falsey value, redux won't update the store with that data. If you want the store to throw an error instead, set `throwOnValidation` to `true`.
 
 # React component value providers
 
@@ -225,7 +210,7 @@ render(
   <Container store={store}>
     {(props, { store }) => <p>Hello there, {store.get('name')}!</p>}
   </Container>,
-  document.body
+  document.body,
 );
 ```
 
@@ -282,34 +267,6 @@ export const resourceIds = selectorMemoizer(
   selectedIds: store.get('selectedIds')
 );
 ```
-
-# Performance analysis
-
-## Reduxless vs Redux
-
-### Invoking/dispatching an action
-
-| no of reducers/mount points | redux ops/sec | reduxless ops/sec |
-| --------------------------- | ------------- | ----------------- |
-| 10                          | 405,947       | 9,531,412         |
-| 100                         | 43,863        | 9,610,732         |
-| 1000                        | 1,439         | 9,563,089         |
-
-### Invoking/dispatching an action followed by running all the selectors
-
-| no of reducers/mount points | redux ops/sec | reduxless ops/sec |
-| --------------------------- | ------------- | ----------------- |
-| 10                          | 210,653       | 434,939           |
-| 100                         | 19,174        | 37,198            |
-| 1000                        | 872           | 2,638             |
-
-# Reduxless selectorMemoizer memoization vs Reselect library
-
-`Reselect` x 6,104,945 ops/sec ±1.65% (88 runs sampled)
-
-`selectorMemoizer` x 19,567,472 ops/sec ±1.44% (85 runs sampled)
-
-Speed up 3.2x
 
 ## Change Log
 
