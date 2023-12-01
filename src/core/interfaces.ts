@@ -189,11 +189,8 @@ export interface Store {
 
 /** The router-enabled store instance */
 export interface RouterEnabledStore extends Store {
-  syncToLocations: string[];
-  useHash: boolean;
-  syncedLocationToStore: boolean;
-  serializers: Serializers;
   navigate: (newPath?: string) => void;
+  getPath: () => string;
 }
 
 /**

@@ -1,9 +1,5 @@
 import { extractPartsFromPath, getPath } from './selectors';
-import {
-  MountPointsToValues,
-  RouterEnabledStore,
-  Serializers,
-} from '../interfaces';
+import { MountPointsToValues, Serializers, Store } from '../interfaces';
 
 export function generateNewUrl(
   syncableData: MountPointsToValues,
@@ -42,42 +38,68 @@ export function generateNewUrl(
 }
 
 export const generateNewUrlFromWindowLocation = (
-  store: RouterEnabledStore,
+  store: Store,
+  syncToLocations: string[],
+  serializers: Serializers,
+  useHash: boolean,
   newPath?: string,
 ) => {
-  const data = store.getAll(store.syncToLocations);
-  const path = getPath(store);
-  return generateNewUrl(data, store.serializers, store.useHash, path, newPath);
+  const data = store.getAll(syncToLocations);
+  const path = getPath(useHash);
+  return generateNewUrl(data, serializers, useHash, path, newPath);
 };
 
 export const getStateFromUrl = (
-  store: RouterEnabledStore,
+  serializers: Serializers,
+  useHash: boolean,
   mountPoints: string[],
 ) => {
-  const { storeData } = extractPartsFromPath(getPath(store), store.serializers);
+  const { storeData } = extractPartsFromPath(getPath(useHash), serializers);
   const filteredStoreData = {};
   mountPoints.forEach((key) => {
     if (key in storeData) {
       filteredStoreData[key] = storeData[key];
-    } else if (store.serializers.has(key)) {
-      filteredStoreData[key] = store.serializers.get(key).fromUrlValue('');
+    } else if (serializers.has(key)) {
+      filteredStoreData[key] = serializers.get(key).fromUrlValue('');
     }
   });
 
   return filteredStoreData;
 };
 
-export const pushHistory = (store: RouterEnabledStore) => {
-  const newUrl = generateNewUrlFromWindowLocation(store);
-  const currentUrl = getPath(store);
+export const pushHistory = (
+  store: Store,
+  syncToLocations: string[],
+  serializers: Serializers,
+  useHash: boolean,
+) => {
+  const newUrl = generateNewUrlFromWindowLocation(
+    store,
+    syncToLocations,
+    serializers,
+    useHash,
+  );
+  const currentUrl = getPath(useHash);
   if (newUrl != currentUrl) {
     history.pushState(null, null, newUrl);
   }
 };
 
-export const replaceHistory = (store: RouterEnabledStore, newPath?: string) =>
+export const replaceHistory = (
+  store: Store,
+  syncToLocations: string[],
+  serializers: Serializers,
+  useHash: boolean,
+  newPath?: string,
+) =>
   history.replaceState(
     null,
     null,
-    generateNewUrlFromWindowLocation(store, newPath),
+    generateNewUrlFromWindowLocation(
+      store,
+      syncToLocations,
+      serializers,
+      useHash,
+      newPath,
+    ),
   );

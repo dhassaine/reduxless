@@ -9,7 +9,6 @@ import {
   JSX,
   Fragment,
 } from 'preact';
-import { getPath } from '@reduxless/core';
 import type {
   SelectorMappings,
   ActionMappings,
@@ -135,7 +134,8 @@ export const Match: FunctionalComponent<MatchProps> = ({
   return (
     <StoreContext.Consumer>
       {({ store }) => {
-        const actualPath = currentPath ?? getPath(store as RouterEnabledStore);
+        const actualPath =
+          currentPath ?? (store as RouterEnabledStore).getPath();
         const matched =
           typeof path == 'function'
             ? path(actualPath)

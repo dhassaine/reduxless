@@ -1,4 +1,3 @@
-import { getPath } from '@reduxless/core';
 import type {
   SelectorMappings,
   ActionMappings,
@@ -133,7 +132,8 @@ export const Match = ({
   return (
     <StoreContext.Consumer>
       {({ store }) => {
-        const actualPath = currentPath ?? getPath(store as RouterEnabledStore);
+        const actualPath =
+          currentPath ?? (store as RouterEnabledStore).getPath();
         const matched =
           typeof path == 'function'
             ? path(actualPath)

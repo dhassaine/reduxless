@@ -8,8 +8,10 @@ import {
   RouterEnabledStore,
   CreateRouterEnabledStore,
   Serializer,
+  Serializers,
 } from '../interfaces';
 import createStore from '../state/store';
+import { getPath } from './selectors';
 
 type GenericFunction = (...args: any[]) => any;
 
@@ -56,13 +58,18 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
   batchUpdateFn,
   pushStateMountPoints = [],
   replaceStateMountPoints = [],
-  serializers = {},
+  serializers: _serializers = {},
   routerOptions = {},
 } = {}) => {
   const { debounceTime, useHash } = {
     ...defaultOptions,
     ...routerOptions,
   };
+  let syncToLocations: string[] = [];
+  let syncedLocationToStore = false;
+  const serializers: Serializers = new Map<string, Serializer>(
+    Object.entries(_serializers),
+  );
 
   const routedStore = createStore({
     initialState,
@@ -73,8 +80,10 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
   const _subscribe = routedStore.subscribe;
   routedStore.subscribe = (listener: GenericFunction) => {
     window.addEventListener('popstate', popstate);
-    update(routedStore.syncToLocations);
-    if (routedStore.syncToLocations.length > 0) replaceHistory(routedStore);
+    update(syncToLocations);
+    if (syncToLocations.length > 0) {
+      replaceHistory(routedStore, syncToLocations, serializers, useHash);
+    }
     const unsubscribe = _subscribe(listener);
     return () => {
       window.removeEventListener('popstate', popstate);
@@ -82,30 +91,33 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
     };
   };
 
-  routedStore.serializers = new Map<string, Serializer>(
-    Object.entries(serializers),
-  );
-
   routedStore.navigate = (newPath?: string) => {
     history.pushState(
       null,
       null,
-      generateNewUrlFromWindowLocation(routedStore, newPath),
+      generateNewUrlFromWindowLocation(
+        routedStore,
+        syncToLocations,
+        serializers,
+        useHash,
+        newPath,
+      ),
     );
     routedStore.ping();
   };
 
-  routedStore.syncToLocations = pushStateMountPoints.concat(
-    replaceStateMountPoints,
-  );
-  routedStore.useHash = useHash;
+  syncToLocations = pushStateMountPoints.concat(replaceStateMountPoints);
 
   let lastPushState = [];
   let lastReplaceState = [];
 
   const update = (mountPoints: string[]) => {
-    routedStore.syncedLocationToStore = true;
-    const filteredStoreData = getStateFromUrl(routedStore, mountPoints);
+    syncedLocationToStore = true;
+    const filteredStoreData = getStateFromUrl(
+      serializers,
+      useHash,
+      mountPoints,
+    );
 
     routedStore.withMutations((s) => {
       s.setAll(filteredStoreData);
@@ -115,7 +127,7 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
         replaceStateMountPoints,
       );
     });
-    routedStore.syncedLocationToStore = false;
+    syncedLocationToStore = false;
   };
 
   const popstate = () => {
@@ -123,12 +135,12 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
   };
 
   const debouncedReplaceState = debounce(debounceTime, () => {
-    replaceHistory(routedStore);
+    replaceHistory(routedStore, syncToLocations, serializers, useHash);
   });
 
   routedStore.addUpdateIntercept(() => {
-    if (routedStore.syncedLocationToStore) {
-      routedStore.syncedLocationToStore = false;
+    if (syncedLocationToStore) {
+      syncedLocationToStore = false;
       return;
     }
 
@@ -150,12 +162,14 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
     });
 
     if (shouldPushState) {
-      pushHistory(routedStore);
+      pushHistory(routedStore, syncToLocations, serializers, useHash);
       debouncedReplaceState.cancel();
     } else if (shouldReplaceState) {
       debouncedReplaceState();
     }
   });
+
+  routedStore.getPath = () => getPath(useHash);
 
   return routedStore;
 };

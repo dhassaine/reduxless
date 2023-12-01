@@ -1,4 +1,4 @@
-import { RouterEnabledStore, Serializers } from '../interfaces';
+import { Serializers } from '../interfaces';
 
 type JSONDTO = { [index: string]: string };
 
@@ -26,8 +26,8 @@ const parseStore = (jsonStoreData: string, serializers?: Serializers) => {
   return data;
 };
 
-export const getPath = (store: RouterEnabledStore) =>
-  store.useHash
+export const getPath = (useHash: boolean) =>
+  useHash
     ? window.location.hash.replace(/^#/, '/')
     : window.location.pathname + window.location.search;
 
