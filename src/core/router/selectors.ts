@@ -1,11 +1,8 @@
-import { RouterEnabledStore, Serializers } from '../interfaces';
+import { Serializers } from '../interfaces';
 
 type JSONDTO = { [index: string]: string };
 
-const parseStore = (
-  jsonStoreData: string,
-  serializers: Serializers = new Map()
-) => {
+const parseStore = (jsonStoreData: string, serializers?: Serializers) => {
   let data: JSONDTO = {};
 
   try {
@@ -16,7 +13,7 @@ const parseStore = (
 
   for (const [key, value] of Object.entries(data)) {
     try {
-      if (serializers.has(key)) {
+      if (serializers?.has(key)) {
         data[key] = serializers.get(key).fromUrlValue(value);
       } else {
         data[key] = JSON.parse(value);
@@ -29,13 +26,15 @@ const parseStore = (
   return data;
 };
 
-export const getPath = (store: RouterEnabledStore) =>
-  store.useHash
+export const getPath = (useHash: boolean) =>
+  useHash
     ? window.location.hash.replace(/^#/, '/')
     : window.location.pathname + window.location.search;
 
-export const extractPartsFromPath = (store: RouterEnabledStore) => {
-  const path = getPath(store);
+export const extractPartsFromPath = (
+  path: string,
+  serializers?: Serializers,
+) => {
   const [pathName, query = ''] = path.split('?');
   try {
     const params = decodeURIComponent(query).split('&');
@@ -45,12 +44,12 @@ export const extractPartsFromPath = (store: RouterEnabledStore) => {
         if (pair.startsWith('storeData='))
           acc.storeData = parseStore(
             decodeURIComponent(pair.replace(/^storeData=/, '')),
-            store.serializers
+            serializers,
           );
         else acc.query += (acc.query ? '&' : '') + pair;
         return acc;
       },
-      { pathName: pathName || '/', query: '', storeData: {} }
+      { pathName: pathName || '/', query: '', storeData: {} },
     );
   } catch (e) {
     return { pathName: pathName || '/', query: '', storeData: {} };

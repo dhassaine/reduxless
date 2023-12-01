@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Smoke test Match renders children if url path matches 1`] = `
+<DocumentFragment>
+  <div>
+    hello
+  </div>
+</DocumentFragment>
+`;

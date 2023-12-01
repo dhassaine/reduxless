@@ -98,12 +98,12 @@ interface CreateRouterEnabledStoreArgs extends CreateStoreArgs {
  * select store data.
  */
 export type CreateRouterEnabledStore = (
-  args?: CreateRouterEnabledStoreArgs
+  args?: CreateRouterEnabledStoreArgs,
 ) => RouterEnabledStore;
 
 type MountPoint = string;
 
-interface MountPointsToValues {
+export interface MountPointsToValues {
   [keys: string]: any;
 }
 
@@ -189,11 +189,8 @@ export interface Store {
 
 /** The router-enabled store instance */
 export interface RouterEnabledStore extends Store {
-  syncToLocations: string[];
-  useHash: boolean;
-  syncedLocationToStore: boolean;
-  serializers: Serializers;
   navigate: (newPath?: string) => void;
+  getPath: () => string;
 }
 
 /**

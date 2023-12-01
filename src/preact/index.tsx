@@ -9,7 +9,6 @@ import {
   JSX,
   Fragment,
 } from 'preact';
-import { getPath } from '@reduxless/core';
 import type {
   SelectorMappings,
   ActionMappings,
@@ -75,7 +74,7 @@ export const mapper =
                 for (const key of Object.keys(propMappings)) {
                   this._mappedProps[key] = propMappings[key](
                     this._store,
-                    this.props
+                    this.props,
                   );
                 }
               }
@@ -102,24 +101,25 @@ export const mapper =
     };
   };
 
-export const Link: FunctionalComponent<JSX.HTMLAttributes<HTMLAnchorElement>> =
-  ({ href, children, onClick, ...rest }) => (
-    <StoreContext.Consumer>
-      {({ store }) => (
-        <a
-          {...rest}
-          href={href}
-          onClick={(ev) => {
-            ev.preventDefault();
-            (store as RouterEnabledStore).navigate(href);
-            onClick?.call(ev.target, ev);
-          }}
-        >
-          {children}
-        </a>
-      )}
-    </StoreContext.Consumer>
-  );
+export const Link: FunctionalComponent<
+  JSX.HTMLAttributes<HTMLAnchorElement>
+> = ({ href, children, onClick, ...rest }) => (
+  <StoreContext.Consumer>
+    {({ store }) => (
+      <a
+        {...rest}
+        href={href}
+        onClick={(ev) => {
+          ev.preventDefault();
+          (store as RouterEnabledStore).navigate(href as string);
+          onClick?.call(ev.target, ev);
+        }}
+      >
+        {children}
+      </a>
+    )}
+  </StoreContext.Consumer>
+);
 
 interface MatchProps {
   path: string | ((path: string) => boolean);
@@ -134,11 +134,13 @@ export const Match: FunctionalComponent<MatchProps> = ({
   return (
     <StoreContext.Consumer>
       {({ store }) => {
-        const actualPath = currentPath ?? getPath(store as RouterEnabledStore);
+        const actualPath =
+          currentPath ?? (store as RouterEnabledStore).getPath();
         const matched =
           typeof path == 'function'
             ? path(actualPath)
             : actualPath.split('?')[0] == path;
+
         return matched ? <Fragment>{children}</Fragment> : null;
       }}
     </StoreContext.Consumer>

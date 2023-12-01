@@ -27,6 +27,7 @@ function selectorMemoizer<T>(
 
     if (!hasPropsChanged) return lastResult;
 
+    // eslint-disable-next-line prefer-spread
     lastResult = mapper.apply(null, lastProps);
     return lastResult;
   };

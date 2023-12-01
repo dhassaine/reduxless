@@ -1,6 +1,6 @@
 {
   "name": "@reduxless/core",
-  "version": "5.0.5",
+  "version": "6.0.0",
   "description": "A small and performant state management and routing library with unidirectional data flow",
   "author": "Djamel Hassaine <dhassaine@gmail.com> (https://github.com/dhassaine)",
   "contributors": [
@@ -16,9 +16,6 @@
   },
   "jest": {
     "testEnvironment": "jsdom",
-    "setupFiles": [
-      "<rootDir>/test-setup/polyfill.ts"
-    ],
     "moduleDirectories": [
       "node_modules"
     ],
@@ -31,6 +28,8 @@
     "transform": {
       "\\.(j|t)sx?$": "ts-jest"
     },
-    "testURL": "http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D"
+    "testEnvironmentOptions": {
+      "url": "http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=%7B%22counter%22%3A%7B%22value%22%3A1%7D%2C%22counter2%22%3A%7B%22value%22%3A2%7D%7D"
+    }
   }
 }
