@@ -140,6 +140,7 @@ export const Match: FunctionalComponent<MatchProps> = ({
           typeof path == 'function'
             ? path(actualPath)
             : actualPath.split('?')[0] == path;
+
         return matched ? <Fragment>{children}</Fragment> : null;
       }}
     </StoreContext.Consumer>

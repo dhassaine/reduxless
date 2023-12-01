@@ -36,6 +36,7 @@
     "ts-jest": "29.1.1",
     "tslib": "2.6.2",
     "typescript": "5.3.2",
-    "undom": "0.4.0"
+    "undom": "0.4.0",
+    "@testing-library/preact": "3.2.3"
   }
 }
