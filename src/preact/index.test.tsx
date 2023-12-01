@@ -14,10 +14,13 @@ describe('Smoke test', () => {
     const store = createRouterEnabledStore();
     const results = render(
       <Container store={store}>
-        <Match path={`/page1`}>
+        <Match path={'/page1'}>
           <div>hello</div>
         </Match>
-        <Match path={`/page2`}>
+        <Match path={'/page2'}>
+          <div>bye</div>
+        </Match>
+        <Match path={(p) => p == '/page3'}>
           <div>bye</div>
         </Match>
       </Container>,
