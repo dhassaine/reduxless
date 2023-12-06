@@ -98,6 +98,9 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
   };
 
   routedStore.navigate = (newPath: string) => {
+    // update the url with the new path immediately so that serializers
+    // can determine whether they need to serialize the store data
+    // some use cases only serialize data on certain paths
     history.pushState(null, null, newPath);
     const newUrl = generateNewUrlFromWindowLocation(
       routedStore,
@@ -106,6 +109,8 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
       useHash,
       newPath,
     );
+    // replace the serialized store data instead of pushing so we don't
+    // alter the history length
     history.replaceState(null, null, newUrl);
     routedStore.ping();
   };
