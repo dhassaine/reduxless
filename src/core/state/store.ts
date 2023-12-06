@@ -4,7 +4,7 @@ const makeSubject = () => {
   const observers = new Map();
   let idPtr = 0;
   return {
-    subscribe: callback => {
+    subscribe: (callback) => {
       const id = idPtr;
       idPtr++;
       observers.set(id, callback);
@@ -13,8 +13,8 @@ const makeSubject = () => {
       };
     },
     next: (...args) => {
-      observers.forEach(callback => callback(...args));
-    }
+      observers.forEach((callback) => callback(...args));
+    },
   };
 };
 
@@ -23,7 +23,7 @@ const immediateScheduler = (fn: () => void) => fn();
 const createStore: CreateStore = ({
   initialState = {},
   validators = {},
-  batchUpdateFn = immediateScheduler
+  batchUpdateFn = immediateScheduler,
 } = {}) => {
   const state$ = makeSubject();
   const updateIntercepts = [];
@@ -54,7 +54,7 @@ const createStore: CreateStore = ({
   };
 
   const update = () => {
-    updateIntercepts.forEach(fn => fn(mutableStore));
+    updateIntercepts.forEach((fn) => fn(mutableStore));
     ping();
   };
 
@@ -69,13 +69,13 @@ const createStore: CreateStore = ({
 
   const _setAll = (mountPointsAndPayloads: EnumerableObject<any>) => {
     Object.entries(mountPointsAndPayloads).forEach(([mountPoint, payload]) =>
-      _set(mountPoint, payload)
+      _set(mountPoint, payload),
     );
   };
 
   setAll(initialState);
 
-  const addUpdateIntercept = fn => updateIntercepts.push(fn);
+  const addUpdateIntercept = (fn) => updateIntercepts.push(fn);
 
   const set = (mountPoint: string, payload: any) => {
     _set(mountPoint, payload);
@@ -89,17 +89,17 @@ const createStore: CreateStore = ({
       (results, mountPoint) => (
         (results[mountPoint] = memory.get(mountPoint)), results
       ),
-      {}
+      {},
     );
 
   const mutableStore = {
     get,
     set: _set,
     getAll,
-    setAll: _setAll
+    setAll: _setAll,
   };
 
-  const withMutations = fn => {
+  const withMutations = (fn) => {
     fn(mutableStore);
     update();
   };
@@ -113,7 +113,7 @@ const createStore: CreateStore = ({
     addUpdateIntercept,
     ping,
     subscribe: (listener: (store) => any) =>
-      state$.subscribe(() => listener(storeApi))
+      state$.subscribe(() => listener(storeApi)),
   };
 
   return storeApi;
