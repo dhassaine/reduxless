@@ -61,6 +61,8 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
   serializers: _serializers = {},
   routerOptions = {},
 } = {}) => {
+  let subscriptionCount = 0;
+
   const { debounceTime, useHash } = {
     ...defaultOptions,
     ...routerOptions,
@@ -79,6 +81,7 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
 
   const _subscribe = routedStore.subscribe;
   routedStore.subscribe = (listener: GenericFunction) => {
+    subscriptionCount++;
     window.addEventListener('popstate', popstate);
     update(syncToLocations);
     if (syncToLocations.length > 0) {
@@ -86,23 +89,24 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
     }
     const unsubscribe = _subscribe(listener);
     return () => {
-      window.removeEventListener('popstate', popstate);
+      subscriptionCount--;
       unsubscribe();
+      if (subscriptionCount == 0) {
+        window.removeEventListener('popstate', popstate);
+      }
     };
   };
 
-  routedStore.navigate = (newPath?: string) => {
-    history.pushState(
-      null,
-      null,
-      generateNewUrlFromWindowLocation(
-        routedStore,
-        syncToLocations,
-        serializers,
-        useHash,
-        newPath,
-      ),
+  routedStore.navigate = (newPath: string) => {
+    history.pushState(null, null, newPath);
+    const newUrl = generateNewUrlFromWindowLocation(
+      routedStore,
+      syncToLocations,
+      serializers,
+      useHash,
+      newPath,
     );
+    history.replaceState(null, null, newUrl);
     routedStore.ping();
   };
 
@@ -128,6 +132,9 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
       );
     });
     syncedLocationToStore = false;
+    if (Object.keys(filteredStoreData).length == 0) {
+      routedStore.ping();
+    }
   };
 
   const popstate = () => {

@@ -14,7 +14,7 @@ const url =
     serializeURLDTO({
       counter: { value: 1 },
       counter2: { value: 2 },
-    })
+    }),
   );
 
 describe('router/index', () => {
@@ -47,49 +47,26 @@ describe('router/index', () => {
       });
 
       it('syncs registered storeData from window.location to the store', (done) => {
+        const pushStateMountPoints = ['counter', 'counter2'];
         const store = createRouterEnabledStore({
-          pushStateMountPoints: ['counter', 'counter2'],
+          pushStateMountPoints,
         });
+        unsubscribe = store.subscribe(jest.fn());
 
-        const assertions = [
-          () => {
-            expect(store.get('counter')).toEqual({ value: 1 });
-            expect(store.get('counter2')).toEqual({ value: 2 });
-          },
-          () => {
-            expect(store.get('counter')).toEqual({ value: 2 });
-            expect(store.get('counter2')).toEqual({ value: 3 });
-          },
-        ];
+        expect(store.get('counter')).toEqual({ value: 1 });
+        expect(store.get('counter2')).toEqual({ value: 2 });
 
-        unsubscribe = store.subscribe(() => {
-          const assert = assertions.pop();
+        store.setAll({ counter: { value: 2 }, counter2: { value: 3 } });
+        expect(store.get('counter')).toEqual({ value: 2 });
+        expect(store.get('counter2')).toEqual({ value: 3 });
 
-          try {
-            assert();
-          } catch (error) {
-            done(error);
-          }
-
-          if (assertions.length === 0) {
-            return done();
-          }
-          window.history.back();
-        });
-
-        window.history.pushState(
-          null,
-          null,
-          'http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2&storeData=' +
-            encodeURIComponent(
-              serializeURLDTO({
-                counter: { value: 2 },
-                counter2: { value: 3 },
-              })
-            )
-        );
-        window.history.pushState(null, null, '/ignored');
+        const popPromise = getPopStatePromise();
         window.history.back();
+        popPromise.then(() => {
+          expect(store.get('counter')).toEqual({ value: 1 });
+          expect(store.get('counter2')).toEqual({ value: 2 });
+          done();
+        });
       });
 
       it('changes made directly to the registered sync data in the store automatically update the browser location', (done) => {
@@ -114,8 +91,8 @@ describe('router/index', () => {
                 serializeURLDTO({
                   counter: { value: 2 },
                   counter2: { value: 3 },
-                })
-              )
+                }),
+              ),
           );
           jest.useRealTimers();
           done();
@@ -149,8 +126,11 @@ describe('router/index', () => {
           'search',
           '?queryParam=queryValue&a[]=1&a[]=2&storeData=' +
             encodeURIComponent(
-              serializeURLDTO({ counter: { value: 4 }, counter2: { value: 2 } })
-            )
+              serializeURLDTO({
+                counter: { value: 4 },
+                counter2: { value: 2 },
+              }),
+            ),
         );
         expect(store.get('counter')).toEqual({ value: 2 });
       });
@@ -162,10 +142,10 @@ describe('router/index', () => {
         const oldReplace = window.history.replaceState;
 
         const pushState = (window.history.pushState = jest.fn(
-          oldPush.bind(window.history)
+          oldPush.bind(window.history),
         ));
         const replaceState = (window.history.replaceState = jest.fn(
-          oldReplace.bind(window.history)
+          oldReplace.bind(window.history),
         ));
 
         const store = createRouterEnabledStore({
@@ -251,10 +231,10 @@ describe('router/index', () => {
         const oldReplace = window.history.replaceState;
 
         const pushState = (window.history.pushState = jest.fn(
-          oldPush.bind(window.history)
+          oldPush.bind(window.history),
         ));
         const replaceState = (window.history.replaceState = jest.fn(
-          oldReplace.bind(window.history)
+          oldReplace.bind(window.history),
         ));
 
         const store = createRouterEnabledStore({
@@ -324,6 +304,30 @@ describe('router/index', () => {
         store.set('counter', { value: 3 }); // simple update
         store.set('counter2', { value: 4 }); // replaceState
       });
+
+      describe('when there are multiple subscriptions to the store', () => {
+        describe('when at least one unsubscribe has been invoked', () => {
+          it('state is restored on browse back', (done) => {
+            window.history.pushState(null, null, 'http://example.com/page1');
+            const store = createRouterEnabledStore({
+              initialState: { val: 0 },
+              pushStateMountPoints: ['val'],
+            });
+            unsubscribe = store.subscribe(jest.fn());
+            const unsubscribe2 = store.subscribe(jest.fn());
+            unsubscribe2();
+            store.set('val', 1);
+            expect(store.get('val')).toEqual(1);
+
+            const popPromise = getPopStatePromise();
+            window.history.back();
+            popPromise.then(() => {
+              expect(store.get('val')).toEqual(0);
+              done();
+            });
+          });
+        });
+      });
     });
 
     describe('navigate', () => {
@@ -352,7 +356,7 @@ describe('router/index', () => {
         store.navigate('page2');
         expect(window.location.href).toEqual(
           'http://example.com/page2?storeData=' +
-            encodeURIComponent(serializeURLDTO({ counter: { value: 1 } }))
+            encodeURIComponent(serializeURLDTO({ counter: { value: 1 } })),
         );
       });
 
@@ -416,14 +420,14 @@ describe('router/index', () => {
       history.pushState(
         null,
         null,
-        'http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2'
+        'http://example.com/page1?queryParam=queryValue&a[]=1&a[]=2',
       );
     });
 
     it('pushState should not be called when updating a non sync mountpoint after using browser back', (done) => {
       const oldPush = window.history.pushState;
       const pushState = (window.history.pushState = jest.fn(
-        oldPush.bind(window.history)
+        oldPush.bind(window.history),
       ));
 
       const store = createRouterEnabledStore({
@@ -455,3 +459,12 @@ describe('router/index', () => {
     });
   });
 });
+function getPopStatePromise() {
+  return new Promise((resolve) => {
+    const popstate = () => {
+      resolve(undefined);
+      window.removeEventListener('popstate', popstate);
+    };
+    window.addEventListener('popstate', popstate);
+  });
+}
