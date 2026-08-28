@@ -1,6 +1,17 @@
 import { extractPartsFromPath, getPath } from './selectors';
 import { MountPointsToValues, Serializers, Store } from '../interfaces';
 
+function mergeQueries(currentQuery: string, newQuery: string) {
+  const newParams = newQuery.split('&').filter(Boolean);
+  const newParamNames = new Set(newParams.map((param) => param.split('=')[0]));
+  const currentParams = currentQuery
+    .split('&')
+    .filter(Boolean)
+    .filter((param) => !newParamNames.has(param.split('=')[0]));
+
+  return [...currentParams, ...newParams].join('&');
+}
+
 export function generateNewUrl(
   syncableData: MountPointsToValues,
   serializers: Serializers,
@@ -9,6 +20,9 @@ export function generateNewUrl(
   newPath?: string,
 ) {
   const { pathName, query } = extractPartsFromPath(path, serializers);
+  const newPathParts = newPath
+    ? extractPartsFromPath(newPath, serializers)
+    : null;
   let hasUrlData = false;
   for (const [key, value] of Object.entries(syncableData)) {
     if (serializers.has(key)) {
@@ -22,15 +36,17 @@ export function generateNewUrl(
     }
   }
 
-  let nextQuery = query;
-  const nextPath = newPath || pathName;
+  let nextQuery = newPathParts
+    ? mergeQueries(query, newPathParts.query)
+    : query;
+  const nextPath = newPathParts?.pathName || pathName;
 
   if (hasUrlData) {
     const storeDataParam = `storeData=${encodeURIComponent(
       JSON.stringify(syncableData),
     )}`;
 
-    nextQuery += (query ? '&' : '') + storeDataParam;
+    nextQuery += (nextQuery ? '&' : '') + storeDataParam;
   }
 
   const url = nextQuery ? `${nextPath}?${nextQuery}` : nextPath;

@@ -107,7 +107,7 @@ export const createRouterEnabledStore: CreateRouterEnabledStore = ({
       syncToLocations,
       serializers,
       useHash,
-      useHash ? newPath : undefined,
+      newPath,
     );
     // replace the serialized store data instead of pushing so we don't
     // alter the history length
