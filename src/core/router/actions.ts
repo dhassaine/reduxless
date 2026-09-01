@@ -9,6 +9,9 @@ export function generateNewUrl(
   newPath?: string,
 ) {
   const { pathName, query } = extractPartsFromPath(path, serializers);
+  const newPathParts = newPath
+    ? extractPartsFromPath(newPath, serializers)
+    : null;
   let hasUrlData = false;
   for (const [key, value] of Object.entries(syncableData)) {
     if (serializers.has(key)) {
@@ -22,15 +25,15 @@ export function generateNewUrl(
     }
   }
 
-  let nextQuery = query;
-  const nextPath = newPath || pathName;
+  let nextQuery = newPathParts ? newPathParts.query : query;
+  const nextPath = newPathParts?.pathName || pathName;
 
   if (hasUrlData) {
     const storeDataParam = `storeData=${encodeURIComponent(
       JSON.stringify(syncableData),
     )}`;
 
-    nextQuery += (query ? '&' : '') + storeDataParam;
+    nextQuery += (nextQuery ? '&' : '') + storeDataParam;
   }
 
   const url = nextQuery ? `${nextPath}?${nextQuery}` : nextPath;
