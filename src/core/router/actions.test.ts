@@ -11,7 +11,7 @@ describe(generateNewUrl, () => {
     expect(newUrl).toBe('/dashboard?storeData=%7B%22a%22%3A%222%22%7D');
   });
 
-  it('merges current and new query parameters', () => {
+  it('uses query parameters from the new path', () => {
     const newUrl = generateNewUrl(
       {},
       new Map(),
@@ -20,7 +20,19 @@ describe(generateNewUrl, () => {
       '/gantt?project_id=17383&task_id=20',
     );
 
-    expect(newUrl).toBe('/gantt?filter=active&project_id=17383&task_id=20');
+    expect(newUrl).toBe('/gantt?project_id=17383&task_id=20');
+  });
+
+  it('does not carry current query parameters to a new path', () => {
+    const newUrl = generateNewUrl(
+      {},
+      new Map(),
+      false,
+      '/projects?filter=active',
+      '/gantt',
+    );
+
+    expect(newUrl).toBe('/gantt');
   });
 
   it('appends store data to new query parameters', () => {

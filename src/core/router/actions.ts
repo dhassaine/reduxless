@@ -1,17 +1,6 @@
 import { extractPartsFromPath, getPath } from './selectors';
 import { MountPointsToValues, Serializers, Store } from '../interfaces';
 
-function mergeQueries(currentQuery: string, newQuery: string) {
-  const newParams = newQuery.split('&').filter(Boolean);
-  const newParamNames = new Set(newParams.map((param) => param.split('=')[0]));
-  const currentParams = currentQuery
-    .split('&')
-    .filter(Boolean)
-    .filter((param) => !newParamNames.has(param.split('=')[0]));
-
-  return [...currentParams, ...newParams].join('&');
-}
-
 export function generateNewUrl(
   syncableData: MountPointsToValues,
   serializers: Serializers,
@@ -36,9 +25,7 @@ export function generateNewUrl(
     }
   }
 
-  let nextQuery = newPathParts
-    ? mergeQueries(query, newPathParts.query)
-    : query;
+  let nextQuery = newPathParts ? newPathParts.query : query;
   const nextPath = newPathParts?.pathName || pathName;
 
   if (hasUrlData) {

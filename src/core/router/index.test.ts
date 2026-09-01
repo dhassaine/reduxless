@@ -346,8 +346,12 @@ describe('router/index', () => {
         expect(window.location.href).toEqual('http://example.com/page2');
       });
 
-      it('preserves query parameters without duplicating them', () => {
-        window.history.pushState(null, null, 'http://example.com/page1');
+      it('uses the new path query parameters without duplicating them', () => {
+        window.history.pushState(
+          null,
+          null,
+          'http://example.com/page1?filter=active&task_id=10',
+        );
         const store = createRouterEnabledStore();
         unsubscribe = store.subscribe(jest.fn());
         store.navigate('page2?project_id=17383&task_id=20');
